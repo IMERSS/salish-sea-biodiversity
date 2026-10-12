@@ -1,0 +1,16 @@
+{{- /* Map of subsidiary project boundaries, populated from data/projects.json by scripts/collect-projects.js */ -}}
+{{- $projects := slice -}}
+{{- range site.Data.projects -}}
+{{- $projects = $projects | append (dict
+    "id" .id
+    "title" .title
+    "siteUrl" .siteUrl
+    "descriptionHtml" (.description | markdownify)
+    "boundary" .boundary) -}}
+{{- end -}}
+{{- $maplibre := site.Params.projectMap.maplibreVersion | default "4.7.1" -}}
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@{{ $maplibre }}/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@{{ $maplibre }}/dist/maplibre-gl.js"></script>
+<div class="imerss-project-map" data-bounds="{{ site.Params.projectMap.bounds | jsonify }}"></div>
+<script type="application/json" class="imerss-project-map-data">{{ $projects | jsonify | safeJS }}</script>
+<script src="{{ "js/project-map.js" | relURL }}"></script>

@@ -91,6 +91,13 @@ menu:
 params:
   description: Biodiversity Change in the Salish Sea
 
+  # Map of subsidiary projects shown on every page. Projects are listed in projects.json at the top level of this
+  # repository - run `npm run collect` to refresh data/projects.json from their repositories before building
+  projectMap:
+    # Initial view as [[west, south], [east, north]]
+    bounds: [[-125.3, 47.0], [-122.0, 50.3]]
+    maplibreVersion: "4.7.1"
+
   # Displays bizarrely on hextra once we change background colour
   toc: false
 

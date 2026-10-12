@@ -1,0 +1,9 @@
+{
+    "// comment": "Subsidiary project sites shown on the index map. Run `npm run collect` to refresh data/projects.json from these repositories.",
+    "boundaryFile": "boundary.geojson",
+    "descriptionFile": "project.md",
+    "projects": [
+        "https://github.com/IMERSS/saanich-peninsula-flora",
+        "https://github.com/IMERSS/howe-sound-mapping-2026"
+    ]
+}

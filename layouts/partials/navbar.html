@@ -1,8 +1,11 @@
+{{- /* Shared IMERSS navigation banner - keep identical across the index site and its project sites.
+       A project site sets params.indexSite.title and params.indexSite.url to show a link back to the index at top left */ -}}
 {{- $logoPath := .Site.Params.navbar.logo.path | default "images/logo.svg" -}}
 {{- $logoLink := .Site.Params.navbar.logo.link | default .Site.Home.RelPermalink -}}
 {{- $logoWidth := .Site.Params.navbar.logo.width | default "20" -}}
 {{- $logoHeight := .Site.Params.navbar.logo.height | default "20" -}}
 {{- $logoDarkPath := .Site.Params.navbar.logo.dark | default $logoPath -}}
+{{- $indexSite := .Site.Params.indexSite -}}
 
 <div class="nav-container hx-sticky hx-top-0 hx-w-full hx-bg-transparent print:hx-hidden">
 
@@ -11,16 +14,22 @@
   </div>
   <div class="imerss-navbar">
       {{- if (.Site.Params.navbar.displayTitle | default true) }}
-      <a class="hx-flex hx-items-center hover:hx-opacity-75" href="{{ $logoLink }}">
-          <span class="imerss-navbar-title hx-mx-2 hx-font-extrabold hx-inline hx-select-none" title="{{ .Site.Title }}">{{- .Site.Title -}}</span>
-      </a>
+      <div class="imerss-navbar-titles">
+          {{- with $indexSite }}
+          <a class="imerss-navbar-index hover:hx-opacity-75" href="{{ .url }}" title="{{ .title }}">
+              <span>&larr; {{ .title }}</span>
+          </a>
+          {{- end }}
+          <a class="hx-flex hx-items-center hover:hx-opacity-75" href="{{ $logoLink }}">
+              <span class="imerss-navbar-title hx-mx-2 hx-font-extrabold hx-inline hx-select-none" title="{{ .Site.Title }}">{{- .Site.Title -}}</span>
+          </a>
+      </div>
       {{- end }}
       {{- if (.Site.Params.navbar.displayLogo | default true) }}
       <a class="hx-flex hx-items-center hover:hx-opacity-75" href="{{ $logoLink }}">
           <img src="{{ $logoPath | relURL }}" alt="{{ .Site.Title }}" height="{{ $logoHeight }}" width="{{ $logoWidth }}" />
       </a>
       {{- end }}
-    </a>
   </div>
 
 </div>

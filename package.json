@@ -1,0 +1,18 @@
+{
+    "name": "salish-sea-biodiversity",
+    "description": "Index site for IMERSS biodiversity projects in the Salish Sea",
+    "version": "0.0.1",
+    "author": "IMERSS",
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "collect": "node scripts/collect-projects.js",
+        "build": "node scripts/collect-projects.js && hugo"
+    },
+    "dependencies": {
+        "node-fetch": "^2.7.0"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    }
+}
