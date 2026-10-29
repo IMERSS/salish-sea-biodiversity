@@ -114,6 +114,11 @@ nav a {
     position: relative;
 }
 
+/* Keep the header image above the page content, so that content scrolls beneath the banner rather than over it */
+.nav-container {
+    z-index: 20;
+}
+
 .imerss-navbar-background {
     background: url("../images/imerss-header-cropped.jpg") no-repeat;
     background-size: cover;
@@ -167,8 +172,11 @@ nav a {
     margin-left: 24px;
 }
 
+/* Pin the subnav over the lower strip of the header image, just below the navbar */
 .imerss-subnav {
-    position: relative;
+    position: sticky;
+    top: 100px;
+    z-index: 30;
     font-size: 16px;
 }
 
