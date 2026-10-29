@@ -3,13 +3,15 @@ linkTitle: "Projects"
 title: Projects
 ---
 
-Frameworks for each of our studies:
+Frameworks for each of our studies. Each project is also outlined on the map - click its boundary to visit it.
 
-* Saanich Flora Solow analysis
+{{< project-list >}}
+
+### In development
+
 * Galiano Island PPP study
 * Galiano Island conservation analysis
-* Hunterston Farms BioBlitz assessment,
-* Howe Sound conservation analysis
+* Hunterston Farms BioBlitz assessment
 
 
 {{< callout emoji="❓" >}}

@@ -189,6 +189,15 @@ nav a {
 
 
 
+.imerss-project-list-item h3 a {
+    color: #FDF2CE;
+    text-decoration: underline;
+}
+
+.imerss-project-list-item + .imerss-project-list-item {
+    margin-top: 1.5rem;
+}
+
 footer {
     color: black;
 }
