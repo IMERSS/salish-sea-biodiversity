@@ -119,12 +119,16 @@ nav a {
     z-index: 20;
 }
 
+/* Positioned within the sticky .nav-container rather than fixed, since Safari can misplace a fixed element nested in
+   a sticky one when the page repaints */
 .imerss-navbar-background {
     background: url("../images/imerss-header-cropped.jpg") no-repeat;
     background-size: cover;
     height: 160px;
     width: 100%;
-    position: fixed;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .imerss-navbar {
