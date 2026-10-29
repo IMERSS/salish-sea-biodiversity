@@ -27,6 +27,9 @@ params:
 ```
 
 Then add the project's repository URL to the `projects` list in [`projects.json`](projects.json) and rebuild this site.
+The map links each project to `https://<owner>.github.io/<repository>/story`. If a project's site lives elsewhere, list
+it as an object giving its address too, for example
+`{"repo": "https://github.com/IMERSS/detecting-local-extinction", "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/"}`.
 
 ## Building
 

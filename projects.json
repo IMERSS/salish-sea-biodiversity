@@ -1,9 +1,13 @@
 {
-    "// comment": "Subsidiary project sites shown on the index map. Run `npm run collect` to refresh data/projects.json from these repositories.",
+    "// comment": "Subsidiary project sites shown on the index map. Run `npm run collect` to refresh data/projects.json from these repositories. An entry may be an object holding the repository URL as \"repo\" and a \"siteUrl\" for a project whose site is not at the usual /story address.",
     "boundaryFile": "boundary.geojson",
     "descriptionFile": "project.md",
     "projects": [
         "https://github.com/IMERSS/saanich-peninsula-flora",
-        "https://github.com/IMERSS/howe-sound-mapping-2026"
+        "https://github.com/IMERSS/howe-sound-mapping-2026",
+        {
+            "repo": "https://github.com/IMERSS/detecting-local-extinction",
+            "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/"
+        }
     ]
 }

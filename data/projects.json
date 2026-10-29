@@ -2136,5 +2136,66 @@
         }
       ]
     }
+  },
+  {
+    "id": "detecting-local-extinction",
+    "title": "Protocol for the Detection of Extirpation",
+    "repoUrl": "https://github.com/IMERSS/detecting-local-extinction",
+    "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/",
+    "description": "# Protocol for the Detection of Extirpation\n\nA protocol for detecting local extinction, or extirpation, developed on Galiano Island. It combines historical\nspecimens, community science observations and targeted searches, weighing the search effort spent in each species'\nhistorical and potential habitat to test the hypothesis that a population has been lost, in line with IUCN extinction\ncriteria. Published in [*Plants, People, Planet*](https://nph.onlinelibrary.wiley.com/doi/full/10.1002/ppp3.70130).\n",
+    "boundary": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {
+            "name": "Galiano Island"
+          },
+          "geometry": {
+            "coordinates": [
+              [
+                [
+                  -123.557,
+                  48.957
+                ],
+                [
+                  -123.368,
+                  48.855
+                ],
+                [
+                  -123.306,
+                  48.858
+                ],
+                [
+                  -123.313,
+                  48.897
+                ],
+                [
+                  -123.43,
+                  48.936
+                ],
+                [
+                  -123.571,
+                  49.015
+                ],
+                [
+                  -123.59,
+                  49.014
+                ],
+                [
+                  -123.593,
+                  48.999
+                ],
+                [
+                  -123.557,
+                  48.957
+                ]
+              ]
+            ],
+            "type": "Polygon"
+          }
+        }
+      ]
+    }
   }
 ]

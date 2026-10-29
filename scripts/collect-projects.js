@@ -101,14 +101,24 @@ const titleFromMarkdown = function (markdown, fallback) {
 };
 
 /**
+ * Retrieve the repository URL from a project's entry in projects.json.
+ * @param {String|Object} entry - The project's entry - either its repository URL, or an object holding it as `repo`.
+ * @return {String} The project's GitHub repository URL.
+ */
+const entryRepoUrl = function (entry) {
+    return typeof entry === "string" ? entry : entry.repo;
+};
+
+/**
  * Collect the boundary and description of a single project.
- * @param {String} repoUrl - The project's GitHub repository URL.
+ * @param {String|Object} entry - The project's entry in projects.json - either its GitHub repository URL, or an object
+ * with members `repo` holding that URL and optionally `siteUrl` overriding the URL computed for its published site.
  * @param {Object} config - The parsed contents of projects.json.
  * @param {String|null} localDir - A directory holding local checkouts of the repositories, or null to fetch from GitHub.
  * @return {Promise<Object>} A promise for the project's record in data/projects.json.
  */
-const collectProject = async function (repoUrl, config, localDir) {
-    const repo = parseRepoUrl(repoUrl);
+const collectProject = async function (entry, config, localDir) {
+    const repo = parseRepoUrl(entryRepoUrl(entry));
     const [boundaryText, description] = await Promise.all([
         readProjectFile(repo, config.boundaryFile, localDir),
         readProjectFile(repo, config.descriptionFile, localDir)
@@ -117,7 +127,7 @@ const collectProject = async function (repoUrl, config, localDir) {
         id: repo.name,
         title: titleFromMarkdown(description, repo.name),
         repoUrl: "https://github.com/" + repo.owner + "/" + repo.name,
-        siteUrl: pagesUrl(repo),
+        siteUrl: entry.siteUrl || pagesUrl(repo),
         description,
         boundary: toFeatureCollection(JSON.parse(boundaryText))
     };
@@ -152,7 +162,7 @@ const main = async function () {
 
     const results = await Promise.allSettled(config.projects.map(repoUrl => collectProject(repoUrl, config, localDir)));
     const records = results.flatMap((result, i) => {
-        const repoUrl = config.projects[i];
+        const repoUrl = entryRepoUrl(config.projects[i]);
         let record;
         if (result.status === "fulfilled") {
             record = result.value;
