@@ -7,6 +7,12 @@
     <h3><a href="{{ .siteUrl }}">{{ .title }}</a></h3>
     {{- /* The description's first heading repeats the title */ -}}
     {{ replaceRE `^#[^\n]*\n+` "" .description | markdownify }}
+    {{- with index site.Data.funders .id }}
+    <section class="imerss-funders" aria-label="Funders">
+      <p>{{ .thanks | markdownify }}</p>
+      {{ partial "logos.html" .logos }}
+    </section>
+    {{- end }}
   </div>
 {{- end }}
 </div>

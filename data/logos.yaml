@@ -1,0 +1,26 @@
+# Logos of funders and partners, copied from imerss.org's data/logos.yaml and static/images/logos. `ratio`
+# (width/height) and `density` (share of the logo that is ink) let each logo be sized to a similar visual weight.
+sitka:
+  name: Sitka Foundation
+  url: https://sitkafoundation.org/
+  logo: images/logos/sitka-foundation.png
+  ratio: 1.161
+  density: 0.212
+ciee:
+  name: Canadian Institute of Ecology and Evolution
+  url: https://www.ciee-icee.ca/
+  logo: images/logos/ciee.png
+  ratio: 4.713
+  density: 0.166
+crd:
+  name: Capital Regional District
+  url: https://www.crd.ca/
+  logo: images/logos/capital-regional-district.png
+  ratio: 2.773
+  density: 0.280
+keefer:
+  name: Keefer Ecological Services Ltd.
+  url: https://keefereco.com/
+  logo: images/logos/keefer-ecological-services.png
+  ratio: 1.405
+  density: 0.320

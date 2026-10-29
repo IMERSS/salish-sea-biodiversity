@@ -31,6 +31,11 @@ The map links each project to `https://<owner>.github.io/<repository>/story`. If
 it as an object giving its address too, for example
 `{"repo": "https://github.com/IMERSS/detecting-local-extinction", "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/"}`.
 
+To thank a project's funders below its entry on the Projects page, add the project's id to
+[`data/funders.yaml`](data/funders.yaml) with a sentence of thanks and the keys of their logos in
+[`data/logos.yaml`](data/logos.yaml). Logo files go in `static/images/logos/` - imerss.org's repository holds logos for
+many of IMERSS's funders and partners, with their entries in its own `data/logos.yaml`.
+
 ## Adding a dataset
 
 Datasets are shown on the map in the Data section in place of the projects, and listed on the Data page. Unlike

@@ -1,0 +1,9 @@
+# Acknowledgement of funders shown below a project's entry on the Projects page, keyed by the project's id in
+# data/projects.json. `logos` lists keys from data/logos.yaml.
+saanich-peninsula-flora:
+  thanks: >-
+    We are grateful for funding provided by the [Sitka Foundation](https://sitkafoundation.org/), the
+    [Canadian Institute of Ecology and Evolution](https://www.ciee-icee.ca/), the
+    [Capital Regional District](https://www.crd.ca/), and [Keefer Ecological Services Ltd.](https://keefereco.com/)
+    in support of this project.
+  logos: [sitka, ciee, crd, keefer]

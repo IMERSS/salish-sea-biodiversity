@@ -243,6 +243,49 @@ nav a {
     background-color: #FDF2CE26;
 }
 
+/* Funders of a project, shown below its entry on the Projects page. The logos are mostly dark-on-light, so they sit on
+   a light panel, as on imerss.org in dark mode */
+
+.imerss-funders {
+    margin-top: 1rem;
+}
+
+.imerss-funders .imerss-logos-list {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0.875rem 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1rem;
+    background-color: #f8fafc;
+    border-radius: 8px;
+}
+
+.content .imerss-funders .imerss-logos-list li {
+    margin: 0;
+}
+
+.imerss-funders .imerss-logos-list a {
+    display: block;
+    line-height: 0;
+    transition: opacity 0.2s ease;
+}
+
+.imerss-funders .imerss-logos-list a:hover,
+.imerss-funders .imerss-logos-list a:focus-visible {
+    opacity: 0.75;
+}
+
+.content .imerss-funders .imerss-logos-list img {
+    width: var(--logo-w);
+    height: var(--logo-h);
+    max-width: none;
+    margin: 0;
+    object-fit: contain;
+}
+
 footer {
     color: black;
 }
