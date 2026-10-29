@@ -1,6 +1,6 @@
 # Configuration
 baseURL: "/"
-title: Biodiversity Change in the Salish Sea
+title: Salish Sea Biodiversity Atlas
 
 relativeUrls: true
 publishDir: docs
@@ -93,7 +93,7 @@ menu:
       weight: 3
 
 params:
-  description: Biodiversity Change in the Salish Sea
+  description: Salish Sea Biodiversity Atlas
 
   # Map of subsidiary projects shown on every page. Projects are listed in projects.json at the top level of this
   # repository - run `npm run collect` to refresh data/projects.json from their repositories before building
@@ -112,7 +112,8 @@ params:
       path: images/imerss.png
       width: 200
       # height: 60
-      # link: /
+      # The logo links to IMERSS, while the site title links to this site's home page
+      link: https://www.imerss.org/
     width: wide
 
   page:

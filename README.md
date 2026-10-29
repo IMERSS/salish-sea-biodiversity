@@ -1,4 +1,4 @@
-# Biodiversity Change in the Salish Sea
+# Salish Sea Biodiversity Atlas
 
 The index site for IMERSS biodiversity projects in the Salish Sea, published at
 https://imerss.github.io/salish-sea-biodiversity/.
@@ -22,7 +22,7 @@ A project repository must:
 ```yaml
 params:
   indexSite:
-    title: Biodiversity Change in the Salish Sea
+    title: Salish Sea Biodiversity Atlas
     url: "https://imerss.github.io/salish-sea-biodiversity/"
 ```
 
