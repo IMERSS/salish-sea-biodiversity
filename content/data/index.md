@@ -3,5 +3,7 @@ title: Data
 toc: false
 ---
 
-Access all datasets available: click on the data and go to basic atlas page that allows one to explore and download
-the dataset
+Datasets compiled through our work across the Salish Sea. Each is outlined on the map - click its boundary or title
+to explore and download the dataset.
+
+{{< project-list datasets >}}

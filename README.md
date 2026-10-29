@@ -31,6 +31,21 @@ The map links each project to `https://<owner>.github.io/<repository>/story`. If
 it as an object giving its address too, for example
 `{"repo": "https://github.com/IMERSS/detecting-local-extinction", "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/"}`.
 
+## Adding a dataset
+
+Datasets are shown on the map in the Data section in place of the projects, and listed on the Data page. Unlike
+projects, a dataset's files are held in this repository, in a folder under [`datasets/`](datasets):
+
+* `boundary.geojson` - the area the dataset covers, as for a project
+* `dataset.md` - a short markdown description of the dataset. Its first `#` heading is used as the dataset's title
+
+Add the folder and the URL its title and boundary link to under `datasets` in [`projects.json`](projects.json), for example
+`{"dir": "datasets/salish-sea-diatoms", "siteUrl": "https://www.gbif.org/dataset/d41f9582-0b3e-4062-8ee0-31f0ba52ace1"}`,
+and rebuild this site.
+
+Boundaries may overlap, as a dataset for one island may lie within one for the whole Salish Sea. The map draws larger
+boundaries beneath smaller ones, and where they overlap, the pointer selects the smallest.
+
 ## Building
 
 You need [Hugo](https://gohugo.io/installation/) (the site was built with 0.121.0) and [node](https://nodejs.org/) 18 or later.

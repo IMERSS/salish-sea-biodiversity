@@ -1,10 +1,13 @@
-{{- /* Map of subsidiary project boundaries, populated from data/projects.json by scripts/collect-projects.js */ -}}
+{{- /* Map of subsidiary project boundaries, populated from data/projects.json by scripts/collect-projects.js.
+       Pages in the Data section show the datasets from data/datasets.json instead */ -}}
+{{- $isData := eq .Section "data" -}}
 {{- $projects := slice -}}
-{{- range site.Data.projects -}}
+{{- range cond $isData site.Data.datasets site.Data.projects -}}
 {{- $projects = $projects | append (dict
     "id" .id
     "title" .title
     "siteUrl" .siteUrl
+    "linkText" (cond $isData "View dataset" "Visit project site")
     "descriptionHtml" (.description | markdownify)
     "boundary" .boundary) -}}
 {{- end -}}

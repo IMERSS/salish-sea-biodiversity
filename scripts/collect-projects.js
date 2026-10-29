@@ -5,6 +5,8 @@
 /*
  * Collects the boundary GeoJSON and markdown description from the top level of each subsidiary project repository
  * listed in projects.json, and writes them to data/projects.json for the Hugo build to render onto the index map.
+ * Datasets listed in projects.json are collected in the same way from their folders within this repository, and
+ * written to data/datasets.json for the map shown in the Data section.
  *
  * Usage:
  *   node scripts/collect-projects.js                 - fetch from each repository's default branch on GitHub
@@ -21,6 +23,7 @@ const path = require("path");
 const rootDir = path.resolve(__dirname, "..");
 const configPath = path.join(rootDir, "projects.json");
 const outputPath = path.join(rootDir, "data", "projects.json");
+const datasetsOutputPath = path.join(rootDir, "data", "datasets.json");
 
 /**
  * Parse a GitHub repository URL into its owner and repository name.
@@ -134,6 +137,28 @@ const collectProject = async function (entry, config, localDir) {
 };
 
 /**
+ * Collect the boundary and description of a single dataset from its folder within this repository.
+ * @param {Object} entry - The dataset's entry in projects.json, with members `dir` holding the path of its folder
+ * relative to this repository and `siteUrl` holding the URL that its map boundary and title link to.
+ * @param {Object} config - The parsed contents of projects.json.
+ * @return {Promise<Object>} A promise for the dataset's record in data/datasets.json.
+ */
+const collectDataset = async function (entry, config) {
+    const dir = path.join(rootDir, entry.dir);
+    const [boundaryText, description] = await Promise.all([
+        fs.readFile(path.join(dir, config.boundaryFile), "utf8"),
+        fs.readFile(path.join(dir, config.datasetDescriptionFile), "utf8")
+    ]);
+    return {
+        id: path.basename(entry.dir),
+        title: titleFromMarkdown(description, path.basename(entry.dir)),
+        siteUrl: entry.siteUrl,
+        description,
+        boundary: toFeatureCollection(JSON.parse(boundaryText))
+    };
+};
+
+/**
  * Read the previously collected projects, if any, indexed by repository URL.
  * @return {Promise<Object<String, Object>>} A promise for a map of repository URL to previously collected project record.
  */
@@ -151,8 +176,8 @@ const readPrevious = async function () {
 };
 
 /**
- * Collect all projects listed in projects.json and write them to data/projects.json.
- * @return {Promise} A promise which resolves when data/projects.json has been written.
+ * Collect all projects and datasets listed in projects.json and write them to data/projects.json and data/datasets.json.
+ * @return {Promise} A promise which resolves when both files have been written.
  */
 const main = async function () {
     const localIndex = process.argv.indexOf("--local");
@@ -179,6 +204,11 @@ const main = async function () {
     await fs.mkdir(path.dirname(outputPath), {recursive: true});
     await fs.writeFile(outputPath, JSON.stringify(records, null, 2) + "\n");
     console.log("Wrote " + records.length + " project(s) to " + path.relative(rootDir, outputPath));
+
+    // Datasets are held within this repository, so any failure to read one is an error to be fixed rather than retried
+    const datasets = await Promise.all((config.datasets || []).map(entry => collectDataset(entry, config)));
+    await fs.writeFile(datasetsOutputPath, JSON.stringify(datasets, null, 2) + "\n");
+    console.log("Wrote " + datasets.length + " dataset(s) to " + path.relative(rootDir, datasetsOutputPath));
 };
 
 main().catch(e => {

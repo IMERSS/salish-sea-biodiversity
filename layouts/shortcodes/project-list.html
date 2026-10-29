@@ -1,7 +1,9 @@
-{{- /* List of subsidiary projects, from the same data/projects.json that populates the map */ -}}
+{{- /* List of subsidiary projects, from the same data/projects.json that populates the map, or of datasets from
+       data/datasets.json when given "datasets". Hovering an item highlights its boundary on the map */ -}}
+{{- $items := cond (eq (.Get 0) "datasets") site.Data.datasets site.Data.projects -}}
 <div class="imerss-project-list">
-{{- range site.Data.projects }}
-  <div class="imerss-project-list-item">
+{{- range $items }}
+  <div class="imerss-project-list-item" data-map-id="{{ .id }}">
     <h3><a href="{{ .siteUrl }}">{{ .title }}</a></h3>
     {{- /* The description's first heading repeats the title */ -}}
     {{ replaceRE `^#[^\n]*\n+` "" .description | markdownify }}

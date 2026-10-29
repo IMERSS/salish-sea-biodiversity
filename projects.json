@@ -1,5 +1,5 @@
 {
-    "// comment": "Subsidiary project sites shown on the index map. Run `npm run collect` to refresh data/projects.json from these repositories. An entry may be an object holding the repository URL as \"repo\" and a \"siteUrl\" for a project whose site is not at the usual /story address.",
+    "// comment": "Subsidiary project sites shown on the index map. Run `npm run collect` to refresh data/projects.json from these repositories. An entry may be an object holding the repository URL as \"repo\" and a \"siteUrl\" for a project whose site is not at the usual /story address. Datasets shown on the map in the Data section are listed under \"datasets\", each with \"dir\" naming its folder in this repository holding boundary.geojson and dataset.md, and \"siteUrl\" giving where it links to.",
     "boundaryFile": "boundary.geojson",
     "descriptionFile": "project.md",
     "projects": [
@@ -8,6 +8,17 @@
         {
             "repo": "https://github.com/IMERSS/detecting-local-extinction",
             "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/"
+        }
+    ],
+    "datasetDescriptionFile": "dataset.md",
+    "datasets": [
+        {
+            "dir": "datasets/galiano-marine-animals",
+            "siteUrl": "https://www.gbif.org/dataset/56687a3d-b48f-44e5-b2b8-d55bafff2f33"
+        },
+        {
+            "dir": "datasets/salish-sea-diatoms",
+            "siteUrl": "https://www.gbif.org/dataset/d41f9582-0b3e-4062-8ee0-31f0ba52ace1"
         }
     ]
 }
