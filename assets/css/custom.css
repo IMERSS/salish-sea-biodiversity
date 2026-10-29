@@ -199,13 +199,74 @@ nav a {
     text-decoration: underline;
 }
 
-.imerss-project-list-item h3 a {
+/* hextra's callouts have their own light background and text colour, which their links should follow */
+.content .hx-rounded-lg.hx-border a:not(.not-prose) {
+    color: inherit;
+}
+
+/* Accordion list of projects or datasets - see assets/js/project-list.js */
+
+.imerss-project-list-item {
+    border-bottom: 1px solid #FDF2CE40;
+}
+
+.imerss-project-list-item:first-child {
+    border-top: 1px solid #FDF2CE40;
+}
+
+.content .imerss-project-list-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0.875rem 0;
+    font-size: 1.2rem;
+    line-height: 1.4;
+}
+
+.content .imerss-project-list-heading a.imerss-project-list-title {
     color: #FDF2CE;
+    text-decoration: none;
+}
+
+.content .imerss-project-list-heading a.imerss-project-list-title:hover,
+.imerss-expanded .imerss-project-list-heading a.imerss-project-list-title {
     text-decoration: underline;
 }
 
-.imerss-project-list-item + .imerss-project-list-item {
-    margin-top: 1.5rem;
+.imerss-project-list-toggle {
+    flex: none;
+    display: flex;
+    padding: 0.25rem;
+    color: #FDF2CE;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.imerss-project-list-toggle:hover {
+    background-color: #FDF2CE26;
+}
+
+.imerss-project-list-toggle svg {
+    transition: transform 0.2s ease;
+}
+
+.imerss-expanded .imerss-project-list-toggle svg {
+    transform: rotate(180deg);
+}
+
+.imerss-project-list-body {
+    padding-bottom: 1.25rem;
+}
+
+.content .imerss-project-list-body > p:first-child {
+    margin-top: 0;
+}
+
+.content .imerss-project-list-link {
+    margin-top: 1rem;
+    font-weight: 600;
 }
 
 /* Dropdown listing the children of a subnav menu item, shown while the item is hovered or focused */

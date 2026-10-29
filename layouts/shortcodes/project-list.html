@@ -1,18 +1,34 @@
 {{- /* List of subsidiary projects, from the same data/projects.json that populates the map, or of datasets from
-       data/datasets.json when given "datasets". Hovering an item highlights its boundary on the map */ -}}
-{{- $items := cond (eq (.Get 0) "datasets") site.Data.datasets site.Data.projects -}}
+       data/datasets.json when given "datasets". Hovering an item highlights its boundary on the map.
+       Each item is an accordion entry: assets/js/project-list.js collapses them to their titles, and clicking a
+       title expands its entry, or follows the title's link once the entry is expanded */ -}}
+{{- $isData := eq (.Get 0) "datasets" -}}
+{{- $items := cond $isData site.Data.datasets site.Data.projects -}}
+{{- $linkText := cond $isData "View dataset" "Visit project site" -}}
 <div class="imerss-project-list">
 {{- range $items }}
+  {{- $bodyId := printf "imerss-project-list-body-%s" .id }}
   <div class="imerss-project-list-item" data-map-id="{{ .id }}">
-    <h3><a href="{{ .siteUrl }}">{{ .title }}</a></h3>
-    {{- /* The description's first heading repeats the title */ -}}
-    {{ replaceRE `^#[^\n]*\n+` "" .description | markdownify }}
-    {{- with index site.Data.funders .id }}
-    <section class="imerss-funders" aria-label="Funders">
-      <p>{{ .thanks | markdownify }}</p>
-      {{ partial "logos.html" .logos }}
-    </section>
-    {{- end }}
+    <h3 class="imerss-project-list-heading">
+      <a class="imerss-project-list-title" href="{{ .siteUrl }}">{{ .title }}</a>
+      <button type="button" class="imerss-project-list-toggle" aria-expanded="true" aria-controls="{{ $bodyId }}"
+              aria-label="Show or hide details of {{ .title }}">
+        <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </h3>
+    <div class="imerss-project-list-body" id="{{ $bodyId }}">
+      {{- /* The description's first heading repeats the title */ -}}
+      {{ replaceRE `^#[^\n]*\n+` "" .description | markdownify }}
+      {{- with index site.Data.funders .id }}
+      <section class="imerss-funders" aria-label="Funders">
+        <p>{{ .thanks | markdownify }}</p>
+        {{ partial "logos.html" .logos }}
+      </section>
+      {{- end }}
+      <p class="imerss-project-list-link"><a href="{{ .siteUrl }}">{{ $linkText }} &rarr;</a></p>
+    </div>
   </div>
 {{- end }}
 </div>
+{{- $listScript := resources.Get "js/project-list.js" | fingerprint }}
+<script src="{{ $listScript.RelPermalink }}" integrity="{{ $listScript.Data.Integrity }}"></script>
