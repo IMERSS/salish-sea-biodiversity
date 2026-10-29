@@ -3,8 +3,6 @@ linkTitle: "Projects"
 title: Projects
 ---
 
-Frameworks for each of our studies. Each project is also outlined on the map - click its boundary to visit it.
-
 {{< project-list >}}
 
 ### In development
