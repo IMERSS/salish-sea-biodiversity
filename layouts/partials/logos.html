@@ -7,8 +7,12 @@
   {{- $weight := math.Pow (div 0.3 (float (.density | default 0.3))) 0.2 -}}
   {{- $h := mul (math.Sqrt (div 8000.0 $ratio)) $weight -}}
   {{- $h = math.Min $h 76.0 -}}
+  {{- /* An optional scale enlarges a logo whose lettering would otherwise be too small to read */ -}}
+  {{- $scale := float (.scale | default 1) -}}
+  {{- $h = mul $h $scale -}}
   {{- $w := mul $h $ratio -}}
-  {{- if gt $w 200.0 }}{{ $w = 200.0 }}{{ $h = div $w $ratio }}{{ end -}}
+  {{- $maxW := mul 200.0 $scale -}}
+  {{- if gt $w $maxW }}{{ $w = $maxW }}{{ $h = div $w $ratio }}{{ end -}}
   <li>
     <a href="{{ .url }}" target="_blank" rel="noreferrer" title="{{ .name }}">
       <img src="{{ .logo | relURL }}" alt="{{ .name }}" loading="lazy"

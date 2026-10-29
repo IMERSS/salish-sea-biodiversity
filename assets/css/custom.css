@@ -253,13 +253,14 @@ nav a {
 .imerss-funders .imerss-logos-list {
     list-style: none;
     margin: 1.5rem 0 0;
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 2rem 2.75rem;
-    background-color: #f8fafc;
+    gap: 1.5rem;
+    /* White, so that logos with white backgrounds show no edges */
+    background-color: #ffffff;
     border-radius: 12px;
 }
 
