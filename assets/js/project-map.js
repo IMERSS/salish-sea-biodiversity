@@ -157,7 +157,7 @@ const imerssProjectMap = function (container, projects, options) {
             source: "projects",
             paint: {
                 "fill-color": opts.colour,
-                "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.45, 0.2]
+                "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.65, 0.2]
             }
         });
         map.addLayer({
@@ -166,7 +166,7 @@ const imerssProjectMap = function (container, projects, options) {
             source: "projects",
             paint: {
                 "line-color": opts.colour,
-                "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 3, 1.5]
+                "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 4, 1.5]
             }
         });
 
