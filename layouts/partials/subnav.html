@@ -33,6 +33,10 @@
         {{- else -}}
         {{- $active := or ($currentPage.HasMenuCurrent "main" .) ($currentPage.IsMenuCurrent "main" .) -}}
         {{- $activeClass := cond $active "hx-font-medium" "hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200" -}}
+        {{- if .HasChildren }}
+        {{- /* A menu item with children shows them in a dropdown below it */}}
+        <div class="imerss-subnav-dropdown hx-hidden md:hx-inline-block">
+        {{- end }}
         <a
                 title="{{ or (T .Identifier) .Name | safeHTML }}"
                 href="{{ $link }}"
@@ -41,6 +45,15 @@
         >
             <span class="hx-text-center">{{ or (T .Identifier) .Name | safeHTML }}</span>
         </a>
+        {{- if .HasChildren }}
+            <div class="imerss-subnav-dropdown-menu">
+                {{- range .Children }}
+                {{- $childExternal := strings.HasPrefix .URL "http" }}
+                <a href="{{ .URL }}" {{ if $childExternal }}target="_blank" rel="noreferrer"{{ end }}>{{ .Name }}</a>
+                {{- end }}
+            </div>
+        </div>
+        {{- end }}
         {{- end -}}
         {{- end -}}
         {{- end -}}

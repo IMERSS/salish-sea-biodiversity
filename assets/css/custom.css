@@ -189,6 +189,12 @@ nav a {
 
 
 
+/* Show links within page content in the page's text colour rather than hextra's blue, which is hard to read here */
+.content a:not(.not-prose) {
+    color: #FDF2CE;
+    text-decoration: underline;
+}
+
 .imerss-project-list-item h3 a {
     color: #FDF2CE;
     text-decoration: underline;
@@ -196,6 +202,41 @@ nav a {
 
 .imerss-project-list-item + .imerss-project-list-item {
     margin-top: 1.5rem;
+}
+
+/* Dropdown listing the children of a subnav menu item, shown while the item is hovered or focused */
+
+.imerss-subnav-dropdown {
+    position: relative;
+}
+
+.imerss-subnav-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 3;
+    min-width: 100%;
+    padding: 0.5rem 0;
+    background-color: #184E62;
+    border: 1px solid #FDF2CE80;
+}
+
+.imerss-subnav-dropdown:hover .imerss-subnav-dropdown-menu,
+.imerss-subnav-dropdown:focus-within .imerss-subnav-dropdown-menu {
+    display: block;
+}
+
+.imerss-subnav .imerss-subnav-dropdown-menu a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #FDF2CE;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.imerss-subnav .imerss-subnav-dropdown-menu a:hover {
+    background-color: #FDF2CE26;
 }
 
 footer {

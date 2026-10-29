@@ -63,6 +63,10 @@ menu:
       name: Docs
       pageRef: /documentation
       weight: 4
+    - name: Protocol for the Detection of Extirpation ↗
+      parent: docs
+      url: "https://imerss.github.io/detecting-local-extinction/docs/"
+      weight: 1
     - name: Search
       weight: 5
       params:
