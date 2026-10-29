@@ -3,7 +3,7 @@
     "id": "galiano-marine-animals",
     "title": "Marine animals of Galiano Island (1893–2021)",
     "siteUrl": "https://www.gbif.org/dataset/56687a3d-b48f-44e5-b2b8-d55bafff2f33",
-    "description": "# Marine animals of Galiano Island (1893–2021)\n\nA catalogue of the marine animals reported from the waters around Galiano Island, from sponges and worms to fishes\nand marine mammals. It brings together historical collections and published reports with the community science\nobservations gathered by the Biodiversity Galiano project since 2016, distinguishing historical reports that have\nsince been confirmed, those that remain unconfirmed, and species newly reported for the island.\n",
+    "description": "# Marine animals of Galiano Island (1893–2021)\n\nA catalogue of the marine animals reported from the waters around Galiano Island, from sponges and worms to fishes\nand marine mammals. It brings together historical collections and published reports with the community science\nobservations gathered by the Biodiversity Galiano project since 2016, distinguishing historical reports that have\nsince been confirmed, those that remain unconfirmed, and species newly reported for the island.\n\nData paper: [Simon *et al.* (2022), *Biodiversity Data Journal* 10: e76050](https://doi.org/10.3897/BDJ.10.e76050)\n",
     "boundary": {
       "type": "FeatureCollection",
       "features": [
@@ -79,7 +79,7 @@
     "id": "salish-sea-diatoms",
     "title": "Diatoms of the Salish Sea (1866–2026)",
     "siteUrl": "https://www.gbif.org/dataset/d41f9582-0b3e-4062-8ee0-31f0ba52ace1",
-    "description": "# Diatoms of the Salish Sea (1866–2026)\n\nA catalogue of marine diatom occurrences across the Salish Sea, consolidating records from the published literature,\nmorphological study of samples and molecular (DNA metabarcoding) surveys. It documents the region's diatom flora and\nhow knowledge of it has accumulated since the first reports in 1866.\n",
+    "description": "# Diatoms of the Salish Sea (1866–2026)\n\nA catalogue of marine diatom occurrences across the Salish Sea, consolidating records from the published literature,\nmorphological study of samples and molecular (DNA metabarcoding) surveys. It documents the region's diatom flora and\nhow knowledge of it has accumulated since the first reports in 1866.\n\nData paper: [Webber *et al.* (2026), *Biodiversity Data Journal* 14: e189060](https://doi.org/10.3897/BDJ.14.e189060)\n",
     "boundary": {
       "type": "FeatureCollection",
       "features": [
