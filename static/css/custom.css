@@ -29,14 +29,13 @@ main .content h3, main.content h2, main h1 {
 
 .imerss-map {
     width: 60%;
-    z-index: 5;
-    /* Keep the map in view while the page content scrolls beside it */
-    /* Start below the 160px header image, which overlaps the subnav row */
+    /* Above the header image, whose lower strip it covers beside the subnav, as on the Saanich Peninsula story page */
+    z-index: 25;
+    /* Keep the map in view while the page content scrolls beside it, starting just below the 100px navbar */
     position: sticky;
-    top: 160px;
-    margin-top: 60px;
+    top: 100px;
     align-self: flex-start;
-    height: calc(100vh - 160px);
+    height: calc(100vh - 100px);
 }
 
 .imerss-map .imerss-project-map {
