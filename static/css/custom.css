@@ -1,0 +1,455 @@
+@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i&display=swap";
+
+table {
+  /* Override absolutely insane display:block in hextra core style */
+    display: table !important;
+}
+
+:root {
+    --bs-body-font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    /** This only controls the bizarre height calculation for the page **/
+    --navbar-height: 12rem;
+
+    font-family: var(--bs-body-font-family)
+}
+
+body {
+    background-color: #184E62;
+    color: #FDF2CE;
+}
+
+/** Override absolutely ridiculous tailwind hardcoded content colour **/
+main .content h3, main.content h2, main h1 {
+    color: #FDF2CE !important;
+}
+
+.imerss-main {
+    display: flex;
+}
+
+.imerss-map {
+    width: 60%;
+    z-index: 5;
+    /* Keep the map in view while the page content scrolls beside it */
+    /* Start below the 160px header image, which overlaps the subnav row */
+    position: sticky;
+    top: 160px;
+    margin-top: 60px;
+    align-self: flex-start;
+    height: calc(100vh - 160px);
+}
+
+.imerss-map .imerss-project-map {
+    width: 100%;
+    height: 100%;
+}
+
+.imerss-map .imerss-project-popup .maplibregl-popup-content {
+    background-color: #184E62e8;
+    color: #FDF2CE;
+    font-family: var(--bs-body-font-family);
+    font-size: 14px;
+    line-height: 1.45;
+    padding: 12px 16px;
+    border: 1px solid #FDF2CE80;
+}
+
+.imerss-map .imerss-project-popup-hover {
+    pointer-events: none;
+}
+
+.imerss-map .imerss-project-popup .maplibregl-popup-tip {
+    display: none;
+}
+
+.imerss-map .imerss-project-popup h1 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.imerss-map .imerss-project-popup p + p {
+    margin-top: 6px;
+}
+
+.imerss-map .imerss-project-popup a {
+    color: #FDF2CE;
+    text-decoration: underline;
+}
+
+.imerss-map .imerss-project-popup .maplibregl-popup-close-button {
+    color: #FDF2CE;
+}
+
+
+/** Defeat side matter which screws up layout when page is wide **/
+.xl\:hx-block {
+    display: none !important;
+}
+
+.imerss-page {
+    width: 40%;
+}
+
+.imerss-navbar-title {
+    color: #FDF2CE;
+    font-weight: 700;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+}
+
+.imerss-bg-neutral-50 {
+    background-color: #ffffff80;
+}
+
+nav a span {
+    color: #FDF2CE;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+nav a {
+    position: relative;
+}
+
+/* Keep the header image above the page content, so that content scrolls beneath the banner rather than over it */
+.nav-container {
+    z-index: 20;
+}
+
+/* Positioned within the sticky .nav-container rather than fixed, since Safari can misplace a fixed element nested in
+   a sticky one when the page repaints */
+.imerss-navbar-background {
+    background: url("../images/imerss-header-cropped.jpg") no-repeat;
+    background-size: cover;
+    height: 160px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.imerss-navbar {
+    justify-content: space-between;
+    display: flex;
+    height: 100px;
+}
+
+/* Weird trick inherited from docsy for filtering background image */
+
+.imerss-navbar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #184E6280;
+}
+
+.imerss-navbar a, .imerss-subnav a, .imerss-subnav .search-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.imerss-navbar img {
+    margin-right: 12px;
+}
+
+.imerss-navbar span {
+    margin-left: 16px;
+}
+
+/* Shared navigation banner - a project site shows a link back to the index site above its title */
+
+.imerss-navbar .imerss-navbar-titles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.imerss-navbar .imerss-navbar-index span {
+    color: #FDF2CE;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    margin-left: 24px;
+}
+
+/* Pin the subnav over the lower strip of the header image, just below the navbar */
+.imerss-subnav {
+    position: sticky;
+    top: 100px;
+    z-index: 30;
+    font-size: 16px;
+}
+
+.imerss-subnav::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #184E62b0;
+}
+
+
+
+/* Show links within page content in the page's text colour rather than hextra's blue, which is hard to read here */
+.content a:not(.not-prose) {
+    color: #FDF2CE;
+    text-decoration: underline;
+}
+
+/* hextra's callouts have their own light background and text colour, which their links should follow */
+.content .hx-rounded-lg.hx-border a:not(.not-prose) {
+    color: inherit;
+}
+
+/* Accordion list of projects or datasets - see assets/js/project-list.js */
+
+.imerss-project-list-item {
+    border-bottom: 1px solid #FDF2CE40;
+}
+
+.imerss-project-list-item:first-child {
+    border-top: 1px solid #FDF2CE40;
+}
+
+.content .imerss-project-list-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0.875rem 0;
+    font-size: 1.2rem;
+    line-height: 1.4;
+}
+
+.content .imerss-project-list-heading a.imerss-project-list-title {
+    color: #FDF2CE;
+    text-decoration: none;
+}
+
+.content .imerss-project-list-heading a.imerss-project-list-title:hover,
+.imerss-expanded .imerss-project-list-heading a.imerss-project-list-title {
+    text-decoration: underline;
+}
+
+.imerss-project-list-toggle {
+    flex: none;
+    display: flex;
+    padding: 0.25rem;
+    color: #FDF2CE;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.imerss-project-list-toggle:hover {
+    background-color: #FDF2CE26;
+}
+
+.imerss-project-list-toggle svg {
+    transition: transform 0.2s ease;
+}
+
+.imerss-expanded .imerss-project-list-toggle svg {
+    transform: rotate(180deg);
+}
+
+.imerss-project-list-body {
+    padding-bottom: 1.25rem;
+}
+
+.content .imerss-project-list-body > p:first-child {
+    margin-top: 0;
+}
+
+.content .imerss-project-list-link {
+    margin-top: 1rem;
+    font-weight: 600;
+}
+
+/* Dropdown listing the children of a subnav menu item, shown while the item is hovered or focused */
+
+.imerss-subnav-dropdown {
+    position: relative;
+}
+
+.imerss-subnav-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 3;
+    min-width: 100%;
+    padding: 0.5rem 0;
+    background-color: #184E62;
+    border: 1px solid #FDF2CE80;
+}
+
+.imerss-subnav-dropdown:hover .imerss-subnav-dropdown-menu,
+.imerss-subnav-dropdown:focus-within .imerss-subnav-dropdown-menu {
+    display: block;
+}
+
+.imerss-subnav .imerss-subnav-dropdown-menu a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #FDF2CE;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.imerss-subnav .imerss-subnav-dropdown-menu a:hover {
+    background-color: #FDF2CE26;
+}
+
+/* Below 1000px the subnav's menu items are replaced by a hamburger menu - see static/js/subnav-menu.js */
+
+.imerss-subnav .imerss-subnav-item {
+    display: none;
+}
+
+.imerss-subnav .imerss-hamburger {
+    position: relative;
+    z-index: 2;
+    color: #FDF2CE;
+}
+
+@media (min-width: 1000px) {
+    .imerss-subnav .imerss-subnav-item {
+        display: inline-block;
+    }
+
+    .imerss-subnav .imerss-hamburger,
+    .imerss-subnav .imerss-mobile-menu {
+        display: none;
+    }
+}
+
+/* hextra's own sidebar and its hamburger overlay are replaced by the subnav's hamburger menu */
+.imerss-page .sidebar-container,
+.imerss-page .mobile-menu-overlay {
+    display: none;
+}
+
+.imerss-subnav .imerss-mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    padding: 0.5rem 0;
+    background-color: #184E62;
+    border-bottom: 1px solid #FDF2CE80;
+}
+
+.imerss-subnav .imerss-mobile-menu[hidden] {
+    display: none;
+}
+
+.imerss-subnav .imerss-mobile-menu a {
+    display: block;
+    padding: 0.625rem 1.5rem;
+    color: #FDF2CE;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.imerss-subnav .imerss-mobile-menu a.imerss-active {
+    text-decoration: underline;
+}
+
+.imerss-subnav .imerss-mobile-menu a.imerss-mobile-menu-child {
+    padding-left: 2.5rem;
+    font-size: 15px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.imerss-subnav .imerss-mobile-menu a:hover {
+    background-color: #FDF2CE26;
+}
+
+/* The subnav shows its own search box from 768px, as hextra's styles do, so the menu shows one only below that */
+.imerss-subnav .imerss-mobile-menu-search {
+    padding: 0.5rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .imerss-subnav .imerss-mobile-menu-search {
+        display: none;
+    }
+}
+
+/* The search box's "CTRL K" hint crowds the subnav until the window is wide */
+@media (max-width: 1309px) {
+    .imerss-subnav .search-wrapper kbd {
+        display: none;
+    }
+}
+
+/* Funders of a project, shown below its entry on the Projects page, following imerss.org's logo design. The logos are
+   mostly dark-on-light, so they sit on a light panel, as on imerss.org in dark mode */
+
+.imerss-funders {
+    margin-top: 1rem;
+}
+
+.imerss-funders .imerss-logos-list {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    /* White, so that logos with white backgrounds show no edges */
+    background-color: #ffffff;
+    border-radius: 12px;
+}
+
+.content .imerss-funders .imerss-logos-list li {
+    margin: 0;
+}
+
+.imerss-funders .imerss-logos-list a {
+    display: block;
+    line-height: 0;
+    transition: opacity 0.2s ease;
+}
+
+.imerss-funders .imerss-logos-list a:hover,
+.imerss-funders .imerss-logos-list a:focus-visible {
+    opacity: 0.75;
+}
+
+.content .imerss-funders .imerss-logos-list img {
+    width: var(--logo-w);
+    height: var(--logo-h);
+    max-width: none;
+    margin: 0;
+    object-fit: contain;
+}
+
+@media (max-width: 640px) {
+    .imerss-funders .imerss-logos-list {
+        gap: 1.5rem 2rem;
+    }
+
+    .content .imerss-funders .imerss-logos-list img {
+        width: calc(var(--logo-w) * 0.78);
+        height: calc(var(--logo-h) * 0.78);
+    }
+}
+
+footer {
+    color: black;
+}
+
+.imerss-copyright {
+    padding: 1rem;
+}

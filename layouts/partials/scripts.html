@@ -1,0 +1,87 @@
+{{- /* Copy of hextra's scripts.html without js/menu.js, whose hamburger menu opens hextra's sidebar. The subnav's hamburger
+       menu is driven by static/js/subnav-menu.js instead. hextra's scripts, its search script and the flexsearch library are
+       served as-is from static/ so that their filenames stay stable rather than being fingerprinted - see the header of
+       static/js/main.js for how to regenerate it */ -}}
+<script defer src="{{ "js/main.js" | relURL }}"></script>
+
+{{/* Search */}}
+{{- if (site.Params.search.enable | default true) -}}
+  {{- /* Only the search data is still rendered by Hugo, at a stable name since it is never fingerprinted */ -}}
+  {{- $searchDataFile := printf "%s.search-data.json" .Language.Lang -}}
+  {{- $searchData := resources.Get "json/search-data.json" | resources.ExecuteAsTemplate $searchDataFile . -}}
+  {{- $searchData.Publish -}}
+  <script defer src="{{ "lib/flexsearch/flexsearch.bundle.min.js" | relURL }}"></script>
+  <script defer src="{{ printf "%s.search.js" .Language.Lang | relURL }}"></script>
+{{- end -}}
+
+{{/* Mermaid */}}
+{{/* FIXME: need to investigate .Page.Store hasMermaid is set for homepage */}}
+{{- if and (.Page.Store.Get "hasMermaid") (not .Page.IsHome) -}}
+  {{- $mermaidJS := resources.Get "lib/mermaid/mermaid.min.js" | fingerprint -}}
+  <script defer src="{{ $mermaidJS.RelPermalink }}" integrity="{{ $mermaidJS.Data.Integrity }}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Store original mermaid code for each diagram
+      document.querySelectorAll(".mermaid").forEach(el => {
+        el.dataset.original = el.innerHTML;
+      });
+
+      const theme = document.documentElement.classList.contains("dark") ? "dark" : "default";
+      mermaid.initialize({ startOnLoad: true, theme: theme });
+
+      let timeout;
+      new MutationObserver(() => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          const theme = document.documentElement.classList.contains("dark") ? "dark" : "default";
+          document.querySelectorAll(".mermaid").forEach(el => {
+            // Reset to original content, preserving HTML
+            el.innerHTML = el.dataset.original;
+            el.removeAttribute("data-processed");
+          });
+          mermaid.initialize({ startOnLoad: true, theme: theme });
+          mermaid.init();
+        }, 150);
+      }).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"]
+      });
+    });
+  </script>
+{{- end -}}
+
+{{/* KaTex */}}
+{{- if .Page.Params.math -}}
+  {{- $katexCSS := resources.Get "lib/katex/katex.min.css" | fingerprint -}}
+  {{- $katexJS := resources.Get "lib/katex/katex.min.js" | fingerprint -}}
+  {{- $mhchemJS := resources.Get "lib/katex/mhchem.min.js" | fingerprint -}}
+  {{- $katexAutoRenderJS := resources.Get "lib/katex/auto-render.min.js" | fingerprint -}}
+  <link type="text/css" rel="stylesheet" href="{{ $katexCSS.RelPermalink }}" integrity="{{ $katexCSS.Data.Integrity }}" />
+  <script defer src="{{ $katexJS.RelPermalink }}" integrity="{{ $katexJS.Data.Integrity }}"></script>
+  <script defer src="{{ $katexAutoRenderJS.RelPermalink }}" integrity="{{ $katexAutoRenderJS.Data.Integrity }}"></script>
+  <script defer src="{{ $mhchemJS.RelPermalink }}" integrity="{{ $mhchemJS.Data.Integrity }}"></script>
+  {{ $katexFonts := resources.Match "lib/katex/fonts/*" }}
+  {{- range $katexFonts -}}
+    {{ .Publish }}
+  {{- end -}}
+  <script>
+    // TODO: make render options configurable
+    // Reference: https://katex.org/docs/autorender#api
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "\\begin{equation}", right: "\\end{equation}", display: true },
+          {left: "\\begin{align}", right: "\\end{align}", display: true},
+          {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+          {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+          {left: "\\begin{CD}", right: "\\end{CD}", display: true},
+          { left: "\\[", right: "\\]", display: true },
+        ],
+        throwOnError: false,
+      });
+    });
+  </script>
+{{ end }}

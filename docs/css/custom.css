@@ -304,6 +304,93 @@ nav a {
     background-color: #FDF2CE26;
 }
 
+/* Below 1000px the subnav's menu items are replaced by a hamburger menu - see static/js/subnav-menu.js */
+
+.imerss-subnav .imerss-subnav-item {
+    display: none;
+}
+
+.imerss-subnav .imerss-hamburger {
+    position: relative;
+    z-index: 2;
+    color: #FDF2CE;
+}
+
+@media (min-width: 1000px) {
+    .imerss-subnav .imerss-subnav-item {
+        display: inline-block;
+    }
+
+    .imerss-subnav .imerss-hamburger,
+    .imerss-subnav .imerss-mobile-menu {
+        display: none;
+    }
+}
+
+/* hextra's own sidebar and its hamburger overlay are replaced by the subnav's hamburger menu */
+.imerss-page .sidebar-container,
+.imerss-page .mobile-menu-overlay {
+    display: none;
+}
+
+.imerss-subnav .imerss-mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    padding: 0.5rem 0;
+    background-color: #184E62;
+    border-bottom: 1px solid #FDF2CE80;
+}
+
+.imerss-subnav .imerss-mobile-menu[hidden] {
+    display: none;
+}
+
+.imerss-subnav .imerss-mobile-menu a {
+    display: block;
+    padding: 0.625rem 1.5rem;
+    color: #FDF2CE;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.imerss-subnav .imerss-mobile-menu a.imerss-active {
+    text-decoration: underline;
+}
+
+.imerss-subnav .imerss-mobile-menu a.imerss-mobile-menu-child {
+    padding-left: 2.5rem;
+    font-size: 15px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.imerss-subnav .imerss-mobile-menu a:hover {
+    background-color: #FDF2CE26;
+}
+
+/* The subnav shows its own search box from 768px, as hextra's styles do, so the menu shows one only below that */
+.imerss-subnav .imerss-mobile-menu-search {
+    padding: 0.5rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .imerss-subnav .imerss-mobile-menu-search {
+        display: none;
+    }
+}
+
+/* The search box's "CTRL K" hint crowds the subnav until the window is wide */
+@media (max-width: 1309px) {
+    .imerss-subnav .search-wrapper kbd {
+        display: none;
+    }
+}
+
 /* Funders of a project, shown below its entry on the Projects page, following imerss.org's logo design. The logos are
    mostly dark-on-light, so they sit on a light panel, as on imerss.org in dark mode */
 

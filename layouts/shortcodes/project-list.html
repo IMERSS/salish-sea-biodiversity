@@ -1,6 +1,6 @@
 {{- /* List of subsidiary projects, from the same data/projects.json that populates the map, or of datasets from
        data/datasets.json when given "datasets". Hovering an item highlights its boundary on the map.
-       Each item is an accordion entry: assets/js/project-list.js collapses them to their titles, and clicking a
+       Each item is an accordion entry: static/js/project-list.js collapses them to their titles, and clicking a
        title expands its entry, or follows the title's link once the entry is expanded */ -}}
 {{- $isData := eq (.Get 0) "datasets" -}}
 {{- $items := cond $isData site.Data.datasets site.Data.projects -}}
@@ -30,5 +30,4 @@
   </div>
 {{- end }}
 </div>
-{{- $listScript := resources.Get "js/project-list.js" | fingerprint }}
-<script src="{{ $listScript.RelPermalink }}" integrity="{{ $listScript.Data.Integrity }}"></script>
+<script src="{{ "js/project-list.js" | relURL }}"></script>
