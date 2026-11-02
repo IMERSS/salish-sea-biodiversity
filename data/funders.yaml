@@ -3,18 +3,18 @@
 # and funders, and `logos` lists keys from data/logos.yaml.
 saanich-peninsula-flora:
   partners: >-
-    In partnership with Cara Gibson of [Swan Lake Nature Sanctuary](https://www.swanlake.bc.ca/) and
-    Paige Erickson-Mcgee of [Habitat Acquisition Trust](https://hat.bc.ca/).
+    In partnership with Paige Erickson-Mcgee of [Habitat Acquisition Trust](https://hat.bc.ca/) and Cara Gibson of
+    [Swan Lake Nature Sanctuary](https://www.swanlake.bc.ca/).
   acknowledgements: >-
-    We thank Andy MacKinnon, Kristen Miskelly, James Miskelly, Adam Martin, Frank Lomer, Matt Fairbarns, and Terry
-    Ludwar for their contributions to this project.
+    We thank Matt Fairbarns, Frank Lomer, Terry Ludwar, Andy MacKinnon, Adam Martin, James Miskelly, and Kristen
+    Miskelly for their contributions to this project.
   thanks: >-
     We are grateful for funding provided by the [Sitka Foundation](https://sitkafoundation.org/), the
     [Canadian Institute of Ecology and Evolution](https://www.ciee-icee.ca/), the
     [Capital Regional District](https://www.crd.ca/), [Nature Victoria](https://naturevictoria.ca/), and
     [Keefer Ecological Services Ltd.](https://keefereco.com/)
     in support of this project.
-  logos: [swan-lake, hat, sitka, ciee, crd, nature-victoria, keefer]
+  logos: [hat, swan-lake, sitka, ciee, crd, nature-victoria, keefer]
 xetthecum-ecocultural-mapping:
   thanks: >-
     We are grateful for funding provided by the
