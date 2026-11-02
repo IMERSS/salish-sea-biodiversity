@@ -25,16 +25,26 @@
         <div class="imerss-project-list-body" id="{{ $bodyId }}">
           {{- /* The description's first heading repeats the title */ -}}
           {{ replaceRE `^#[^\n]*\n+` "" .description | markdownify }}
-          {{- with index site.Data.funders .id }}
-          <section class="imerss-funders" aria-label="Partners and funders">
+          {{- $funders := index site.Data.funders .id }}
+          {{- if or $place.acknowledgement $funders }}
+          <section class="imerss-funders" aria-label="Acknowledgements">
+            {{- with $place.acknowledgement }}
+            <p>{{ . | markdownify }}</p>
+            {{- end }}
+            {{- with $funders }}
             {{- with .partners }}
             <p>{{ . | markdownify }}</p>
             {{- end }}
             {{- with .acknowledgements }}
             <p>{{ . | markdownify }}</p>
             {{- end }}
-            <p>{{ .thanks | markdownify }}</p>
-            {{ partial "logos.html" .logos }}
+            {{- with .thanks }}
+            <p>{{ . | markdownify }}</p>
+            {{- end }}
+            {{- with .logos }}
+            {{ partial "logos.html" . }}
+            {{- end }}
+            {{- end }}
           </section>
           {{- end }}
           <p class="imerss-project-list-link"><a href="{{ .siteUrl }}" target="_blank" rel="noopener">{{ $linkText }} &rarr;</a></p>

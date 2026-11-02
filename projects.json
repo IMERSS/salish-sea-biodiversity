@@ -1,20 +1,23 @@
 {
-    "// comment": "Places, and the projects and datasets within them, shown on the index map. Run `npm run collect` to refresh data/projects.json, data/datasets.json and data/places.json. Each place has an id and a name; the map outlines it with the boundaries of the projects (or, in the Data section, datasets) within it, and the Projects and Data pages list them beneath it. A project is an object holding its repository URL as \"repo\", the id of its place as \"place\", and optionally a \"siteUrl\" for a site that is not at the usual /story address, and a \"title\" overriding the one taken from its description. A project or dataset may instead be held in this repository, as an object with \"dir\" naming its folder - holding project.md or dataset.md and, optionally, boundary.geojson - and \"siteUrl\" giving where it links to.",
+    "// comment": "Places, and the projects and datasets within them, shown on the index map. Run `npm run collect` to refresh data/projects.json, data/datasets.json and data/places.json. Each place has an id, a name and optionally an \"acknowledgement\" of the peoples in whose territories it lies, shown with each project or dataset within it; the map outlines it with the boundaries of the projects (or, in the Data section, datasets) within it, and the Projects and Data pages list them beneath it. A project is an object holding its repository URL as \"repo\", the id of its place as \"place\", and optionally a \"siteUrl\" for a site that is not at the usual /story address, and a \"title\" overriding the one taken from its description. A project or dataset may instead be held in this repository, as an object with \"dir\" naming its folder - holding project.md or dataset.md and, optionally, boundary.geojson - and \"siteUrl\" giving where it links to.",
     "boundaryFile": "boundary.geojson",
     "descriptionFile": "project.md",
     "datasetDescriptionFile": "dataset.md",
     "places": [
         {
             "id": "howe-sound",
-            "name": "Átl’ḵa7tsem/Howe Sound"
+            "name": "Átl’ḵa7tsem/Howe Sound",
+            "acknowledgement": "We respectfully acknowledge that this work takes place on the unceded territory of the Sḵwx̱wú7mesh Úxwumixw (Squamish Nation), who have cared for these lands and waters since time immemorial."
         },
         {
             "id": "galiano-island",
-            "name": "Galiano Island"
+            "name": "Galiano Island",
+            "acknowledgement": "We respectfully acknowledge that this work takes place within the traditional territories of the Penelakut, Hwlitsum and Tsawwassen First Nations, among other Hul’qumi’num-speaking Coast Salish peoples, who have cared for these lands and waters since time immemorial."
         },
         {
             "id": "saanich-peninsula",
-            "name": "Saanich Peninsula"
+            "name": "W̱SÁNEĆ/Saanich Peninsula",
+            "acknowledgement": "We respectfully acknowledge that this work takes place within the territories of the W̱SÁNEĆ (Saanich) people, who have cared for these lands and waters since time immemorial."
         },
         {
             "id": "salish-sea",
@@ -39,7 +42,8 @@
         },
         {
             "repo": "https://github.com/IMERSS/saanich-peninsula-flora",
-            "place": "saanich-peninsula"
+            "place": "saanich-peninsula",
+            "title": "Flora of W̱SÁNEĆ/Saanich Peninsula"
         }
     ],
     "datasets": [

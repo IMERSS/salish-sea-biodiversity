@@ -15,6 +15,9 @@ under `places` in [`projects.json`](projects.json), each with an `id` and a `nam
 pages. Every project and dataset names its place by id in its entry's `place`. A place with nothing in it on a given
 page is left out of that page and its map.
 
+A place may also give an `acknowledgement` of the peoples in whose territories it lies, which is shown with each
+project or dataset within it.
+
 ## Adding a project
 
 

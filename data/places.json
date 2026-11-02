@@ -1,15 +1,18 @@
 [
   {
     "id": "howe-sound",
-    "name": "Átl’ḵa7tsem/Howe Sound"
+    "name": "Átl’ḵa7tsem/Howe Sound",
+    "acknowledgement": "We respectfully acknowledge that this work takes place on the unceded territory of the Sḵwx̱wú7mesh Úxwumixw (Squamish Nation), who have cared for these lands and waters since time immemorial."
   },
   {
     "id": "galiano-island",
-    "name": "Galiano Island"
+    "name": "Galiano Island",
+    "acknowledgement": "We respectfully acknowledge that this work takes place within the traditional territories of the Penelakut, Hwlitsum and Tsawwassen First Nations, among other Hul’qumi’num-speaking Coast Salish peoples, who have cared for these lands and waters since time immemorial."
   },
   {
     "id": "saanich-peninsula",
-    "name": "Saanich Peninsula"
+    "name": "W̱SÁNEĆ/Saanich Peninsula",
+    "acknowledgement": "We respectfully acknowledge that this work takes place within the territories of the W̱SÁNEĆ (Saanich) people, who have cared for these lands and waters since time immemorial."
   },
   {
     "id": "salish-sea",
