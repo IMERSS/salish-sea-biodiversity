@@ -2,7 +2,7 @@
        menu is driven by static/js/subnav-menu.js instead. hextra's scripts, its search script and the flexsearch library are
        served as-is from static/ so that their filenames stay stable rather than being fingerprinted - see the header of
        static/js/main.js for how to regenerate it */ -}}
-<script defer src="{{ "js/main.js" | relURL }}"></script>
+<script defer src="{{ partial "static-url.html" "js/main.js" }}"></script>
 
 {{/* Search */}}
 {{- if (site.Params.search.enable | default true) -}}
@@ -10,8 +10,8 @@
   {{- $searchDataFile := printf "%s.search-data.json" .Language.Lang -}}
   {{- $searchData := resources.Get "json/search-data.json" | resources.ExecuteAsTemplate $searchDataFile . -}}
   {{- $searchData.Publish -}}
-  <script defer src="{{ "lib/flexsearch/flexsearch.bundle.min.js" | relURL }}"></script>
-  <script defer src="{{ printf "%s.search.js" .Language.Lang | relURL }}"></script>
+  <script defer src="{{ partial "static-url.html" "lib/flexsearch/flexsearch.bundle.min.js" }}"></script>
+  <script defer src="{{ partial "static-url.html" (printf "%s.search.js" .Language.Lang) }}"></script>
 {{- end -}}
 
 {{/* Mermaid */}}

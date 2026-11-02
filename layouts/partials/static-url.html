@@ -1,0 +1,5 @@
+{{- /* The URL of a file in static/, given its path there, with a version parameter taken from its contents. The file
+       keeps its stable name, while the parameter changes whenever the file does, so that browsers holding an older copy
+       in their cache fetch the new one */ -}}
+{{- $version := substr (os.ReadFile (path.Join "static" .) | md5) 0 10 -}}
+{{- return printf "%s?v=%s" (. | relURL) $version -}}

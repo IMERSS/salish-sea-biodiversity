@@ -3,10 +3,10 @@
   {{- $styles = $styles | postCSS (dict "inlineImports" true) }}
   <link href="{{ $styles.RelPermalink }}" rel="stylesheet" />
 {{- else }}
-  <!-- hextra's compiled CSS, served as-is from static/css/compiled/main.css so its filename stays stable -->
-  <link href="{{ "css/compiled/main.css" | relURL }}" rel="stylesheet" />
+  <!-- hextra's compiled CSS, served as-is from static/css/compiled/main.css so its filename stays stable, with a version parameter (see static-url.html) -->
+  <link href="{{ partial "static-url.html" "css/compiled/main.css" }}" rel="stylesheet" />
 {{- end }}
 
 
-<!-- Custom CSS: served as-is from static/ so its filename stays stable -->
-<link href="{{ "css/custom.css" | relURL }}" rel="stylesheet" />
+<!-- Custom CSS: served as-is from static/ so its filename stays stable, with a version parameter (see static-url.html) -->
+<link href="{{ partial "static-url.html" "css/custom.css" }}" rel="stylesheet" />
