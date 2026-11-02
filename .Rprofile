@@ -20,7 +20,7 @@ options(
 )
 
 # 1. Define the required Hugo version
-options(blogdown.hugo.version = "0.121.0")
+options(blogdown.hugo.version = "0.147.7")
 
 # 2. Automatically check and download if missing
 if (interactive() && requireNamespace("blogdown", quietly = TRUE)) {

@@ -76,6 +76,16 @@ main .content h3, main.content h2, main h1 {
     text-decoration: underline;
 }
 
+.imerss-map .imerss-project-popup .imerss-place-popup-items {
+    margin: 0;
+    padding-left: 1.1rem;
+    list-style: disc;
+}
+
+.imerss-map .imerss-project-popup .imerss-place-popup-items li + li {
+    margin-top: 4px;
+}
+
 .imerss-map .imerss-project-popup .maplibregl-popup-close-button {
     color: #FDF2CE;
 }
@@ -201,6 +211,58 @@ nav a {
 /* hextra's callouts have their own light background and text colour, which their links should follow */
 .content .hx-rounded-lg.hx-border a:not(.not-prose) {
     color: inherit;
+}
+
+/* Projects and datasets grouped by place. A place's name is set as a small label above its entries. While the place is
+   hovered, here or on the map, or once it has been opened by clicking it on the map, its name brightens and a slim bar
+   marks its section */
+
+.imerss-place {
+    position: relative;
+    /* Scrolling a place into view leaves it clear of the fixed header and subnav */
+    scroll-margin-top: 180px;
+}
+
+.imerss-place::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1.25rem;
+    width: 3px;
+    border-radius: 2px;
+    background-color: #FDF2CE;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.imerss-place:hover::before,
+.imerss-place.imerss-map-hovered::before,
+.imerss-place.imerss-selected::before {
+    opacity: 0.8;
+}
+
+.content .imerss-place + .imerss-place {
+    margin-top: 2.25rem;
+}
+
+.content h2.imerss-place-name {
+    margin: 0 0 0.5rem;
+    padding: 0;
+    border: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #FDF2CE !important;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.imerss-place:hover .imerss-place-name,
+.imerss-place.imerss-map-hovered .imerss-place-name,
+.imerss-place.imerss-selected .imerss-place-name {
+    opacity: 1;
 }
 
 /* Accordion list of projects or datasets - see assets/js/project-list.js */
