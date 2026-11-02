@@ -20,9 +20,8 @@ regional and national efforts to detect, understand and respond to biodiversity 
 ### An open and evolving atlas
 
 This atlas is a work in progress rather than a finished account. A synthesis of results across these projects and
-datasets is in preparation, and new work will be added as it develops. We welcome contributions from researchers,
-naturalists, First Nations, community organizations and stewardship groups across the Salish Sea, whether
-observations, datasets, expertise or questions worth pursuing together.
+datasets is in preparation, and new work will be added as it develops. We welcome contributions from communities across
+the Salish Sea, whether observations, datasets, expertise or questions worth pursuing together.
 
 Explore the map, or browse the [projects](projects/) and [data](data/) behind it. To contribute or propose a
 collaboration, contact [IMERSS](https://www.imerss.org/) or
