@@ -26,7 +26,13 @@
           {{- /* The description's first heading repeats the title */ -}}
           {{ replaceRE `^#[^\n]*\n+` "" .description | markdownify }}
           {{- with index site.Data.funders .id }}
-          <section class="imerss-funders" aria-label="Funders">
+          <section class="imerss-funders" aria-label="Partners and funders">
+            {{- with .partners }}
+            <p>{{ . | markdownify }}</p>
+            {{- end }}
+            {{- with .acknowledgements }}
+            <p>{{ . | markdownify }}</p>
+            {{- end }}
             <p>{{ .thanks | markdownify }}</p>
             {{ partial "logos.html" .logos }}
           </section>

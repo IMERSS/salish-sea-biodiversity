@@ -1,13 +1,20 @@
-# Acknowledgement of funders shown below a project's entry on the Projects page, keyed by the project's id in
-# data/projects.json. `logos` lists keys from data/logos.yaml.
+# Acknowledgement of partners and funders shown below a project's entry on the Projects page, keyed by the project's id
+# in data/projects.json. `partners`, `acknowledgements` and `thanks` are sentences naming partners, others to thank,
+# and funders, and `logos` lists keys from data/logos.yaml.
 saanich-peninsula-flora:
+  partners: >-
+    In partnership with Cara Gibson of [Swan Lake Nature Sanctuary](https://www.swanlake.bc.ca/) and
+    Paige Erickson-Mcgee of [Habitat Acquisition Trust](https://hat.bc.ca/).
+  acknowledgements: >-
+    We thank Andy MacKinnon, Kristen Miskelly, James Miskelly, Adam Martin, Frank Lomer, and Matt Fairbarns for their
+    contributions to this project.
   thanks: >-
     We are grateful for funding provided by the [Sitka Foundation](https://sitkafoundation.org/), the
     [Canadian Institute of Ecology and Evolution](https://www.ciee-icee.ca/), the
     [Capital Regional District](https://www.crd.ca/), [Nature Victoria](https://naturevictoria.ca/), and
     [Keefer Ecological Services Ltd.](https://keefereco.com/)
     in support of this project.
-  logos: [sitka, ciee, crd, nature-victoria, keefer]
+  logos: [swan-lake, hat, sitka, ciee, crd, nature-victoria, keefer]
 xetthecum-ecocultural-mapping:
   thanks: >-
     We are grateful for funding provided by the
