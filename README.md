@@ -7,7 +7,16 @@ The site shows a map of the Salish Sea with the boundary of each cooperating pro
 boundary shows its description, and clicking it browses to the project's own site. Each project lives in its own
 repository and shares this site's navigation banner, whose top left links back here.
 
+## Places
+
+Projects and datasets are organised by place. The map outlines each place with the boundaries of the projects (or, in
+the Data section, datasets) within it, and the Projects and Data pages list them beneath its name. Places are listed
+under `places` in [`projects.json`](projects.json), each with an `id` and a `name`, in the order they appear on those
+pages. Every project and dataset names its place by id in its entry's `place`. A place with nothing in it on a given
+page is left out of that page and its map.
+
 ## Adding a project
+
 
 A project repository must:
 
@@ -26,10 +35,16 @@ params:
     url: "https://imerss.github.io/salish-sea-biodiversity/"
 ```
 
-Then add the project's repository URL to the `projects` list in [`projects.json`](projects.json) and rebuild this site.
-The map links each project to `https://<owner>.github.io/<repository>/story`. If a project's site lives elsewhere, list
-it as an object giving its address too, for example
-`{"repo": "https://github.com/IMERSS/detecting-local-extinction", "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/"}`.
+Then add the project to the `projects` list in [`projects.json`](projects.json), giving its repository and place, for
+example `{"repo": "https://github.com/IMERSS/saanich-peninsula-flora", "place": "saanich-peninsula"}`, and rebuild this
+site. A project links to `https://<owner>.github.io/<repository>/story`. If its site lives elsewhere, give its address
+as `siteUrl` too, for example
+`{"repo": "https://github.com/IMERSS/detecting-local-extinction", "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/", "place": "galiano-island"}`.
+
+A project whose repository doesn't hold these files may instead be described in a folder under [`projects/`](projects)
+of this repository, holding `project.md` and, optionally, `boundary.geojson` - without one, the project is shown within
+its place's outline drawn from its other projects. List it as
+`{"dir": "projects/xetthecum-ecocultural-mapping", "siteUrl": "https://imerss.github.io/xetthecum-storymap/", "place": "galiano-island"}`.
 
 To thank a project's funders below its entry on the Projects page, add the project's id to
 [`data/funders.yaml`](data/funders.yaml) with a sentence of thanks and the keys of their logos in
@@ -38,18 +53,19 @@ many of IMERSS's funders and partners, with their entries in its own `data/logos
 
 ## Adding a dataset
 
-Datasets are shown on the map in the Data section in place of the projects, and listed on the Data page. Unlike
+Datasets are shown on the map in the Data section in place of the projects, and listed by place on the Data page. Unlike
 projects, a dataset's files are held in this repository, in a folder under [`datasets/`](datasets):
 
 * `boundary.geojson` - the area the dataset covers, as for a project
 * `dataset.md` - a short markdown description of the dataset. Its first `#` heading is used as the dataset's title
 
-Add the folder and the URL its title and boundary link to under `datasets` in [`projects.json`](projects.json), for example
-`{"dir": "datasets/salish-sea-diatoms", "siteUrl": "https://www.gbif.org/dataset/d41f9582-0b3e-4062-8ee0-31f0ba52ace1"}`,
+Add the folder, the URL its title links to and its place under `datasets` in [`projects.json`](projects.json), for
+example
+`{"dir": "datasets/salish-sea-diatoms", "siteUrl": "https://www.gbif.org/dataset/d41f9582-0b3e-4062-8ee0-31f0ba52ace1", "place": "salish-sea"}`,
 and rebuild this site.
 
-Boundaries may overlap, as a dataset for one island may lie within one for the whole Salish Sea. The map draws larger
-boundaries beneath smaller ones, and where they overlap, the pointer selects the smallest.
+Places may overlap, as Galiano Island lies within the Salish Sea. The map draws larger places beneath smaller ones, and
+where they overlap, the pointer selects the smallest.
 
 ## Building
 

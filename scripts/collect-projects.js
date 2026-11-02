@@ -6,7 +6,10 @@
  * Collects the boundary GeoJSON and markdown description from the top level of each subsidiary project repository
  * listed in projects.json, and writes them to data/projects.json for the Hugo build to render onto the index map.
  * Datasets listed in projects.json are collected in the same way from their folders within this repository, and
- * written to data/datasets.json for the map shown in the Data section.
+ * written to data/datasets.json for the map shown in the Data section. A project may likewise be held in a folder within
+ * this repository rather than in a repository of its own. Each project and dataset belongs to one of the places listed
+ * in projects.json, which are written to data/places.json - the map outlines each place with the boundaries of the
+ * projects or datasets within it, so a project held in this repository need not have a boundary of its own.
  *
  * Usage:
  *   node scripts/collect-projects.js                 - fetch from each repository's default branch on GitHub
@@ -24,6 +27,7 @@ const rootDir = path.resolve(__dirname, "..");
 const configPath = path.join(rootDir, "projects.json");
 const outputPath = path.join(rootDir, "data", "projects.json");
 const datasetsOutputPath = path.join(rootDir, "data", "datasets.json");
+const placesOutputPath = path.join(rootDir, "data", "places.json");
 
 /**
  * Parse a GitHub repository URL into its owner and repository name.
@@ -113,14 +117,48 @@ const entryRepoUrl = function (entry) {
 };
 
 /**
+ * Collect the description and any boundary of a project or dataset from its folder within this repository.
+ * @param {Object} entry - The item's entry in projects.json, with members `dir` holding the path of its folder relative
+ * to this repository, `siteUrl` holding the URL that its title links to, and `place` holding the id of its place.
+ * @param {String} boundaryFile - The name of the boundary file within the folder, which may be absent.
+ * @param {String} descriptionFile - The name of the markdown description within the folder.
+ * @return {Promise<Object>} A promise for the item's record, whose `boundary` is null if it has no boundary file.
+ */
+const collectLocal = async function (entry, boundaryFile, descriptionFile) {
+    const dir = path.join(rootDir, entry.dir);
+    const description = await fs.readFile(path.join(dir, descriptionFile), "utf8");
+    let boundary = null;
+    try {
+        boundary = toFeatureCollection(JSON.parse(await fs.readFile(path.join(dir, boundaryFile), "utf8")));
+    } catch (e) {
+        if (e.code !== "ENOENT") {
+            throw e;
+        }
+    }
+    return {
+        id: path.basename(entry.dir),
+        title: titleFromMarkdown(description, path.basename(entry.dir)),
+        siteUrl: entry.siteUrl,
+        place: entry.place,
+        description,
+        boundary
+    };
+};
+
+/**
  * Collect the boundary and description of a single project.
  * @param {String|Object} entry - The project's entry in projects.json - either its GitHub repository URL, or an object
- * with members `repo` holding that URL and optionally `siteUrl` overriding the URL computed for its published site.
+ * with members `repo` holding that URL, optionally `siteUrl` overriding the URL computed for its published site, and
+ * `place` holding the id of its place. An object with `dir` in place of `repo` names a folder within this repository
+ * holding the project's description and, optionally, its boundary.
  * @param {Object} config - The parsed contents of projects.json.
  * @param {String|null} localDir - A directory holding local checkouts of the repositories, or null to fetch from GitHub.
  * @return {Promise<Object>} A promise for the project's record in data/projects.json.
  */
 const collectProject = async function (entry, config, localDir) {
+    if (entry.dir) {
+        return collectLocal(entry, config.boundaryFile, config.descriptionFile);
+    }
     const repo = parseRepoUrl(entryRepoUrl(entry));
     const [boundaryText, description] = await Promise.all([
         readProjectFile(repo, config.boundaryFile, localDir),
@@ -131,28 +169,7 @@ const collectProject = async function (entry, config, localDir) {
         title: titleFromMarkdown(description, repo.name),
         repoUrl: "https://github.com/" + repo.owner + "/" + repo.name,
         siteUrl: entry.siteUrl || pagesUrl(repo),
-        description,
-        boundary: toFeatureCollection(JSON.parse(boundaryText))
-    };
-};
-
-/**
- * Collect the boundary and description of a single dataset from its folder within this repository.
- * @param {Object} entry - The dataset's entry in projects.json, with members `dir` holding the path of its folder
- * relative to this repository and `siteUrl` holding the URL that its map boundary and title link to.
- * @param {Object} config - The parsed contents of projects.json.
- * @return {Promise<Object>} A promise for the dataset's record in data/datasets.json.
- */
-const collectDataset = async function (entry, config) {
-    const dir = path.join(rootDir, entry.dir);
-    const [boundaryText, description] = await Promise.all([
-        fs.readFile(path.join(dir, config.boundaryFile), "utf8"),
-        fs.readFile(path.join(dir, config.datasetDescriptionFile), "utf8")
-    ]);
-    return {
-        id: path.basename(entry.dir),
-        title: titleFromMarkdown(description, path.basename(entry.dir)),
-        siteUrl: entry.siteUrl,
+        place: entry.place,
         description,
         boundary: toFeatureCollection(JSON.parse(boundaryText))
     };
@@ -176,8 +193,9 @@ const readPrevious = async function () {
 };
 
 /**
- * Collect all projects and datasets listed in projects.json and write them to data/projects.json and data/datasets.json.
- * @return {Promise} A promise which resolves when both files have been written.
+ * Collect all projects, datasets and places listed in projects.json and write them to data/projects.json,
+ * data/datasets.json and data/places.json.
+ * @return {Promise} A promise which resolves when all three files have been written.
  */
 const main = async function () {
     const localIndex = process.argv.indexOf("--local");
@@ -185,18 +203,20 @@ const main = async function () {
     const config = JSON.parse(await fs.readFile(configPath, "utf8"));
     const previous = await readPrevious();
 
-    const results = await Promise.allSettled(config.projects.map(repoUrl => collectProject(repoUrl, config, localDir)));
+    const results = await Promise.allSettled(config.projects.map(entry => collectProject(entry, config, localDir)));
     const records = results.flatMap((result, i) => {
-        const repoUrl = entryRepoUrl(config.projects[i]);
+        const entry = config.projects[i];
+        const source = entry.dir || entryRepoUrl(entry);
         let record;
         if (result.status === "fulfilled") {
             record = result.value;
-            console.log("Collected " + record.title + " from " + repoUrl);
+            console.log("Collected " + record.title + " from " + source);
         } else {
-            const prior = previous["https://github.com/" + Object.values(parseRepoUrl(repoUrl)).join("/")];
-            console.warn("Failed to collect " + repoUrl + ": " + result.reason.message +
+            const prior = entry.dir ? null : previous["https://github.com/" + Object.values(parseRepoUrl(source)).join("/")];
+            console.warn("Failed to collect " + source + ": " + result.reason.message +
                 (prior ? " - retaining previously collected version" : " - omitting from map"));
-            record = prior;
+            // A retained record takes its place from the current configuration, in case that has changed
+            record = prior && {...prior, place: entry.place};
         }
         return record ? [record] : [];
     });
@@ -206,9 +226,17 @@ const main = async function () {
     console.log("Wrote " + records.length + " project(s) to " + path.relative(rootDir, outputPath));
 
     // Datasets are held within this repository, so any failure to read one is an error to be fixed rather than retried
-    const datasets = await Promise.all((config.datasets || []).map(entry => collectDataset(entry, config)));
+    const datasets = await Promise.all((config.datasets || []).map(entry =>
+        collectLocal(entry, config.boundaryFile, config.datasetDescriptionFile)));
     await fs.writeFile(datasetsOutputPath, JSON.stringify(datasets, null, 2) + "\n");
     console.log("Wrote " + datasets.length + " dataset(s) to " + path.relative(rootDir, datasetsOutputPath));
+
+    const placeIds = new Set(config.places.map(place => place.id));
+    [...records, ...datasets].filter(record => !placeIds.has(record.place)).forEach(record =>
+        console.warn("Warning: " + record.title + " belongs to unknown place " + JSON.stringify(record.place) +
+            " - it will not be shown"));
+    await fs.writeFile(placesOutputPath, JSON.stringify(config.places, null, 2) + "\n");
+    console.log("Wrote " + config.places.length + " place(s) to " + path.relative(rootDir, placesOutputPath));
 };
 
 main().catch(e => {

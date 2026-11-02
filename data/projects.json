@@ -1,124 +1,5 @@
 [
   {
-    "id": "saanich-peninsula-flora",
-    "title": "Flora of the Saanich Peninsula",
-    "repoUrl": "https://github.com/IMERSS/saanich-peninsula-flora",
-    "siteUrl": "https://imerss.github.io/saanich-peninsula-flora/story",
-    "description": "# Flora of the Saanich Peninsula\n\nAn analysis of the vascular plant flora of the Saanich Peninsula, drawing on historical collections and\ncommunity science observations to map the status of the region's plants, track species that have not been\nreported in recent decades, and recognise the contributors whose records make this work possible.\n",
-    "boundary": {
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "properties": {},
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  -123.551,
-                  48.485
-                ],
-                [
-                  -123.552,
-                  48.394
-                ],
-                [
-                  -123.539,
-                  48.382
-                ],
-                [
-                  -123.592,
-                  48.338
-                ],
-                [
-                  -123.609,
-                  48.315
-                ],
-                [
-                  -123.579,
-                  48.3
-                ],
-                [
-                  -123.537,
-                  48.309
-                ],
-                [
-                  -123.521,
-                  48.349
-                ],
-                [
-                  -123.487,
-                  48.381
-                ],
-                [
-                  -123.428,
-                  48.407
-                ],
-                [
-                  -123.327,
-                  48.395
-                ],
-                [
-                  -123.257,
-                  48.384
-                ],
-                [
-                  -123.194,
-                  48.435
-                ],
-                [
-                  -123.254,
-                  48.58
-                ],
-                [
-                  -123.269,
-                  48.674
-                ],
-                [
-                  -123.341,
-                  48.71
-                ],
-                [
-                  -123.428,
-                  48.72
-                ],
-                [
-                  -123.506,
-                  48.699
-                ],
-                [
-                  -123.5,
-                  48.635
-                ],
-                [
-                  -123.505,
-                  48.57
-                ],
-                [
-                  -123.519,
-                  48.555
-                ],
-                [
-                  -123.547,
-                  48.546
-                ],
-                [
-                  -123.551,
-                  48.493
-                ],
-                [
-                  -123.551,
-                  48.485
-                ]
-              ]
-            ]
-          }
-        }
-      ]
-    }
-  },
-  {
     "id": "howe-sound-mapping-2026",
     "title": "Átl’ḵa7tsem/Howe Sound Biosphere Vegetation Report",
     "repoUrl": "https://github.com/IMERSS/howe-sound-mapping-2026",
@@ -2135,13 +2016,15 @@
           }
         }
       ]
-    }
+    },
+    "place": "howe-sound"
   },
   {
     "id": "detecting-local-extinction",
     "title": "Protocol for the Detection of Extirpation",
     "repoUrl": "https://github.com/IMERSS/detecting-local-extinction",
     "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/",
+    "place": "galiano-island",
     "description": "# Protocol for the Detection of Extirpation\n\nDeveloped on Galiano Island, this protocol for detecting local extinction, or extirpation, combines historical\nspecimens, community science observations and targeted searches. Weighing the search effort spent in each species'\nhistorical and potential habitat, the protocol tests the hypothesis that a population has been lost, in line with\nIUCN extinction criteria.\nPublished in [*Plants, People, Planet*](https://nph.onlinelibrary.wiley.com/doi/full/10.1002/ppp3.70130).\n",
     "boundary": {
       "type": "FeatureCollection",
@@ -2197,5 +2080,133 @@
         }
       ]
     }
+  },
+  {
+    "id": "xetthecum-ecocultural-mapping",
+    "title": "*Xetthecum* Ecocultural Mapping Pilot",
+    "siteUrl": "https://imerss.github.io/xetthecum-storymap/",
+    "place": "galiano-island",
+    "description": "# *Xetthecum* Ecocultural Mapping Pilot\n\nAn initiative weaving together Indigenous ways of knowing and Western ecological science into an ecocultural map of\nRetreat Cove (*Xetthecum* in the Hul’qumi’num language), Galiano Island. Created in partnership with Indigenous and\nnon-Indigenous collaborators, this participatory mapping program brings together historical and contemporary\nbiodiversity data, terrestrial ecosystem mapping, written and spoken Hul’qumi’num, and stories of place, fostering a\nholistic approach to shle’muxun—“guardian of the land,” or “stewardship,” in Hul’qumi’num.\n\nDocumentation: [*Xetthecum*: a learning journey](https://imerss.github.io/xetthecum-documentation/docs/)\n",
+    "boundary": null
+  },
+  {
+    "id": "saanich-peninsula-flora",
+    "title": "Flora of the Saanich Peninsula",
+    "repoUrl": "https://github.com/IMERSS/saanich-peninsula-flora",
+    "siteUrl": "https://imerss.github.io/saanich-peninsula-flora/story",
+    "description": "# Flora of the Saanich Peninsula\n\nAn analysis of the vascular plant flora of the Saanich Peninsula, drawing on historical collections and\ncommunity science observations to map the status of the region's plants, track species that have not been\nreported in recent decades, and recognise the contributors whose records make this work possible.\n",
+    "boundary": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -123.551,
+                  48.485
+                ],
+                [
+                  -123.552,
+                  48.394
+                ],
+                [
+                  -123.539,
+                  48.382
+                ],
+                [
+                  -123.592,
+                  48.338
+                ],
+                [
+                  -123.609,
+                  48.315
+                ],
+                [
+                  -123.579,
+                  48.3
+                ],
+                [
+                  -123.537,
+                  48.309
+                ],
+                [
+                  -123.521,
+                  48.349
+                ],
+                [
+                  -123.487,
+                  48.381
+                ],
+                [
+                  -123.428,
+                  48.407
+                ],
+                [
+                  -123.327,
+                  48.395
+                ],
+                [
+                  -123.257,
+                  48.384
+                ],
+                [
+                  -123.194,
+                  48.435
+                ],
+                [
+                  -123.254,
+                  48.58
+                ],
+                [
+                  -123.269,
+                  48.674
+                ],
+                [
+                  -123.341,
+                  48.71
+                ],
+                [
+                  -123.428,
+                  48.72
+                ],
+                [
+                  -123.506,
+                  48.699
+                ],
+                [
+                  -123.5,
+                  48.635
+                ],
+                [
+                  -123.505,
+                  48.57
+                ],
+                [
+                  -123.519,
+                  48.555
+                ],
+                [
+                  -123.547,
+                  48.546
+                ],
+                [
+                  -123.551,
+                  48.493
+                ],
+                [
+                  -123.551,
+                  48.485
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "place": "saanich-peninsula"
   }
 ]
