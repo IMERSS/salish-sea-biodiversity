@@ -214,10 +214,13 @@ nav a {
 }
 
 /* Projects and datasets grouped by place. A place's name is set as a small label above its entries. While the place is
-   hovered, here or on the map, its name brightens and a slim bar marks its section */
+   hovered, here or on the map, or once it has been opened by clicking it on the map, its name brightens and a slim bar
+   marks its section */
 
 .imerss-place {
     position: relative;
+    /* Scrolling a place into view leaves it clear of the fixed header and subnav */
+    scroll-margin-top: 180px;
 }
 
 .imerss-place::before {
@@ -234,7 +237,8 @@ nav a {
 }
 
 .imerss-place:hover::before,
-.imerss-place.imerss-map-hovered::before {
+.imerss-place.imerss-map-hovered::before,
+.imerss-place.imerss-selected::before {
     opacity: 0.8;
 }
 
@@ -256,7 +260,8 @@ nav a {
 }
 
 .imerss-place:hover .imerss-place-name,
-.imerss-place.imerss-map-hovered .imerss-place-name {
+.imerss-place.imerss-map-hovered .imerss-place-name,
+.imerss-place.imerss-selected .imerss-place-name {
     opacity: 1;
 }
 

@@ -23,6 +23,9 @@
 {{- $maplibre := site.Params.projectMap.maplibreVersion | default "4.7.1" -}}
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@{{ $maplibre }}/dist/maplibre-gl.css">
 <script src="https://unpkg.com/maplibre-gl@{{ $maplibre }}/dist/maplibre-gl.js"></script>
-<div class="imerss-project-map" data-bounds="{{ site.Params.projectMap.bounds | jsonify }}"></div>
+{{- /* Clicking a place opens it in the list on this page, or else on the page listing these places */ -}}
+{{- $listPage := site.GetPage (cond $isData "/data" "/projects") -}}
+<div class="imerss-project-map" data-bounds="{{ site.Params.projectMap.bounds | jsonify }}"
+     data-list-url="{{ $listPage.RelPermalink }}"></div>
 <script type="application/json" class="imerss-project-map-data">{{ $places | jsonify | safeJS }}</script>
 <script src="{{ partial "static-url.html" "js/project-map.js" }}"></script>

@@ -16,7 +16,7 @@
       {{- $bodyId := printf "imerss-project-list-body-%s" .id }}
       <div class="imerss-project-list-item">
         <h3 class="imerss-project-list-heading">
-          <a class="imerss-project-list-title" href="{{ .siteUrl }}">{{ .title | markdownify }}</a>
+          <a class="imerss-project-list-title" href="{{ .siteUrl }}" target="_blank" rel="noopener">{{ .title | markdownify }}</a>
           <button type="button" class="imerss-project-list-toggle" aria-expanded="true" aria-controls="{{ $bodyId }}"
                   aria-label="Show or hide details of {{ .title | markdownify | plainify }}">
             <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -31,7 +31,7 @@
             {{ partial "logos.html" .logos }}
           </section>
           {{- end }}
-          <p class="imerss-project-list-link"><a href="{{ .siteUrl }}">{{ $linkText }} &rarr;</a></p>
+          <p class="imerss-project-list-link"><a href="{{ .siteUrl }}" target="_blank" rel="noopener">{{ $linkText }} &rarr;</a></p>
         </div>
       </div>
     {{- end }}

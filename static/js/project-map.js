@@ -6,8 +6,8 @@
  * Renders the index map of the places holding subsidiary projects or datasets. Places are drawn softly, and highlighted
  * while the pointer is over them, or over their section in a list on the page marked with `data-map-id`, which is in
  * turn marked as hovered while the pointer is over the place on the map. Hovering a place shows its name and the
- * projects within it. Clicking a place holding a single project browses to that project's site; otherwise, or on
- * devices without hover, a click shows a popup linking to each project in the place.
+ * projects within it. Clicking a place opens its section in the list on the page (see static/js/project-list.js), or,
+ * on a page without the list, browses to the page listing these places with that place opened.
  *
  * Places may overlap - a small place may lie within a larger one. Larger places are drawn beneath smaller ones, and
  * where places overlap, the pointer selects the smallest of them.
@@ -97,15 +97,26 @@ const imerssPlaceAt = function (map, point) {
 };
 
 /**
- * Build the HTML shown in a popup for a place, naming it and listing the projects within it.
- * @param {Object} place - A place record with members `name` and `items`, each item having `titleHtml` and `siteUrl`.
- * @param {Boolean} withLinks - Whether to link each project to its site.
+ * Build the HTML shown in the popup for a place, naming it and listing the projects within it.
+ * @param {Object} place - A place record with members `name` and `items`, each item having `titleHtml`.
  * @return {String} The popup's HTML.
  */
-const imerssPlacePopupHtml = function (place, withLinks) {
-    const items = place.items.map(item => "<li>" + (withLinks ? "<a href=\"" + item.siteUrl + "\">" + item.titleHtml + "</a>" :
-        item.titleHtml) + "</li>").join("");
+const imerssPlacePopupHtml = function (place) {
+    const items = place.items.map(item => "<li>" + item.titleHtml + "</li>").join("");
     return "<h1>" + place.name + "</h1><ul class=\"imerss-place-popup-items\">" + items + "</ul>";
+};
+
+/**
+ * Open a place in the list of places - on this page if it holds the list, or else on the page that does.
+ * @param {String} id - The place's id.
+ * @param {String} listUrl - The URL of the page listing the places.
+ */
+const imerssOpenPlaceInList = function (id, listUrl) {
+    if (document.querySelector(".imerss-place[data-map-id=\"" + id + "\"]")) {
+        document.dispatchEvent(new CustomEvent("imerss-open-place", {detail: {id}}));
+    } else if (listUrl) {
+        window.location.href = listUrl + "#imerss-place-" + encodeURIComponent(id);
+    }
 };
 
 /**
@@ -143,13 +154,6 @@ const imerssProjectMap = function (container, places, options) {
         maxWidth: "320px",
         offset: 14,
         className: "imerss-project-popup imerss-project-popup-hover"
-    });
-    // Opened by a click, holding links to each project in the place
-    const linkPopup = new maplibregl.Popup({
-        closeOnClick: true,
-        maxWidth: "320px",
-        offset: 14,
-        className: "imerss-project-popup"
     });
     const listSections = [...document.querySelectorAll("[data-map-id]")];
     let hoveredIndex = null;
@@ -210,11 +214,9 @@ const imerssProjectMap = function (container, places, options) {
                 map.getCanvas().style.cursor = "pointer";
                 if (index !== hoveredIndex) {
                     setHovered(index);
-                    hoverPopup.setHTML(imerssPlacePopupHtml(places[index], false));
+                    hoverPopup.setHTML(imerssPlacePopupHtml(places[index]));
                 }
-                if (!linkPopup.isOpen()) {
-                    hoverPopup.setLngLat(e.lngLat).addTo(map);
-                }
+                hoverPopup.setLngLat(e.lngLat).addTo(map);
             }
         });
         map.on("mouseleave", "place-fill", () => {
@@ -227,16 +229,7 @@ const imerssProjectMap = function (container, places, options) {
         map.on("click", e => {
             const index = imerssPlaceAt(map, e.point);
             if (index !== null) {
-                const place = places[index];
-                if (canHover && place.items.length === 1) {
-                    window.location.href = place.items[0].siteUrl;
-                } else {
-                    hoverPopup.remove();
-                    setHovered(index);
-                    linkPopup.setLngLat(e.lngLat).setHTML(imerssPlacePopupHtml(place, true)).addTo(map);
-                }
-            } else if (!canHover) {
-                setHovered(null);
+                imerssOpenPlaceInList(places[index].id, opts.listUrl);
             }
         });
 
@@ -244,10 +237,7 @@ const imerssProjectMap = function (container, places, options) {
         listSections.forEach(section => {
             const index = places.findIndex(place => place.id === section.dataset.mapId);
             if (index !== -1) {
-                section.addEventListener("mouseenter", () => {
-                    linkPopup.remove();
-                    setHovered(index);
-                });
+                section.addEventListener("mouseenter", () => setHovered(index));
                 section.addEventListener("mouseleave", () => setHovered(null));
             }
         });
@@ -260,6 +250,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const dataElement = container.parentElement.querySelector(".imerss-project-map-data");
         const places = JSON.parse(dataElement?.textContent || "[]");
         const bounds = JSON.parse(container.dataset.bounds || "null");
-        imerssProjectMap(container, places, bounds ? {bounds} : {});
+        imerssProjectMap(container, places, {...(bounds && {bounds}), listUrl: container.dataset.listUrl});
     });
 });

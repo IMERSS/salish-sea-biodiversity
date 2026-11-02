@@ -137,7 +137,7 @@ const collectLocal = async function (entry, boundaryFile, descriptionFile) {
     }
     return {
         id: path.basename(entry.dir),
-        title: titleFromMarkdown(description, path.basename(entry.dir)),
+        title: entry.title || titleFromMarkdown(description, path.basename(entry.dir)),
         siteUrl: entry.siteUrl,
         place: entry.place,
         description,
@@ -149,7 +149,8 @@ const collectLocal = async function (entry, boundaryFile, descriptionFile) {
  * Collect the boundary and description of a single project.
  * @param {String|Object} entry - The project's entry in projects.json - either its GitHub repository URL, or an object
  * with members `repo` holding that URL, optionally `siteUrl` overriding the URL computed for its published site, and
- * `place` holding the id of its place. An object with `dir` in place of `repo` names a folder within this repository
+ * `place` holding the id of its place, and optionally `title` overriding the title taken from its description. An object
+ * with `dir` in place of `repo` names a folder within this repository
  * holding the project's description and, optionally, its boundary.
  * @param {Object} config - The parsed contents of projects.json.
  * @param {String|null} localDir - A directory holding local checkouts of the repositories, or null to fetch from GitHub.
@@ -166,7 +167,7 @@ const collectProject = async function (entry, config, localDir) {
     ]);
     return {
         id: repo.name,
-        title: titleFromMarkdown(description, repo.name),
+        title: entry.title || titleFromMarkdown(description, repo.name),
         repoUrl: "https://github.com/" + repo.owner + "/" + repo.name,
         siteUrl: entry.siteUrl || pagesUrl(repo),
         place: entry.place,
@@ -215,8 +216,8 @@ const main = async function () {
             const prior = entry.dir ? null : previous["https://github.com/" + Object.values(parseRepoUrl(source)).join("/")];
             console.warn("Failed to collect " + source + ": " + result.reason.message +
                 (prior ? " - retaining previously collected version" : " - omitting from map"));
-            // A retained record takes its place from the current configuration, in case that has changed
-            record = prior && {...prior, place: entry.place};
+            // A retained record takes its place and any title from the current configuration, in case they have changed
+            record = prior && {...prior, place: entry.place, ...(entry.title && {title: entry.title})};
         }
         return record ? [record] : [];
     });
