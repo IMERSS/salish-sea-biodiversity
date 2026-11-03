@@ -15,7 +15,7 @@ region's biodiversity remains incomplete.
 
 Detecting biodiversity change depends on knowledge held in local communities. Our work brings community-based
 projects, regional non-profits and academic institutions together to develop practical, transparent methods that
-communities can adopt to monitor biodiversity where they live. Chief among these is the
+communities can adopt to monitor biodiversity where they live, including the
 [bioReportR framework](https://boninabox.geobon.org/tool-detail?id=251) for publishing interactive, map-based
 biodiversity reports, which adapts our
 [protocol for detecting local extinction](https://imerss.github.io/detecting-local-extinction/docs/). Through this
