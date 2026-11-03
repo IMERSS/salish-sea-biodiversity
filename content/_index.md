@@ -5,7 +5,7 @@
 
 The Salish Sea Biodiversity Atlas brings together datasets, analyses and tools for understanding how biodiversity is
 changing across the Salish Sea. Building on more than a decade of research, the projects and datasets mapped here
-draw on Indigenous and Local Knowledge, historical collections, published records, community science observations
+draw on historical collections, published records, Indigenous and Local Knowledge, community science observations
 and targeted fieldwork to
 establish regional baselines: documenting which historically reported species have been confirmed in recent decades,
 which have gone unreported and may have been lost locally, which are newly recorded, and where knowledge of the
