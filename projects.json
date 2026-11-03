@@ -1,5 +1,5 @@
 {
-    "// comment": "Places, and the projects and datasets within them, shown on the index map. Run `npm run collect` to refresh data/projects.json, data/datasets.json and data/places.json. Each place has an id, a name and optionally an \"acknowledgement\" of the peoples in whose territories it lies, shown with each project or dataset within it; the map outlines it with the boundaries of the projects (or, in the Data section, datasets) within it, and the Projects and Data pages list them beneath it. A project is an object holding its repository URL as \"repo\", the id of its place as \"place\", and optionally a \"siteUrl\" for a site that is not at the usual /story address, and a \"title\" overriding the one taken from its description. A project or dataset may instead be held in this repository, as an object with \"dir\" naming its folder - holding project.md or dataset.md and, optionally, boundary.geojson - and \"siteUrl\" giving where it links to.",
+    "// comment": "Places, and the projects and datasets within them, shown on the index map. Run `npm run collect` to refresh data/projects.json, data/datasets.json and data/places.json. Each place has an id, a name and optionally an \"acknowledgement\" of the peoples in whose territories it lies, shown with each project or dataset within it; the map outlines it with the boundaries of the projects (or, in the Data section, datasets) within it, and the Projects and Data pages list them beneath it. A project is an object holding its repository URL as \"repo\", the id of its place as \"place\", and optionally a \"siteUrl\" for a site that is not at the usual /story address, a \"title\" overriding the one taken from its description, and a \"description\" overriding the description itself. A project or dataset may instead be held in this repository, as an object with \"dir\" naming its folder - holding project.md or dataset.md and, optionally, boundary.geojson - and \"siteUrl\" giving where it links to.",
     "boundaryFile": "boundary.geojson",
     "descriptionFile": "project.md",
     "datasetDescriptionFile": "dataset.md",
@@ -28,7 +28,8 @@
         {
             "repo": "https://github.com/IMERSS/howe-sound-mapping-2026",
             "place": "howe-sound",
-            "title": "Flora of Átl’ḵa7tsem/Howe Sound"
+            "title": "Flora of Átl’ḵa7tsem/Howe Sound",
+            "description": "A map-based report on the vascular plant diversity of the Átl’ḵa7tsem/Howe Sound Biosphere Region, drawing on historical collections and community science observations to relate the region’s plants to biogeoclimatic zones and protected areas, map their status, track species that have not been reported in recent decades, and recognise the contributors whose records make this work possible.\n"
         },
         {
             "repo": "https://github.com/IMERSS/detecting-local-extinction",

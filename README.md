@@ -41,7 +41,8 @@ params:
 Then add the project to the `projects` list in [`projects.json`](projects.json), giving its repository and place, for
 example `{"repo": "https://github.com/IMERSS/saanich-peninsula-flora", "place": "saanich-peninsula"}`, and rebuild this
 site. A project links to `https://<owner>.github.io/<repository>/story`. If its site lives elsewhere, give its address
-as `siteUrl` too, for example
+as `siteUrl` too. A project's entry may also give a `title` or `description` to use in place of those in its
+`project.md`. For example
 `{"repo": "https://github.com/IMERSS/detecting-local-extinction", "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/", "place": "galiano-island"}`.
 
 A project whose repository doesn't hold these files may instead be described in a folder under [`projects/`](projects)

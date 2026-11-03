@@ -325,9 +325,10 @@ nav a {
     margin-top: 0;
 }
 
-.content .imerss-project-list-link {
-    margin-top: 1rem;
+/* The link to a project at the end of its summary */
+.content a.imerss-project-list-link {
     font-weight: 600;
+    white-space: nowrap;
 }
 
 /* Dropdown listing the children of a subnav menu item, shown while the item is hovered or focused */

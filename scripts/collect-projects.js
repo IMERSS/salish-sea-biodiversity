@@ -149,7 +149,8 @@ const collectLocal = async function (entry, boundaryFile, descriptionFile) {
  * Collect the boundary and description of a single project.
  * @param {String|Object} entry - The project's entry in projects.json - either its GitHub repository URL, or an object
  * with members `repo` holding that URL, optionally `siteUrl` overriding the URL computed for its published site, and
- * `place` holding the id of its place, and optionally `title` overriding the title taken from its description. An object
+ * `place` holding the id of its place, and optionally `title` overriding the title taken from its description and
+ * `description` overriding the description itself. An object
  * with `dir` in place of `repo` names a folder within this repository
  * holding the project's description and, optionally, its boundary.
  * @param {Object} config - The parsed contents of projects.json.
@@ -171,7 +172,7 @@ const collectProject = async function (entry, config, localDir) {
         repoUrl: "https://github.com/" + repo.owner + "/" + repo.name,
         siteUrl: entry.siteUrl || pagesUrl(repo),
         place: entry.place,
-        description,
+        description: entry.description || description,
         boundary: toFeatureCollection(JSON.parse(boundaryText))
     };
 };
@@ -217,7 +218,8 @@ const main = async function () {
             console.warn("Failed to collect " + source + ": " + result.reason.message +
                 (prior ? " - retaining previously collected version" : " - omitting from map"));
             // A retained record takes its place and any title from the current configuration, in case they have changed
-            record = prior && {...prior, place: entry.place, ...(entry.title && {title: entry.title})};
+            record = prior && {...prior, place: entry.place, ...(entry.title && {title: entry.title}),
+                ...(entry.description && {description: entry.description})};
         }
         return record ? [record] : [];
     });

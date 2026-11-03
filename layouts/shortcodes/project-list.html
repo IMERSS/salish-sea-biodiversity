@@ -1,7 +1,9 @@
 {{- /* List of subsidiary projects grouped by place, from data/places.json and data/projects.json, or of datasets from
        data/datasets.json when given "datasets". Hovering a place's section highlights it on the map.
        Each project is an accordion entry: static/js/project-list.js collapses them to their titles, and clicking a
-       title expands its entry, or follows the title's link once the entry is expanded */ -}}
+       title expands its entry, or follows the title's link once the entry is expanded. The project is also linked at
+       the end of its summary - the first paragraph of its description - and its acknowledgements, from its place and
+       data/funders.yaml, are joined into a single paragraph */ -}}
 {{- $isData := eq (.Get 0) "datasets" -}}
 {{- $items := cond $isData site.Data.datasets site.Data.projects -}}
 {{- $linkText := cond $isData "View dataset" "Visit project site" -}}
@@ -24,30 +26,27 @@
         </h3>
         <div class="imerss-project-list-body" id="{{ $bodyId }}">
           {{- /* The description's first heading repeats the title */ -}}
-          {{ replaceRE `^#[^\n]*\n+` "" .description | markdownify }}
-          {{- $funders := index site.Data.funders .id }}
-          {{- if or $place.acknowledgement $funders }}
+          {{- $paragraphs := split (trim (replaceRE `^#[^\n]*\n+` "" .description) "\n") "\n\n" }}
+          {{- $link := printf `<a class="imerss-project-list-link" href="%s" target="_blank" rel="noopener">%s&nbsp;&rarr;</a>` .siteUrl $linkText }}
+          {{ $.Page.RenderString (dict "display" "block") (printf "%s %s" (index $paragraphs 0) $link) }}
+          {{- range after 1 $paragraphs }}
+          {{ $.Page.RenderString (dict "display" "block") . }}
+          {{- end }}
+          {{- $funders := index site.Data.funders .id | default dict }}
+          {{- $acknowledgements := slice }}
+          {{- range slice $place.acknowledgement $funders.partners $funders.acknowledgements $funders.thanks }}
+            {{- with . }}{{ $acknowledgements = $acknowledgements | append . }}{{ end }}
+          {{- end }}
+          {{- if or $acknowledgements $funders.logos }}
           <section class="imerss-funders" aria-label="Acknowledgements">
-            {{- with $place.acknowledgement }}
-            <p>{{ . | markdownify }}</p>
+            {{- with $acknowledgements }}
+            <p>{{ delimit . " " | markdownify }}</p>
             {{- end }}
-            {{- with $funders }}
-            {{- with .partners }}
-            <p>{{ . | markdownify }}</p>
-            {{- end }}
-            {{- with .acknowledgements }}
-            <p>{{ . | markdownify }}</p>
-            {{- end }}
-            {{- with .thanks }}
-            <p>{{ . | markdownify }}</p>
-            {{- end }}
-            {{- with .logos }}
+            {{- with $funders.logos }}
             {{ partial "logos.html" . }}
-            {{- end }}
             {{- end }}
           </section>
           {{- end }}
-          <p class="imerss-project-list-link"><a href="{{ .siteUrl }}" target="_blank" rel="noopener">{{ $linkText }} &rarr;</a></p>
         </div>
       </div>
     {{- end }}

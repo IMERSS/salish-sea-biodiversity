@@ -4,7 +4,7 @@
     "title": "Flora of Átl’ḵa7tsem/Howe Sound",
     "repoUrl": "https://github.com/IMERSS/howe-sound-mapping-2026",
     "siteUrl": "https://imerss.github.io/howe-sound-mapping-2026/story",
-    "description": "# Átl’ḵa7tsem/Howe Sound Biosphere Vegetation Report\n\nA map-based report on the vascular plant diversity of the Átl’ḵa7tsem/Howe Sound Biosphere Region, relating\nhistorical and community science records to biogeoclimatic zones and protected areas across the biosphere.\n",
+    "description": "A map-based report on the vascular plant diversity of the Átl’ḵa7tsem/Howe Sound Biosphere Region, drawing on historical collections and community science observations to relate the region’s plants to biogeoclimatic zones and protected areas, map their status, track species that have not been reported in recent decades, and recognise the contributors whose records make this work possible.\n",
     "boundary": {
       "type": "FeatureCollection",
       "features": [
