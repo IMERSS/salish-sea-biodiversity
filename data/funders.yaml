@@ -1,6 +1,7 @@
 # Acknowledgement of partners and funders shown below a project's entry on the Projects page, keyed by the project's id
 # in data/projects.json. `partners`, `acknowledgements` and `thanks` are sentences naming partners, others to thank,
-# and funders, and `logos` lists keys from data/logos.yaml. Every member is optional. The acknowledgement of the
+# and funders, and `logos` lists keys from data/logos.yaml, of which `featuredLogo` may name one to set larger on a row
+# of its own. Every member is optional. The acknowledgement of the
 # peoples in whose territories a project takes place belongs to its place, in projects.json.
 saanich-peninsula-flora:
   partners: >-
@@ -27,4 +28,5 @@ xetthecum-ecocultural-mapping:
     [Inclusive Design Research Centre](https://idrc.ocadu.ca/), the
     [Southern Gulf Islands Community Resource Centre](https://www.sgicommunityresources.ca/), and the
     [Capital Regional District](https://www.crd.ca/) in support of this ongoing ecocultural mapping initiative.
-  logos: [whiteswan, iwi, idrc, sgi-crc, crd]
+  logos: [iwi, idrc, whiteswan, sgi-crc, crd]
+  featuredLogo: whiteswan

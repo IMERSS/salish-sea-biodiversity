@@ -1,6 +1,10 @@
-{{- /* Funder and partner logos, given a list of keys from data/logos.yaml. Adapted from imerss.org's logos partial */ -}}
+{{- /* Funder and partner logos, given a dict holding `logos`, a list of keys from data/logos.yaml, and optionally
+       `featured`, the key of a logo to feature - set larger, on a row of its own. Adapted from imerss.org's logos
+       partial */ -}}
+{{- $featured := .featured -}}
 <ul class="imerss-logos-list">
-  {{- range . }}
+  {{- range .logos }}
+  {{- $isFeatured := eq . $featured }}
   {{- with index site.Data.logos . }}
   {{- /* Size each logo to a similar visual weight: equal area, nudged down for dense marks and up for light ones */ -}}
   {{- $ratio := float .ratio | default 2.5 -}}
@@ -9,11 +13,12 @@
   {{- $h = math.Min $h 76.0 -}}
   {{- /* An optional scale enlarges a logo whose lettering would otherwise be too small to read */ -}}
   {{- $scale := float (.scale | default 1) -}}
+  {{- if $isFeatured }}{{ $scale = mul $scale 1.8 }}{{ end -}}
   {{- $h = mul $h $scale -}}
   {{- $w := mul $h $ratio -}}
   {{- $maxW := mul 200.0 $scale -}}
   {{- if gt $w $maxW }}{{ $w = $maxW }}{{ $h = div $w $ratio }}{{ end -}}
-  <li>
+  <li{{ if $isFeatured }} class="imerss-logo-featured"{{ end }}>
     <a href="{{ .url }}" target="_blank" rel="noreferrer" title="{{ .name }}">
       <img src="{{ .logo | relURL }}" alt="{{ .name }}" loading="lazy"
            style="--logo-w: {{ math.Round $w }}px; --logo-h: {{ math.Round $h }}px">

@@ -490,6 +490,13 @@ nav a {
     margin: 0;
 }
 
+/* A featured logo takes a row of its own, centred between the others */
+.content .imerss-funders .imerss-logos-list li.imerss-logo-featured {
+    flex-basis: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .imerss-funders .imerss-logos-list a {
     display: block;
     line-height: 0;

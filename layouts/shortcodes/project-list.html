@@ -43,7 +43,7 @@
             <p>{{ delimit . " " | markdownify }}</p>
             {{- end }}
             {{- with $funders.logos }}
-            {{ partial "logos.html" . }}
+            {{ partial "logos.html" (dict "logos" . "featured" $funders.featuredLogo) }}
             {{- end }}
           </section>
           {{- end }}
