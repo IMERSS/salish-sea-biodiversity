@@ -64,3 +64,9 @@ hat:
   logo: images/logos/HAT.png
   ratio: 3.257
   density: 0.237
+whiteswan:
+  name: Whiteswan Environmental
+  url: https://www.whiteswanenvironmental.org/
+  logo: images/logos/whiteswan-environmental.png
+  ratio: 2.158
+  density: 0.401
