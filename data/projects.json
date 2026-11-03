@@ -2094,7 +2094,7 @@
     "title": "Flora of W̱SÁNEĆ/Saanich Peninsula",
     "repoUrl": "https://github.com/IMERSS/saanich-peninsula-flora",
     "siteUrl": "https://imerss.github.io/saanich-peninsula-flora/story",
-    "description": "# Flora of the Saanich Peninsula\n\nAn analysis of the vascular plant flora of the Saanich Peninsula, drawing on historical collections and\ncommunity science observations to map the status of the region's plants, track species that have not been\nreported in recent decades, and recognise the contributors whose records make this work possible.\n",
+    "description": "An analysis of the vascular plant flora of the Saanich Peninsula, drawing on historical collections and\ncommunity science observations to map the status of the region's plants, track species that have not been\nreported in recent decades, and recognise the contributors whose records make this work possible. This work builds on the foundation of Szczawinski and Harrison’s (1972) *Flora of the Saanich Peninsula*.\n",
     "boundary": {
       "type": "FeatureCollection",
       "features": [
