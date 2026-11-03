@@ -10,11 +10,13 @@
       <div class="imerss-page">
     {{ partial "subnav.html" . }}
     {{- block "main" . }}{{ end -}}
-      </div>
-    </div>
+    {{- /* The footer belongs to this column, so that the map column always reaches the bottom of the page and the
+           sticky map is never pushed up into the header as the footer scrolls into view */ -}}
     {{- if or (eq .Site.Params.footer.enable nil) (.Site.Params.footer.enable) }}
       {{ partial "footer.html" . }}
     {{ end }}
+      </div>
+    </div>
     {{ partial "scripts.html" . }}
   </body>
 </html>

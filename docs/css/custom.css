@@ -27,6 +27,18 @@ main .content h3, main.content h2, main h1 {
     display: flex;
 }
 
+/* The page column holds the footer, and is at least as tall as the map, so the footer sits at the foot of the window
+   on short pages */
+.imerss-page {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 100px);
+}
+
+.imerss-page > footer {
+    margin-top: auto;
+}
+
 .imerss-map {
     width: 60%;
     /* Above the header image, whose lower strip it covers beside the subnav, as on the Saanich Peninsula story page */
