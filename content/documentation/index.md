@@ -12,5 +12,5 @@ Aspects of this protocol have been adapted in the [bioReportR framework](https:/
 [Átl’ḵa7tsem/Howe Sound Biosphere](https://imerss.github.io/howe-sound-mapping-2026/story) and
 [Saanich Peninsula](https://imerss.github.io/saanich-peninsula-flora/story).
 
-[*Xetthecum*: a learning journey](https://imerss.github.io/xetthecum-documentation/docs/) documents the *Xetthecum*
-ecocultural mapping pilot at Retreat Cove, Galiano Island, from early research to community engagement.
+[*Xetthecum*: a learning journey](https://imerss.github.io/xetthecum-documentation/docs/) follows the *Xetthecum*
+ecocultural mapping pilot at Retreat Cove, Galiano Island, through its three phases, from November 2020 to April 2024.
