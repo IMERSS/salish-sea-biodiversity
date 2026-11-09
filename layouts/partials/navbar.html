@@ -1,6 +1,7 @@
 {{- /* Shared IMERSS navigation banner - keep identical across the index site and its project sites.
        A project site sets params.indexSite.title and params.indexSite.url to show a link back to the index at top left.
-       The site title always links to the site's home page, while the logo links to params.navbar.logo.link */ -}}
+       The site title always links to the site's home page, while the logo links to params.navbar.logo.link, followed by
+       params.navbar.logo.wordmark, if given, as imerss.org's banner shows its mark beside its name */ -}}
 {{- $logoPath := .Site.Params.navbar.logo.path | default "images/logo.svg" -}}
 {{- $logoLink := .Site.Params.navbar.logo.link | default .Site.Home.RelPermalink -}}
 {{- $logoWidth := .Site.Params.navbar.logo.width | default "20" -}}
@@ -28,7 +29,10 @@
       {{- end }}
       {{- if (.Site.Params.navbar.displayLogo | default true) }}
       <a class="hx-flex hx-items-center hover:hx-opacity-75" href="{{ $logoLink }}">
-          <img src="{{ $logoPath | relURL }}" alt="{{ .Site.Title }}" height="{{ $logoHeight }}" width="{{ $logoWidth }}" />
+          <img src="{{ $logoPath | relURL }}" alt="{{ .Site.Params.navbar.logo.wordmark | default .Site.Title }}" height="{{ $logoHeight }}" width="{{ $logoWidth }}" />
+          {{- with .Site.Params.navbar.logo.wordmark }}
+          <span class="imerss-navbar-wordmark" aria-hidden="true">{{ . }}</span>
+          {{- end }}
       </a>
       {{- end }}
   </div>

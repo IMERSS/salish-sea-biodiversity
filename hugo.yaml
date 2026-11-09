@@ -113,9 +113,11 @@ params:
     displayTitle: true
     displayLogo: true
     logo:
-      path: images/imerss.png
-      width: 200
-      # height: 60
+      # imerss.org's banner mark, recoloured to the banner's cream, beside its name as on imerss.org
+      path: images/imerss-mark.svg
+      width: 35
+      height: 30
+      wordmark: IMERSS
       # The logo links to IMERSS, while the site title links to this site's home page
       link: https://www.imerss.org/
     width: wide
