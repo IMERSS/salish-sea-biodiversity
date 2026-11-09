@@ -115,9 +115,16 @@ main .content h3, main.content h2, main h1 {
 .imerss-navbar-title {
     color: #FDF2CE;
     font-weight: 700;
-    font-size: 22px;
-    text-transform: uppercase;
-    letter-spacing: 0.2rem;
+    font-size: 24px;
+    letter-spacing: 0.01em;
+}
+
+/* The IMERSS name beside its mark at the right of the banner, set as on imerss.org */
+.imerss-navbar .imerss-navbar-wordmark {
+    margin: 0 24px 0 0;
+    color: #FDF2CE;
+    font-weight: 700;
+    font-size: 20px;
 }
 
 .imerss-bg-neutral-50 {
@@ -173,7 +180,7 @@ nav a {
 }
 
 .imerss-navbar img {
-    margin-right: 12px;
+    margin-right: 10px;
 }
 
 .imerss-navbar span {
