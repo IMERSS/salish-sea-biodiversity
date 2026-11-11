@@ -64,7 +64,7 @@
         {
             "id": "saanich-peninsula",
             "name": "W̱SÁNEĆ/Saanich Peninsula",
-            "acknowledgement": "We respectfully acknowledge that this work takes place within the territories of the W̱SÁNEĆ (Saanich) people, who have cared for these lands and waters since time immemorial."
+            "acknowledgement": "We respectfully acknowledge that this work takes place within the territories of the W̱SÁNEĆ Peoples and the Lək̓ʷəŋən (Songhees and Xʷsepsəm/Esquimalt) Peoples, who have cared for these lands and waters since time immemorial."
         },
         {
             "id": "salish-sea",
@@ -91,7 +91,7 @@
         {
             "repo": "https://github.com/IMERSS/saanich-peninsula-flora",
             "place": "saanich-peninsula",
-            "title": "Flora of W̱SÁNEĆ/Saanich Peninsula",
+            "title": "Flora of the W̱SÁNEĆ/Saanich Peninsula",
             "description": "An analysis of the vascular plant flora of the Saanich Peninsula, drawing on historical collections and\ncommunity science observations to map the status of the region's plants, track species that have not been\nreported in recent decades, and recognise the contributors whose records make this work possible. This work builds on the foundation of Harvey Janszen's revisions of Szczawinski and Harrison’s (1972) *Flora of the Saanich Peninsula* through ongoing data curation involving a community of naturalists in the Salish Sea.\n"
         }
     ],
