@@ -224,18 +224,24 @@ const main = async function () {
         return record ? [record] : [];
     });
 
+    const islandPlaces = new Set(config.places.filter(place => place.island).map(place => place.id));
+    const dropIslandBoundary = record => islandPlaces.has(record.place) ? {...record, boundary: null} : record;
+    records.splice(0, records.length, ...records.map(dropIslandBoundary));
+
     await fs.mkdir(path.dirname(outputPath), {recursive: true});
     await fs.writeFile(outputPath, JSON.stringify(records, null, 2) + "\n");
     console.log("Wrote " + records.length + " project(s) to " + path.relative(rootDir, outputPath));
 
     // Datasets are held within this repository, so any failure to read one is an error to be fixed rather than retried
-    const datasets = await Promise.all((config.datasets || []).map(entry =>
-        collectLocal(entry, config.boundaryFile, config.datasetDescriptionFile)));
+    const datasets = (await Promise.all((config.datasets || []).map(entry =>
+        collectLocal(entry, config.boundaryFile, config.datasetDescriptionFile)))).map(dropIslandBoundary);
     await fs.writeFile(datasetsOutputPath, JSON.stringify(datasets, null, 2) + "\n");
     console.log("Wrote " + datasets.length + " dataset(s) to " + path.relative(rootDir, datasetsOutputPath));
 
     const placeIds = new Set(config.places.map(place => place.id));
-    [...records, ...datasets].filter(record => !placeIds.has(record.place)).forEach(record =>
+    const occurrenceDatasets = new Set((config.datasets || []).filter(entry => entry.occurrences).map(entry => path.basename(entry.dir)));
+    [...records, ...datasets].filter(record => !placeIds.has(record.place) &&
+        !(record.place === undefined && occurrenceDatasets.has(record.id))).forEach(record =>
         console.warn("Warning: " + record.title + " belongs to unknown place " + JSON.stringify(record.place) +
             " - it will not be shown"));
     await fs.writeFile(placesOutputPath, JSON.stringify(config.places, null, 2) + "\n");

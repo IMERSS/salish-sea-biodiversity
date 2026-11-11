@@ -7,7 +7,53 @@
   {
     "id": "galiano-island",
     "name": "Galiano Island",
-    "acknowledgement": "We respectfully acknowledge that this work takes place within the traditional territories of the Penelakut, Hwlitsum and Tsawwassen First Nations, among other Hul’qumi’num-speaking Coast Salish peoples, who have cared for these lands and waters since time immemorial."
+    "acknowledgement": "We respectfully acknowledge that this work takes place within the traditional territories of the Penelakut, Hwlitsum and Tsawwassen First Nations, among other Hul’qumi’num-speaking Coast Salish peoples, who have cared for these lands and waters since time immemorial.",
+    "island": "Galiano Island"
+  },
+  {
+    "id": "mayne-island",
+    "name": "Mayne Island",
+    "island": "Mayne Island"
+  },
+  {
+    "id": "saturna-island",
+    "name": "Saturna Island",
+    "island": "Saturna Island"
+  },
+  {
+    "id": "north-pender-island",
+    "name": "North Pender Island",
+    "island": "North Pender Island"
+  },
+  {
+    "id": "south-pender-island",
+    "name": "South Pender Island",
+    "island": "South Pender Island"
+  },
+  {
+    "id": "samuel-island",
+    "name": "Samuel Island",
+    "island": "Samuel Island"
+  },
+  {
+    "id": "georgeson-island",
+    "name": "Georgeson Island",
+    "island": "Georgeson Island"
+  },
+  {
+    "id": "tumbo-island",
+    "name": "Tumbo Island",
+    "island": "Tumbo Island"
+  },
+  {
+    "id": "saltspring-island",
+    "name": "Saltspring Island",
+    "island": "Saltspring Island"
+  },
+  {
+    "id": "texada-island",
+    "name": "Texada Island",
+    "island": "Texada Island"
   },
   {
     "id": "saanich-peninsula",

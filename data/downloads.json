@@ -1,0 +1,92 @@
+{
+  "janszen-journal-5": {
+    "files": [
+      {
+        "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06.csv",
+        "name": "hj5-for-canadensys_2026_10_06.csv"
+      }
+    ],
+    "places": {
+      "saturna-island": [
+        {
+          "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06-saturna-island.csv",
+          "name": "hj5-for-canadensys_2026_10_06-saturna-island.csv",
+          "count": 422
+        }
+      ],
+      "tumbo-island": [
+        {
+          "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06-tumbo-island.csv",
+          "name": "hj5-for-canadensys_2026_10_06-tumbo-island.csv",
+          "count": 6
+        }
+      ],
+      "galiano-island": [
+        {
+          "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06-galiano-island.csv",
+          "name": "hj5-for-canadensys_2026_10_06-galiano-island.csv",
+          "count": 396
+        }
+      ],
+      "south-pender-island": [
+        {
+          "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06-south-pender-island.csv",
+          "name": "hj5-for-canadensys_2026_10_06-south-pender-island.csv",
+          "count": 32
+        }
+      ],
+      "mayne-island": [
+        {
+          "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06-mayne-island.csv",
+          "name": "hj5-for-canadensys_2026_10_06-mayne-island.csv",
+          "count": 158
+        }
+      ],
+      "north-pender-island": [
+        {
+          "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06-north-pender-island.csv",
+          "name": "hj5-for-canadensys_2026_10_06-north-pender-island.csv",
+          "count": 214
+        }
+      ],
+      "samuel-island": [
+        {
+          "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06-samuel-island.csv",
+          "name": "hj5-for-canadensys_2026_10_06-samuel-island.csv",
+          "count": 35
+        }
+      ],
+      "georgeson-island": [
+        {
+          "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06-georgeson-island.csv",
+          "name": "hj5-for-canadensys_2026_10_06-georgeson-island.csv",
+          "count": 27
+        }
+      ],
+      "saltspring-island": [
+        {
+          "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06-saltspring-island.csv",
+          "name": "hj5-for-canadensys_2026_10_06-saltspring-island.csv",
+          "count": 6
+        }
+      ]
+    }
+  },
+  "janszen-journal-8": {
+    "files": [
+      {
+        "url": "data/downloads/janszen-journal-8/hj8-for-canadensys_2026-05-12.csv",
+        "name": "hj8-for-canadensys_2026-05-12.csv"
+      }
+    ],
+    "places": {
+      "texada-island": [
+        {
+          "url": "data/downloads/janszen-journal-8/hj8-for-canadensys_2026-05-12-texada-island.csv",
+          "name": "hj8-for-canadensys_2026-05-12-texada-island.csv",
+          "count": 600
+        }
+      ]
+    }
+  }
+}

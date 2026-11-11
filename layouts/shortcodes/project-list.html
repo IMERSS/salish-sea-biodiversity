@@ -1,24 +1,36 @@
-{{- /* List of subsidiary projects grouped by place, from data/places.json and data/projects.json, or of datasets from
-       data/datasets.json when given "datasets". Hovering a place's section highlights it on the map.
-       Each project is an accordion entry: static/js/project-list.js collapses them to their titles, and clicking a
-       title expands its entry, or follows the title's link once the entry is expanded. The project is also linked at
-       the end of its summary - the first paragraph of its description - and its acknowledgements, from its place and
-       data/funders.yaml, are joined into a single paragraph */ -}}
+{{- /* Projects, or with "datasets" datasets, listed by place. See static/js/project-list.js */ -}}
 {{- $isData := eq (.Get 0) "datasets" -}}
 {{- $items := cond $isData site.Data.datasets site.Data.projects -}}
-{{- $linkText := cond $isData "View dataset" "Visit project site" -}}
 <div class="imerss-places">
 {{- range $place := site.Data.places }}
-  {{- $placeItems := where $items "place" $place.id }}
+  {{- $placeItems := partial "place-items.html" (dict "place" $place "isData" $isData) }}
   {{- if $placeItems }}
   <section class="imerss-place" data-map-id="{{ $place.id }}" aria-labelledby="imerss-place-{{ $place.id }}">
-    <h2 class="imerss-place-name" id="imerss-place-{{ $place.id }}">{{ $place.name }}</h2>
-    <div class="imerss-project-list">
+    <h2 class="imerss-place-name" id="imerss-place-{{ $place.id }}">
+      <button type="button" class="imerss-place-toggle" aria-expanded="true" aria-controls="imerss-place-list-{{ $place.id }}">
+        <span>{{ $place.name }}</span>
+        <span class="imerss-place-count">{{ len $placeItems }}</span>
+      </button>
+    </h2>
+    <div class="imerss-project-list" id="imerss-place-list-{{ $place.id }}">
     {{- range $placeItems }}
       {{- $bodyId := printf "imerss-project-list-body-%s" .id }}
-      <div class="imerss-project-list-item">
+      {{- $occurrences := index (index site.Data.occurrences .id | default dict) $place.id }}
+      {{- if and (not $occurrences) $isData (eq .place $place.id) }}{{ $occurrences = index site.Data.sites .id }}{{ end }}
+      <div class="imerss-project-list-item" data-item-id="{{ .id }}"
+           {{- with $occurrences }} data-occurrences-url="{{ partial "static-url.html" .url }}" data-occurrences-count="{{ .count }}"{{ end }}>
         <h3 class="imerss-project-list-heading">
           <a class="imerss-project-list-title" href="{{ .siteUrl }}" target="_blank" rel="noopener">{{ .title | markdownify }}</a>
+          {{- with $occurrences }}
+          <span class="imerss-record-count">{{ lang.FormatNumber 0 .count }} record{{ if ne .count 1 }}s{{ end }}</span>
+          {{- end }}
+          {{- if not $isData }}
+          <a class="imerss-project-link" href="{{ .siteUrl }}" target="_blank" rel="noopener"
+             aria-label="Explore {{ .title | markdownify | plainify }} on its own site">
+            <span>Explore</span>
+            <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M8 4h8v8M16 4l-9 9M13 13v3H4V7h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          {{- end }}
           <button type="button" class="imerss-project-list-toggle" aria-expanded="true" aria-controls="{{ $bodyId }}"
                   aria-label="Show or hide details of {{ .title | markdownify | plainify }}">
             <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -27,14 +39,12 @@
         <div class="imerss-project-list-body" id="{{ $bodyId }}">
           {{- /* The description's first heading repeats the title */ -}}
           {{- $paragraphs := split (trim (replaceRE `^#[^\n]*\n+` "" .description) "\n") "\n\n" }}
-          {{- $link := printf `<a class="imerss-project-list-link" href="%s" target="_blank" rel="noopener">%s&nbsp;&rarr;</a>` .siteUrl $linkText }}
-          {{ $.Page.RenderString (dict "display" "block") (printf "%s %s" (index $paragraphs 0) $link) }}
-          {{- range after 1 $paragraphs }}
+          {{- range $paragraphs }}
           {{ $.Page.RenderString (dict "display" "block") . }}
           {{- end }}
           {{- $funders := index site.Data.funders .id | default dict }}
           {{- $acknowledgements := slice }}
-          {{- range slice $place.acknowledgement $funders.partners $funders.acknowledgements $funders.thanks }}
+          {{- range slice $funders.partners $funders.acknowledgements $funders.thanks }}
             {{- with . }}{{ $acknowledgements = $acknowledgements | append . }}{{ end }}
           {{- end }}
           {{- if or $acknowledgements $funders.logos }}
@@ -47,8 +57,39 @@
             {{- end }}
           </section>
           {{- end }}
+          {{- if $isData }}
+          {{- $download := index site.Data.downloads .id | default dict }}
+          {{- $downloads := slice }}
+          {{- range index ($download.places | default dict) $place.id }}
+            {{- $downloads = $downloads | append (dict "url" .url "name" .name "label" (printf "CSV · %s" $place.name) "title" (printf "Download the %d records from %s" (int .count) $place.name)) }}
+          {{- end }}
+          {{- range $download.files }}
+            {{- $downloads = $downloads | append (dict "url" .url "name" .name "label" "CSV · full journal" "title" (printf "Download all records in %s" .name)) }}
+          {{- end }}
+          {{- $gbif := in .siteUrl "gbif.org" }}
+          {{- if or $gbif $downloads }}
+          <p class="imerss-dataset-links">
+            {{- if $gbif }}
+            <a class="imerss-dataset-link imerss-gbif-link" href="{{ .siteUrl }}" target="_blank" rel="noopener"
+               title="View this dataset on GBIF" aria-label="View {{ .title | markdownify | plainify }} on GBIF">
+              <img src="{{ partial "static-url.html" "images/logos/gbif.svg" }}" alt="" height="28">
+            </a>
+            {{- end }}
+            {{- range $downloads }}
+            <a class="imerss-dataset-link imerss-download-link" href="{{ .url | relURL }}" download="{{ .name }}"
+               title="{{ .title }}" aria-label="{{ .title }}">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>{{ .label }}</span>
+            </a>
+            {{- end }}
+          </p>
+          {{- end }}
+          {{- end }}
         </div>
       </div>
+    {{- end }}
+    {{- with $place.acknowledgement }}
+      <p class="imerss-place-acknowledgement">{{ . | markdownify }}</p>
     {{- end }}
     </div>
   </section>

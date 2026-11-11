@@ -5,4 +5,6 @@ toc: false
 map: datasets
 ---
 
+Explore baseline biodiversity data curated by communities across the Salish Sea.
+
 {{< project-list datasets >}}

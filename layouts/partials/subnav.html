@@ -29,9 +29,12 @@
         {{- $active := or ($currentPage.HasMenuCurrent "main" .) ($currentPage.IsMenuCurrent "main" .) -}}
         {{- $activeClass := cond $active "hx-font-medium" "hx-text-gray-600 hover:hx-text-gray-800 dark:hx-text-gray-400 dark:hover:hx-text-gray-200" -}}
         {{- if .HasChildren }}
-        {{- /* A menu item with children shows them in a dropdown below it */}}
         <div class="imerss-subnav-dropdown imerss-subnav-item">
-        {{- end }}
+        <button type="button" aria-expanded="false" aria-haspopup="true"
+                class="imerss-subnav-dropdown-toggle hx-relative imerss-subnav-item -hx-ml-2 hx-whitespace-nowrap hx-p-2 {{ $activeClass }}">
+            <span class="hx-text-center">{{ or (T .Identifier) .Name | safeHTML }}</span>
+        </button>
+        {{- else }}
         <a
                 title="{{ or (T .Identifier) .Name | safeHTML }}"
                 href="{{ $link }}"
@@ -40,6 +43,7 @@
         >
             <span class="hx-text-center">{{ or (T .Identifier) .Name | safeHTML }}</span>
         </a>
+        {{- end }}
         {{- if .HasChildren }}
             <div class="imerss-subnav-dropdown-menu">
                 {{- range .Children }}
@@ -68,7 +72,11 @@
         {{- if and (ne .Params.type "search") (not .Params.icon) }}
         {{- $link := partial "imerss-menu-link" . -}}
         {{- $active := or ($currentPage.HasMenuCurrent "main" .) ($currentPage.IsMenuCurrent "main" .) }}
+        {{- if .HasChildren }}
+        <span class="imerss-mobile-menu-heading">{{ or (T .Identifier) .Name | safeHTML }}</span>
+        {{- else }}
         <a href="{{ $link }}" {{ if strings.HasPrefix $link "http" }}target="_blank" rel="noreferrer"{{ end }} {{ if $active }}class="imerss-active"{{ end }}>{{ or (T .Identifier) .Name | safeHTML }}</a>
+        {{- end }}
         {{- range .Children }}
         <a class="imerss-mobile-menu-child" href="{{ .URL }}" {{ if strings.HasPrefix .URL "http" }}target="_blank" rel="noreferrer"{{ end }}>{{ .Name }}</a>
         {{- end }}

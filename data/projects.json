@@ -4,6 +4,7 @@
     "title": "Flora of Átl’ḵa7tsem/Howe Sound",
     "repoUrl": "https://github.com/IMERSS/howe-sound-mapping-2026",
     "siteUrl": "https://imerss.github.io/howe-sound-mapping-2026/story",
+    "place": "howe-sound",
     "description": "A map-based report on the vascular plant diversity of the Átl’ḵa7tsem/Howe Sound Biosphere Region, drawing on historical collections and community science observations to relate the region’s plants to biogeoclimatic zones and protected areas, map their status, track species that have not been reported in recent decades, and recognise the contributors whose records make this work possible.\n",
     "boundary": {
       "type": "FeatureCollection",
@@ -2016,8 +2017,7 @@
           }
         }
       ]
-    },
-    "place": "howe-sound"
+    }
   },
   {
     "id": "detecting-local-extinction",
@@ -2026,60 +2026,7 @@
     "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/",
     "place": "galiano-island",
     "description": "# Protocol for the Detection of Extirpation\n\nDeveloped on Galiano Island, this protocol for detecting local extinction, or extirpation, combines historical\nspecimens, community science observations and targeted searches. Weighing the search effort spent in each species'\nhistorical and potential habitat, the protocol tests the hypothesis that a population has been lost, in line with\nIUCN extinction criteria.\nPublished in [*Plants, People, Planet*](https://nph.onlinelibrary.wiley.com/doi/full/10.1002/ppp3.70130).\n",
-    "boundary": {
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "properties": {
-            "name": "Galiano Island"
-          },
-          "geometry": {
-            "coordinates": [
-              [
-                [
-                  -123.557,
-                  48.957
-                ],
-                [
-                  -123.368,
-                  48.855
-                ],
-                [
-                  -123.306,
-                  48.858
-                ],
-                [
-                  -123.313,
-                  48.897
-                ],
-                [
-                  -123.43,
-                  48.936
-                ],
-                [
-                  -123.571,
-                  49.015
-                ],
-                [
-                  -123.59,
-                  49.014
-                ],
-                [
-                  -123.593,
-                  48.999
-                ],
-                [
-                  -123.557,
-                  48.957
-                ]
-              ]
-            ],
-            "type": "Polygon"
-          }
-        }
-      ]
-    }
+    "boundary": null
   },
   {
     "id": "xetthecum-ecocultural-mapping",
@@ -2094,6 +2041,7 @@
     "title": "Flora of W̱SÁNEĆ/Saanich Peninsula",
     "repoUrl": "https://github.com/IMERSS/saanich-peninsula-flora",
     "siteUrl": "https://imerss.github.io/saanich-peninsula-flora/story",
+    "place": "saanich-peninsula",
     "description": "An analysis of the vascular plant flora of the Saanich Peninsula, drawing on historical collections and\ncommunity science observations to map the status of the region's plants, track species that have not been\nreported in recent decades, and recognise the contributors whose records make this work possible. This work builds on the foundation of Harvey Janszen's revisions of Szczawinski and Harrison’s (1972) *Flora of the Saanich Peninsula* through ongoing data curation involving a community of naturalists in the Salish Sea.\n",
     "boundary": {
       "type": "FeatureCollection",
@@ -2206,7 +2154,6 @@
           }
         }
       ]
-    },
-    "place": "saanich-peninsula"
+    }
   }
 ]

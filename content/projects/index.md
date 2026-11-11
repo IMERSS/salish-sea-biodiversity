@@ -3,6 +3,8 @@ linkTitle: "Projects"
 title: Projects
 ---
 
+Projects tracking biodiversity change in places across the Salish Sea. Choose a place to see the projects within it.
+
 {{< project-list >}}
 
 {{< callout emoji="❓" >}}

@@ -187,3 +187,23 @@ params:
       # inputPosition: top
       # lang: en
       # theme: noborder_dark
+
+# data/ holds both the tables the site is built from - the .json and .yaml files at its top level - and, in folders
+# beneath them, the datasets and reference geography those tables are built from. Hugo reads only the tables
+module:
+  mounts:
+    - source: content
+      target: content
+    - source: static
+      target: static
+    - source: layouts
+      target: layouts
+    - source: assets
+      target: assets
+    - source: i18n
+      target: i18n
+    - source: archetypes
+      target: archetypes
+    - source: data
+      target: data
+      includeFiles: ["/*.json", "/*.yaml"]

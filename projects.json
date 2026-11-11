@@ -1,8 +1,9 @@
 {
-    "// comment": "Places, and the projects and datasets within them, shown on the index map. Run `npm run collect` to refresh data/projects.json, data/datasets.json and data/places.json. Each place has an id, a name and optionally an \"acknowledgement\" of the peoples in whose territories it lies, shown with each project or dataset within it; the map outlines it with the boundaries of the projects (or, in the Data section, datasets) within it, and the Projects and Data pages list them beneath it. A project is an object holding its repository URL as \"repo\", the id of its place as \"place\", and optionally a \"siteUrl\" for a site that is not at the usual /story address, a \"title\" overriding the one taken from its description, and a \"description\" overriding the description itself. A project or dataset may instead be held in this repository, as an object with \"dir\" naming its folder - holding project.md or dataset.md and, optionally, boundary.geojson - and \"siteUrl\" giving where it links to.",
+    "// comment": "Places, and the projects and datasets within them, shown on the index map. Run `npm run collect` to refresh data/projects.json, data/datasets.json and data/places.json. Each place has an id, a name and optionally an \"acknowledgement\" of the peoples in whose territories it lies, shown once beneath the projects or datasets listed under it; the map outlines it with the boundaries of the projects (or, in the Data section, datasets) within it, and the Projects and Data pages list them beneath it. A project is an object holding its repository URL as \"repo\", the id of its place as \"place\", and optionally a \"siteUrl\" for a site that is not at the usual /story address, a \"title\" overriding the one taken from its description, and a \"description\" overriding the description itself. A project or dataset may instead be held in this repository, as an object with \"dir\" naming its folder - holding project.md or dataset.md and, optionally, boundary.geojson - and \"siteUrl\" giving where it links to. A place may also name an \"island\" in the islands KML (\"islandsFile\"), whose outline is drawn for it. A dataset may list tabular Darwin Core \"occurrences\" files, held as is, whose records are assigned to places by island and drawn on the map in the Data section - run `npm run occurrences` (see scripts/build-occurrences.js). A dataset published through GBIF may name its Darwin Core Archive occurrence file, kept out of git, as \"sites\": {\"archive\": ...}, to be summarised into one point per sampling site.",
     "boundaryFile": "boundary.geojson",
     "descriptionFile": "project.md",
     "datasetDescriptionFile": "dataset.md",
+    "islandsFile": "data/geography/Salish_Sea_Islands.kml",
     "places": [
         {
             "id": "howe-sound",
@@ -12,7 +13,53 @@
         {
             "id": "galiano-island",
             "name": "Galiano Island",
-            "acknowledgement": "We respectfully acknowledge that this work takes place within the traditional territories of the Penelakut, Hwlitsum and Tsawwassen First Nations, among other Hul’qumi’num-speaking Coast Salish peoples, who have cared for these lands and waters since time immemorial."
+            "acknowledgement": "We respectfully acknowledge that this work takes place within the traditional territories of the Penelakut, Hwlitsum and Tsawwassen First Nations, among other Hul’qumi’num-speaking Coast Salish peoples, who have cared for these lands and waters since time immemorial.",
+            "island": "Galiano Island"
+        },
+        {
+            "id": "mayne-island",
+            "name": "Mayne Island",
+            "island": "Mayne Island"
+        },
+        {
+            "id": "saturna-island",
+            "name": "Saturna Island",
+            "island": "Saturna Island"
+        },
+        {
+            "id": "north-pender-island",
+            "name": "North Pender Island",
+            "island": "North Pender Island"
+        },
+        {
+            "id": "south-pender-island",
+            "name": "South Pender Island",
+            "island": "South Pender Island"
+        },
+        {
+            "id": "samuel-island",
+            "name": "Samuel Island",
+            "island": "Samuel Island"
+        },
+        {
+            "id": "georgeson-island",
+            "name": "Georgeson Island",
+            "island": "Georgeson Island"
+        },
+        {
+            "id": "tumbo-island",
+            "name": "Tumbo Island",
+            "island": "Tumbo Island"
+        },
+        {
+            "id": "saltspring-island",
+            "name": "Saltspring Island",
+            "island": "Saltspring Island"
+        },
+        {
+            "id": "texada-island",
+            "name": "Texada Island",
+            "island": "Texada Island"
         },
         {
             "id": "saanich-peninsula",
@@ -50,14 +97,44 @@
     ],
     "datasets": [
         {
-            "dir": "datasets/galiano-marine-animals",
-            "siteUrl": "https://www.gbif.org/dataset/56687a3d-b48f-44e5-b2b8-d55bafff2f33",
-            "place": "galiano-island"
+            "dir": "data/janszen-legacy-project/janszen-journal-5",
+            "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
+            "occurrences": {
+                "files": [
+                    "data/janszen-legacy-project/hj5-for-canadensys_2026_10_06.txt"
+                ],
+                "locateBy": {
+                    "Pender Island": [
+                        "North Pender Island",
+                        "South Pender Island"
+                    ]
+                }
+            }
         },
         {
-            "dir": "datasets/salish-sea-diatoms",
+            "dir": "data/janszen-legacy-project/janszen-journal-8",
+            "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
+            "occurrences": {
+                "files": [
+                    "data/janszen-legacy-project/hj8-for-canadensys_2026-05-12.txt"
+                ]
+            }
+        },
+        {
+            "dir": "data/galiano-marine-animals",
+            "siteUrl": "https://www.gbif.org/dataset/56687a3d-b48f-44e5-b2b8-d55bafff2f33",
+            "place": "galiano-island",
+            "sites": {
+                "archive": "data/galiano-marine-animals/dwca-galiano-data-paper-part-i-v1/occurrence.txt"
+            }
+        },
+        {
+            "dir": "data/salish-sea-diatoms",
             "siteUrl": "https://www.gbif.org/dataset/d41f9582-0b3e-4062-8ee0-31f0ba52ace1",
-            "place": "salish-sea"
+            "place": "salish-sea",
+            "sites": {
+                "archive": "data/salish-sea-diatoms/dwca-salishseadiatoms-v1/occurrence.txt"
+            }
         }
     ]
 }

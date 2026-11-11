@@ -3,14 +3,9 @@
 "use strict";
 
 /*
- * Renders the index map of the places holding subsidiary projects or datasets. Places are drawn softly, and highlighted
- * while the pointer is over them, or over their section in a list on the page marked with `data-map-id`, which is in
- * turn marked as hovered while the pointer is over the place on the map. Hovering a place shows its name and the
- * projects within it. Clicking a place opens its section in the list on the page (see static/js/project-list.js), or,
- * on a page without the list, browses to the page listing these places with that place opened.
- *
- * Places may overlap - a small place may lie within a larger one. Larger places are drawn beneath smaller ones, and
- * where places overlap, the pointer selects the smallest of them.
+ * The map of places beside the list of projects or datasets (see static/js/project-list.js). Places highlight while
+ * hovered here or in the list, and a place opened in the list is brought into view, with any records of a dataset hovered
+ * or expanded there drawn as points. Clicking a place opens it in the list. Where places overlap, the smallest is chosen.
  */
 
 const imerssProjectMapDefaults = {
@@ -21,10 +16,15 @@ const imerssProjectMapDefaults = {
     colour: "#FDF2CE"
 };
 
-// Paint values for places at rest and while highlighted - soft by default, so that the map reads as a quiet backdrop
+const imerssOccurrencePaint = {
+    colour: "#F2A541",
+    stroke: "#184E62"
+};
+
+// At rest and while highlighted
 const imerssPlacePaint = {
-    fillOpacity: [0.07, 0.3],
-    lineOpacity: [0.5, 1],
+    fillOpacity: [0, 0.12],
+    lineOpacity: [0, 1],
     lineWidth: [1, 2.25],
     glowOpacity: [0, 0.45]
 };
@@ -32,10 +32,74 @@ const imerssPlacePaint = {
 /**
  * Build a paint expression choosing between a value for places at rest and one for a highlighted place.
  * @param {Number[]} values - The values at rest and while highlighted.
- * @return {Array} A MapLibre expression selecting between them by the feature's "hover" state.
+ * @return {Array} A MapLibre expression selecting between them by the feature's "hover" and "selected" states.
  */
 const imerssHoverValue = function (values) {
-    return ["case", ["boolean", ["feature-state", "hover"], false], values[1], values[0]];
+    return ["case", ["any", ["boolean", ["feature-state", "hover"], false], ["boolean", ["feature-state", "selected"], false]],
+        values[1], values[0]];
+};
+
+/**
+ * Compute the bounds of a GeoJSON FeatureCollection.
+ * @param {Object} collection - A GeoJSON FeatureCollection of polygons or points.
+ * @return {Number[][]|null} Its bounds as [[west, south], [east, north]], or null if it holds no coordinates.
+ */
+const imerssBounds = function (collection) {
+    const bounds = [[Infinity, Infinity], [-Infinity, -Infinity]];
+    const visit = coords => {
+        if (typeof coords[0] === "number") {
+            bounds[0] = [Math.min(bounds[0][0], coords[0]), Math.min(bounds[0][1], coords[1])];
+            bounds[1] = [Math.max(bounds[1][0], coords[0]), Math.max(bounds[1][1], coords[1])];
+        } else {
+            coords.forEach(visit);
+        }
+    };
+    collection.features.forEach(feature => visit(feature.geometry.coordinates));
+    return isFinite(bounds[0][0]) ? bounds : null;
+};
+
+/**
+ * Escape text for inclusion in HTML.
+ * @param {String} text - The text.
+ * @return {String} The escaped text.
+ */
+const imerssEscape = text => String(text).replace(/[&<>"']/g, c => "&#" + c.charCodeAt(0) + ";");
+
+const imerssOccurrenceFields = [
+    ["locality", "Locality"],
+    ["habitat", "Habitat"],
+    ["organismQuantity", "Abundance"],
+    ["occurrenceRemarks", "Remarks"],
+    ["recordedBy", "Recorded by"],
+    ["fieldNotes", "Source"],
+    ["occurrenceID", "Record"]
+];
+
+/**
+ * Build the HTML shown in the popup for a record drawn on the map.
+ * @param {Object} properties - The record's properties, as written by scripts/build-occurrences.js.
+ * @return {String} The popup's HTML.
+ */
+const imerssOccurrencePopupHtml = function (properties) {
+    if (properties.records !== undefined) {
+        const plural = (n, word) => n.toLocaleString() + " " + word + (n === 1 ? "" : "s");
+        const years = properties.firstYear ? properties.firstYear === properties.lastYear ? String(properties.firstYear) :
+            properties.firstYear + "–" + properties.lastYear : "";
+        return "<h1>" + plural(properties.records, "record") + "</h1><p>" + plural(properties.taxa, "taxon").replace(/taxons$/, "taxa") +
+            (years ? " · " + years : "") + "</p>";
+    }
+    const name = properties.scientificName || properties.verbatimIdentification || "Unidentified";
+    const verbatim = properties.verbatimIdentification && properties.verbatimIdentification !== name &&
+        !name.startsWith(properties.verbatimIdentification + " ") ? " <span class=\"imerss-occurrence-verbatim\">(recorded as " +
+        imerssEscape(properties.verbatimIdentification) + ")</span>" : "";
+    const rows = imerssOccurrenceFields.filter(([field]) => properties[field]).map(([field, label]) => {
+        const value = field === "organismQuantity" && properties.organismQuantityType ?
+            properties.organismQuantity + " " + properties.organismQuantityType : properties[field];
+        return "<dt>" + label + "</dt><dd>" + imerssEscape(String(value).replace(/ \| /g, ", ")) + "</dd>";
+    }).join("");
+    return "<h1><em>" + imerssEscape(name) + "</em>" + verbatim + "</h1>" +
+        (properties.eventDate ? "<p>" + imerssEscape(properties.eventDate) + "</p>" : "") +
+        "<dl class=\"imerss-occurrence-fields\">" + rows + "</dl>";
 };
 
 /**
@@ -157,6 +221,61 @@ const imerssProjectMap = function (container, places, options) {
     });
     const listSections = [...document.querySelectorAll("[data-map-id]")];
     let hoveredIndex = null;
+    let selectedIndex = null;
+    const occurrences = {preview: null, shown: null, drawn: null, cache: {}};
+    const recordPopup = new maplibregl.Popup({closeButton: false, maxWidth: "340px", offset: 8, className: "imerss-project-popup"});
+
+    /**
+     * Fetch the records at a URL, once.
+     * @param {String} url - The URL of a GeoJSON FeatureCollection of records.
+     * @return {Promise<Object>} A promise for the FeatureCollection.
+     */
+    const fetchOccurrences = function (url) {
+        occurrences.cache[url] = occurrences.cache[url] || fetch(url).then(response => {
+            if (!response.ok) {
+                throw new Error("HTTP " + response.status + " fetching " + url);
+            }
+            return response.json();
+        });
+        return occurrences.cache[url];
+    };
+
+    /**
+     * Draw the records previewed, or failing that those shown, or none.
+     */
+    const drawOccurrences = async function () {
+        const url = occurrences.preview || occurrences.shown;
+        if (!loaded || url === occurrences.drawn) {
+            return;
+        }
+        occurrences.drawn = url;
+        recordPopup.remove();
+        const data = url ? await fetchOccurrences(url) : {type: "FeatureCollection", features: []};
+        if (occurrences.drawn === url && map.getSource("occurrences")) {
+            map.getSource("occurrences").setData(data);
+        }
+    };
+
+    /**
+     * Mark a place as opened in the list, bringing it into view, or clear the mark and return to the overview.
+     * @param {Number|null} index - The index of the opened place, or null if none is open.
+     */
+    const setSelected = function (index) {
+        if (!loaded) {
+            selectedIndex = index;
+            return;
+        }
+        if (selectedIndex !== null) {
+            map.setFeatureState({source: "places", id: selectedIndex}, {selected: false});
+        }
+        selectedIndex = index;
+        if (index !== null) {
+            map.setFeatureState({source: "places", id: index}, {selected: true});
+            map.fitBounds(imerssBounds(places[index].boundary), {padding: 60, maxZoom: 12});
+        } else {
+            map.fitBounds(opts.bounds, {padding: 0});
+        }
+    };
 
     /**
      * Highlight a place on the map and its section in any list on the page, or clear the highlight.
@@ -173,6 +292,20 @@ const imerssProjectMap = function (container, places, options) {
         const id = index === null ? null : places[index].id;
         listSections.forEach(section => section.classList.toggle("imerss-map-hovered", section.dataset.mapId === id));
     };
+
+    let loaded = false;
+    document.addEventListener("imerss-preview-occurrences", e => {
+        occurrences.preview = e.detail.url;
+        drawOccurrences();
+    });
+    document.addEventListener("imerss-show-occurrences", e => {
+        occurrences.shown = e.detail.url;
+        drawOccurrences();
+    });
+    document.addEventListener("imerss-place-opened", e => {
+        const index = places.findIndex(place => place.id === e.detail.id);
+        setSelected(index === -1 ? null : index);
+    });
 
     map.on("load", () => {
         map.addSource("places", {type: "geojson", data: imerssPlaceFeatures(places)});
@@ -208,8 +341,39 @@ const imerssProjectMap = function (container, places, options) {
             }
         });
 
+        map.addSource("occurrences", {type: "geojson", data: {type: "FeatureCollection", features: []}});
+        map.addLayer({
+            id: "occurrence-points",
+            type: "circle",
+            source: "occurrences",
+            paint: {
+                "circle-color": imerssOccurrencePaint.colour,
+                "circle-radius": ["interpolate", ["linear"], ["zoom"],
+                    8, ["case", ["has", "records"], ["interpolate", ["linear"], ["sqrt", ["get", "records"]], 1, 3, 10, 6, 40, 12], 3],
+                    13, ["case", ["has", "records"], ["interpolate", ["linear"], ["sqrt", ["get", "records"]], 1, 5, 10, 10, 40, 18], 6]],
+                "circle-stroke-color": imerssOccurrencePaint.stroke,
+                "circle-stroke-width": 1,
+                "circle-opacity": 0.9
+            }
+        });
+        map.on("mouseenter", "occurrence-points", () => {
+            map.getCanvas().style.cursor = "pointer";
+        });
+        map.on("mouseleave", "occurrence-points", () => {
+            map.getCanvas().style.cursor = "";
+        });
+
+        loaded = true;
+        if (selectedIndex !== null) {
+            setSelected(selectedIndex);
+        }
+        drawOccurrences();
+
         map.on("mousemove", "place-fill", e => {
-            if (canHover) {
+            const overRecord = map.queryRenderedFeatures(e.point, {layers: ["occurrence-points"]}).length > 0;
+            if (overRecord || selectedIndex !== null) {
+                hoverPopup.remove();
+            } else if (canHover) {
                 const index = imerssPlaceAt(map, e.point);
                 map.getCanvas().style.cursor = "pointer";
                 if (index !== hoveredIndex) {
@@ -227,6 +391,11 @@ const imerssProjectMap = function (container, places, options) {
             }
         });
         map.on("click", e => {
+            const record = map.queryRenderedFeatures(e.point, {layers: ["occurrence-points"]})[0];
+            if (record) {
+                recordPopup.setLngLat(record.geometry.coordinates).setHTML(imerssOccurrencePopupHtml(record.properties)).addTo(map);
+                return;
+            }
             const index = imerssPlaceAt(map, e.point);
             if (index !== null) {
                 imerssOpenPlaceInList(places[index].id, opts.listUrl);
@@ -250,6 +419,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const dataElement = container.parentElement.querySelector(".imerss-project-map-data");
         const places = JSON.parse(dataElement?.textContent || "[]");
         const bounds = JSON.parse(container.dataset.bounds || "null");
-        imerssProjectMap(container, places, {...(bounds && {bounds}), listUrl: container.dataset.listUrl});
+        const map = imerssProjectMap(container, places, {...(bounds && {bounds}), listUrl: container.dataset.listUrl});
+        const showcaseElement = container.parentElement.querySelector(".imerss-showcase-data");
+        if (showcaseElement && window.imerssShowcase) {
+            window.imerssShowcase(map, container, JSON.parse(showcaseElement.textContent),
+                bounds || imerssProjectMapDefaults.bounds);
+        }
     });
 });

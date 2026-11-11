@@ -37,3 +37,27 @@ document.addEventListener("keydown", e => {
         imerssMenuButton.focus();
     }
 });
+
+/*
+ * A subnav item with children is a button which opens their dropdown when clicked, as well as on hover or focus. The
+ * dropdown closes on a click outside it or on pressing Escape.
+ */
+document.querySelectorAll(".imerss-subnav-dropdown-toggle").forEach(toggle => {
+    const dropdown = toggle.closest(".imerss-subnav-dropdown");
+    const setOpen = open => {
+        dropdown.classList.toggle("imerss-open", open);
+        toggle.setAttribute("aria-expanded", String(open));
+    };
+    toggle.addEventListener("click", () => setOpen(!dropdown.classList.contains("imerss-open")));
+    document.addEventListener("click", e => {
+        if (!dropdown.contains(e.target)) {
+            setOpen(false);
+        }
+    });
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape" && dropdown.classList.contains("imerss-open")) {
+            setOpen(false);
+            toggle.focus();
+        }
+    });
+});

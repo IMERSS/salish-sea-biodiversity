@@ -8,3 +8,8 @@
 .Rhistory
 
 .idea/
+
+# Darwin Core Archives downloaded from GBIF - summarised into data/sites.json and static/data/sites/, not held here
+data/*/dwca-*/
+
+.claude/

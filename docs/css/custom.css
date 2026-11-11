@@ -1,37 +1,58 @@
 @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i&display=swap";
 
+:root {
+    --bs-body-font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --navbar-height: 12rem;
+    --imerss-teal: #184E62;
+    --imerss-cream: #FDF2CE;
+    --imerss-muted: #A8C8D0;
+    --imerss-rule: #FDF2CE33;
+    --imerss-hover: #FDF2CE26;
+    --imerss-accent: #F2A541;
+
+    font-family: var(--bs-body-font-family);
+}
+
+/* Overrides hextra's display: block */
 table {
-  /* Override absolutely insane display:block in hextra core style */
     display: table !important;
 }
 
-:root {
-    --bs-body-font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    /** This only controls the bizarre height calculation for the page **/
-    --navbar-height: 12rem;
-
-    font-family: var(--bs-body-font-family)
+body,
+html.dark body {
+    background-color: #111111;
+    color: var(--imerss-cream);
 }
 
-body {
-    background-color: #184E62;
-    color: #FDF2CE;
+main .content h3,
+main.content h2,
+main h1 {
+    color: var(--imerss-cream) !important;
 }
 
-/** Override absolutely ridiculous tailwind hardcoded content colour **/
-main .content h3, main.content h2, main h1 {
-    color: #FDF2CE !important;
+.xl\:hx-block {
+    display: none !important;
 }
+
+/* ──── Layout: map beside the page column ──── */
 
 .imerss-main {
     display: flex;
 }
 
-/* The page column holds the footer, and is at least as tall as the map, so the footer sits at the foot of the window
-   on short pages */
+.imerss-map {
+    position: sticky;
+    top: 100px;
+    z-index: 25;
+    align-self: flex-start;
+    width: 60%;
+    height: calc(100vh - 100px);
+}
+
 .imerss-page {
     display: flex;
     flex-direction: column;
+    width: 40%;
     min-height: calc(100vh - 100px);
 }
 
@@ -39,144 +60,62 @@ main .content h3, main.content h2, main h1 {
     margin-top: auto;
 }
 
-.imerss-map {
-    width: 60%;
-    /* Above the header image, whose lower strip it covers beside the subnav, as on the Saanich Peninsula story page */
-    z-index: 25;
-    /* Keep the map in view while the page content scrolls beside it, starting just below the 100px navbar */
-    position: sticky;
-    top: 100px;
-    align-self: flex-start;
-    height: calc(100vh - 100px);
+.imerss-page .hx-max-w-screen-xl {
+    margin: 0;
+    max-width: none;
 }
 
-.imerss-map .imerss-project-map {
-    width: 100%;
-    height: 100%;
+.imerss-page main {
+    max-width: none;
+    padding: 0 28px;
 }
 
-.imerss-map .imerss-project-popup .maplibregl-popup-content {
-    background-color: #184E62e8;
-    color: #FDF2CE;
-    font-family: var(--bs-body-font-family);
-    font-size: 14px;
-    line-height: 1.45;
-    padding: 12px 16px;
-    border: 1px solid #FDF2CE80;
+.imerss-page main h1 {
+    margin-top: 0;
+    padding-top: 12px;
 }
 
-.imerss-map .imerss-project-popup-hover {
-    pointer-events: none;
+.imerss-page main h1 + .hx-mb-16 {
+    margin-bottom: 14px;
 }
 
-.imerss-map .imerss-project-popup .maplibregl-popup-tip {
+.imerss-page article {
+    padding-bottom: 1.5rem;
+}
+
+.imerss-page .sidebar-container,
+.imerss-page .mobile-menu-overlay {
     display: none;
 }
 
-.imerss-map .imerss-project-popup h1 {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 6px;
-}
+/* ──── Banner and subnav ──── */
 
-.imerss-map .imerss-project-popup p + p {
-    margin-top: 6px;
-}
-
-.imerss-map .imerss-project-popup a {
-    color: #FDF2CE;
-    text-decoration: underline;
-}
-
-.imerss-map .imerss-project-popup .imerss-place-popup-items {
-    margin: 0;
-    padding-left: 1.1rem;
-    list-style: disc;
-}
-
-.imerss-map .imerss-project-popup .imerss-place-popup-items li + li {
-    margin-top: 4px;
-}
-
-.imerss-map .imerss-project-popup .maplibregl-popup-close-button {
-    color: #FDF2CE;
-}
-
-
-/** Defeat side matter which screws up layout when page is wide **/
-.xl\:hx-block {
-    display: none !important;
-}
-
-.imerss-page {
-    width: 40%;
-}
-
-.imerss-navbar-title {
-    color: #FDF2CE;
-    font-weight: 700;
-    font-size: 24px;
-    letter-spacing: 0.01em;
-}
-
-/* The IMERSS name beside its mark at the right of the banner, set as on imerss.org */
-.imerss-navbar .imerss-navbar-wordmark {
-    margin: 0 24px 0 0;
-    color: #FDF2CE;
-    font-weight: 700;
-    font-size: 20px;
-}
-
-.imerss-bg-neutral-50 {
-    background-color: #ffffff80;
-}
-
-nav a span {
-    color: #FDF2CE;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 1px;
-}
-
-nav a {
-    position: relative;
-}
-
-/* Keep the header image above the page content, so that content scrolls beneath the banner rather than over it */
 .nav-container {
     z-index: 20;
 }
 
-/* Positioned within the sticky .nav-container rather than fixed, since Safari can misplace a fixed element nested in
-   a sticky one when the page repaints */
+/* Absolute rather than fixed: Safari can misplace a fixed element nested in a sticky one */
 .imerss-navbar-background {
-    background: url("../images/imerss-header-cropped.jpg") no-repeat;
-    background-size: cover;
-    height: 160px;
-    width: 100%;
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 160px;
+    background: url("../images/imerss-header-cropped.jpg") no-repeat;
+    background-size: cover;
 }
 
 .imerss-navbar {
-    justify-content: space-between;
     display: flex;
+    justify-content: space-between;
     height: 100px;
 }
-
-/* Weird trick inherited from docsy for filtering background image */
 
 .imerss-navbar::after {
     content: "";
     position: absolute;
     inset: 0;
     background-color: #184E6280;
-}
-
-.imerss-navbar a, .imerss-subnav a, .imerss-subnav .search-wrapper {
-    position: relative;
-    z-index: 2;
 }
 
 .imerss-navbar img {
@@ -187,7 +126,12 @@ nav a {
     margin-left: 16px;
 }
 
-/* Shared navigation banner - a project site shows a link back to the index site above its title */
+.imerss-navbar-title {
+    color: var(--imerss-cream);
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.01em;
+}
 
 .imerss-navbar .imerss-navbar-titles {
     display: flex;
@@ -196,15 +140,25 @@ nav a {
 }
 
 .imerss-navbar .imerss-navbar-index span {
-    color: #FDF2CE;
+    margin-left: 24px;
+    color: var(--imerss-cream);
     font-size: 13px;
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: 0.1rem;
-    margin-left: 24px;
+    text-transform: uppercase;
 }
 
-/* Pin the subnav over the lower strip of the header image, just below the navbar */
+.imerss-navbar .imerss-navbar-wordmark {
+    margin: 0 24px 0 0;
+    color: var(--imerss-cream);
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.imerss-bg-neutral-50 {
+    background-color: #ffffff80;
+}
+
 .imerss-subnav {
     position: sticky;
     top: 100px;
@@ -219,26 +173,179 @@ nav a {
     background-color: #184E62b0;
 }
 
+/* Raised above the ::after tints */
+.imerss-navbar a,
+.imerss-subnav a,
+.imerss-subnav .search-wrapper,
+.imerss-subnav .imerss-subnav-dropdown {
+    position: relative;
+    z-index: 2;
+}
 
+nav a span,
+nav button.imerss-subnav-dropdown-toggle span {
+    color: var(--imerss-cream);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
 
-/* Show links within page content in the page's text colour rather than hextra's blue, which is hard to read here */
-.content a:not(.not-prose) {
-    color: #FDF2CE;
+nav button.imerss-subnav-dropdown-toggle {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--imerss-cream);
+    font: inherit;
+    cursor: pointer;
+}
+
+.imerss-subnav-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 3;
+    min-width: 100%;
+    padding: 0.5rem 0;
+    background-color: var(--imerss-teal);
+    border: 1px solid #FDF2CE80;
+}
+
+.imerss-subnav-dropdown:hover .imerss-subnav-dropdown-menu,
+.imerss-subnav-dropdown:focus-within .imerss-subnav-dropdown-menu,
+.imerss-subnav-dropdown.imerss-open .imerss-subnav-dropdown-menu {
+    display: block;
+}
+
+.imerss-subnav .imerss-subnav-dropdown-menu a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--imerss-cream);
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.imerss-subnav .imerss-subnav-dropdown-menu a:hover {
+    background-color: var(--imerss-hover);
+}
+
+.imerss-subnav .imerss-subnav-item {
+    display: none;
+}
+
+.imerss-subnav .imerss-hamburger {
+    position: relative;
+    z-index: 2;
+    color: var(--imerss-cream);
+}
+
+.imerss-subnav .imerss-mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    padding: 0.5rem 0;
+    background-color: var(--imerss-teal);
+    border-bottom: 1px solid #FDF2CE80;
+}
+
+.imerss-subnav .imerss-mobile-menu[hidden] {
+    display: none;
+}
+
+.imerss-subnav .imerss-mobile-menu a {
+    display: block;
+    padding: 0.625rem 1.5rem;
+    color: var(--imerss-cream);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.imerss-subnav .imerss-mobile-menu a:hover {
+    background-color: var(--imerss-hover);
+}
+
+.imerss-subnav .imerss-mobile-menu a.imerss-active {
     text-decoration: underline;
 }
 
-/* hextra's callouts have their own light background and text colour, which their links should follow */
+.imerss-subnav .imerss-mobile-menu a.imerss-mobile-menu-child {
+    padding-left: 2.5rem;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.imerss-mobile-menu .imerss-mobile-menu-heading {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--imerss-cream);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.imerss-subnav .imerss-mobile-menu-search {
+    padding: 0.5rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .imerss-subnav .imerss-mobile-menu-search {
+        display: none;
+    }
+}
+
+@media (min-width: 1000px) {
+    .imerss-subnav .imerss-subnav-item {
+        display: inline-block;
+    }
+
+    .imerss-subnav .imerss-hamburger,
+    .imerss-subnav .imerss-mobile-menu {
+        display: none;
+    }
+}
+
+@media (max-width: 1309px) {
+    .imerss-subnav .search-wrapper kbd {
+        display: none;
+    }
+}
+
+/* ──── Page content ──── */
+
+.content a:not(.not-prose) {
+    color: var(--imerss-cream);
+    text-decoration: underline;
+}
+
 .content .hx-rounded-lg.hx-border a:not(.not-prose) {
     color: inherit;
 }
 
-/* Projects and datasets grouped by place. A place's name is set as a small label above its entries. While the place is
-   hovered, here or on the map, or once it has been opened by clicking it on the map, its name brightens and a slim bar
-   marks its section */
+.imerss-page .content .hx-rounded-lg.hx-border {
+    margin-top: 2rem;
+    background: transparent;
+    border-color: var(--imerss-rule);
+    color: var(--imerss-muted);
+    font-size: 14px;
+}
+
+/* ──── Places and their projects or datasets ──── */
+
+.content .imerss-places {
+    margin-top: 1.75rem;
+    border-top: 1px solid var(--imerss-rule);
+}
 
 .imerss-place {
     position: relative;
-    /* Scrolling a place into view leaves it clear of the fixed header and subnav */
+    border-bottom: 1px solid var(--imerss-rule);
     scroll-margin-top: 180px;
 }
 
@@ -247,10 +354,10 @@ nav a {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: -1.25rem;
+    left: -0.75rem;
     width: 3px;
     border-radius: 2px;
-    background-color: #FDF2CE;
+    background-color: var(--imerss-cream);
     opacity: 0;
     transition: opacity 0.2s ease;
 }
@@ -261,19 +368,15 @@ nav a {
     opacity: 0.8;
 }
 
-.content .imerss-place + .imerss-place {
-    margin-top: 2.25rem;
-}
-
 .content h2.imerss-place-name {
-    margin: 0 0 0.5rem;
+    margin: 0;
     padding: 0;
     border: 0;
-    font-size: 0.8rem;
+    color: var(--imerss-cream) !important;
+    font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #FDF2CE !important;
     opacity: 0.7;
     transition: opacity 0.2s ease;
 }
@@ -284,14 +387,48 @@ nav a {
     opacity: 1;
 }
 
-/* Accordion list of projects or datasets - see assets/js/project-list.js */
+.imerss-place-toggle {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.8rem 0.25rem;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+    text-transform: inherit;
+    cursor: pointer;
+}
+
+.imerss-place-toggle:hover {
+    background-color: #FDF2CE0d;
+}
+
+.imerss-place-count {
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+.imerss-place.imerss-selected .imerss-project-list {
+    margin-bottom: 1rem;
+}
+
+.content .imerss-place-acknowledgement {
+    margin: 1rem 0 0;
+    font-size: 0.9rem;
+    font-style: italic;
+    opacity: 0.85;
+}
 
 .imerss-project-list-item {
     border-bottom: 1px solid #FDF2CE40;
+    scroll-margin-top: 180px;
 }
 
 .imerss-project-list-item:first-child {
-    border-top: 1px solid #FDF2CE40;
+    border-top: 1px solid var(--imerss-rule);
 }
 
 .content .imerss-project-list-heading {
@@ -301,12 +438,12 @@ nav a {
     gap: 0.75rem;
     margin: 0;
     padding: 0.875rem 0;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     line-height: 1.4;
 }
 
 .content .imerss-project-list-heading a.imerss-project-list-title {
-    color: #FDF2CE;
+    color: var(--imerss-cream);
     text-decoration: none;
 }
 
@@ -319,13 +456,13 @@ nav a {
     flex: none;
     display: flex;
     padding: 0.25rem;
-    color: #FDF2CE;
     border-radius: 4px;
+    color: var(--imerss-cream);
     cursor: pointer;
 }
 
 .imerss-project-list-toggle:hover {
-    background-color: #FDF2CE26;
+    background-color: var(--imerss-hover);
 }
 
 .imerss-project-list-toggle svg {
@@ -344,151 +481,103 @@ nav a {
     margin-top: 0;
 }
 
-/* The link to a project at the end of its summary */
-.content a.imerss-project-list-link {
-    font-weight: 600;
-    white-space: nowrap;
+/* A dataset with records here: a dot, filled while they are on the map */
+.imerss-project-list-item[data-occurrences-url] .imerss-project-list-heading::before {
+    content: "";
+    flex: none;
+    order: -1;
+    width: 9px;
+    height: 9px;
+    border: 1px solid var(--imerss-accent);
+    border-radius: 50%;
 }
 
-/* Dropdown listing the children of a subnav menu item, shown while the item is hovered or focused */
-
-.imerss-subnav-dropdown {
-    position: relative;
+.imerss-occurrences-shown .imerss-project-list-heading::before {
+    background-color: var(--imerss-accent);
 }
 
-.imerss-subnav-dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 3;
-    min-width: 100%;
-    padding: 0.5rem 0;
-    background-color: #184E62;
-    border: 1px solid #FDF2CE80;
+.content .imerss-project-list-item[data-occurrences-url] .imerss-project-list-heading {
+    justify-content: flex-start;
 }
 
-.imerss-subnav-dropdown:hover .imerss-subnav-dropdown-menu,
-.imerss-subnav-dropdown:focus-within .imerss-subnav-dropdown-menu {
-    display: block;
-}
-
-.imerss-subnav .imerss-subnav-dropdown-menu a {
-    display: block;
-    padding: 0.5rem 1rem;
-    color: #FDF2CE;
-    font-size: 15px;
-    white-space: nowrap;
-}
-
-.imerss-subnav .imerss-subnav-dropdown-menu a:hover {
-    background-color: #FDF2CE26;
-}
-
-/* Below 1000px the subnav's menu items are replaced by a hamburger menu - see static/js/subnav-menu.js */
-
-.imerss-subnav .imerss-subnav-item {
-    display: none;
-}
-
-.imerss-subnav .imerss-hamburger {
-    position: relative;
-    z-index: 2;
-    color: #FDF2CE;
-}
-
-@media (min-width: 1000px) {
-    .imerss-subnav .imerss-subnav-item {
-        display: inline-block;
-    }
-
-    .imerss-subnav .imerss-hamburger,
-    .imerss-subnav .imerss-mobile-menu {
-        display: none;
-    }
-}
-
-/* hextra's own sidebar and its hamburger overlay are replaced by the subnav's hamburger menu */
-.imerss-page .sidebar-container,
-.imerss-page .mobile-menu-overlay {
-    display: none;
-}
-
-.imerss-subnav .imerss-mobile-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 3;
-    padding: 0.5rem 0;
-    background-color: #184E62;
-    border-bottom: 1px solid #FDF2CE80;
-}
-
-.imerss-subnav .imerss-mobile-menu[hidden] {
-    display: none;
-}
-
-.imerss-subnav .imerss-mobile-menu a {
-    display: block;
-    padding: 0.625rem 1.5rem;
-    color: #FDF2CE;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.imerss-subnav .imerss-mobile-menu a.imerss-active {
-    text-decoration: underline;
-}
-
-.imerss-subnav .imerss-mobile-menu a.imerss-mobile-menu-child {
-    padding-left: 2.5rem;
-    font-size: 15px;
+.content .imerss-record-count {
+    flex: none;
+    margin-left: auto;
+    font-size: 0.85rem;
     font-weight: 400;
-    text-transform: none;
-    letter-spacing: normal;
+    opacity: 0.7;
+    white-space: nowrap;
 }
 
-.imerss-subnav .imerss-mobile-menu a:hover {
-    background-color: #FDF2CE26;
+.content .imerss-project-list-item[data-occurrences-url] .imerss-project-list-toggle {
+    margin-left: auto;
 }
 
-/* The subnav shows its own search box from 768px, as hextra's styles do, so the menu shows one only below that */
-.imerss-subnav .imerss-mobile-menu-search {
-    padding: 0.5rem 1.5rem;
+.content .imerss-record-count + .imerss-project-list-toggle,
+.content .imerss-project-link + .imerss-project-list-toggle {
+    margin-left: 0;
 }
 
-@media (min-width: 768px) {
-    .imerss-subnav .imerss-mobile-menu-search {
-        display: none;
-    }
+.content a.imerss-project-link,
+.content a.imerss-dataset-link {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #FDF2CE80;
+    border-radius: 4px;
+    color: var(--imerss-cream);
+    font-weight: 600;
+    text-decoration: none;
 }
 
-/* The search box's "CTRL K" hint crowds the subnav until the window is wide */
-@media (max-width: 1309px) {
-    .imerss-subnav .search-wrapper kbd {
-        display: none;
-    }
+.content a.imerss-project-link:hover,
+.content a.imerss-dataset-link:hover {
+    background-color: var(--imerss-hover);
 }
 
-/* Funders of a project, shown below its entry on the Projects page, following imerss.org's logo design. The logos are
-   mostly dark-on-light, so they sit on a light panel, as on imerss.org in dark mode */
+.content a.imerss-project-link {
+    flex: none;
+    gap: 0.3rem;
+    margin-left: auto;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+}
+
+.content .imerss-dataset-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.content a.imerss-dataset-link {
+    gap: 0.35rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.85rem;
+}
+
+.content .imerss-gbif-link img {
+    display: block;
+    width: auto;
+    height: 28px;
+}
+
+/* ──── Funders ──── */
 
 .imerss-funders {
     margin-top: 1rem;
 }
 
+/* White, as most logos are dark on light */
 .imerss-funders .imerss-logos-list {
-    list-style: none;
-    margin: 1.5rem 0 0;
-    padding: 1.5rem 1rem;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     gap: 1.5rem;
-    /* White, so that logos with white backgrounds show no edges */
+    margin: 1.5rem 0 0;
+    padding: 1.5rem 1rem;
+    list-style: none;
     background-color: #ffffff;
     border-radius: 12px;
 }
@@ -497,10 +586,9 @@ nav a {
     margin: 0;
 }
 
-/* A featured logo takes a row of its own, centred between the others */
 .content .imerss-funders .imerss-logos-list li.imerss-logo-featured {
-    flex-basis: 100%;
     display: flex;
+    flex-basis: 100%;
     justify-content: center;
 }
 
@@ -534,10 +622,160 @@ nav a {
     }
 }
 
-footer {
-    color: black;
+/* ──── Map ──── */
+
+.imerss-map .imerss-project-map {
+    width: 100%;
+    height: 100%;
+}
+
+.imerss-map .imerss-project-popup .maplibregl-popup-content {
+    padding: 12px 16px;
+    background-color: #184E62e8;
+    border: 1px solid #FDF2CE80;
+    color: var(--imerss-cream);
+    font-family: var(--bs-body-font-family);
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.imerss-map .imerss-project-popup-hover {
+    pointer-events: none;
+}
+
+.imerss-map .imerss-project-popup .maplibregl-popup-tip {
+    display: none;
+}
+
+.imerss-map .imerss-project-popup .maplibregl-popup-close-button {
+    color: var(--imerss-cream);
+}
+
+.imerss-map .imerss-project-popup h1 {
+    margin-bottom: 6px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.imerss-map .imerss-project-popup p + p {
+    margin-top: 6px;
+}
+
+.imerss-map .imerss-project-popup a {
+    color: var(--imerss-cream);
+    text-decoration: underline;
+}
+
+.imerss-map .imerss-project-popup .imerss-place-popup-items {
+    margin: 0;
+    padding-left: 1.1rem;
+    list-style: disc;
+}
+
+.imerss-map .imerss-project-popup .imerss-place-popup-items li + li {
+    margin-top: 4px;
+}
+
+.imerss-map .imerss-project-popup .imerss-occurrence-verbatim {
+    font-size: 13px;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+.imerss-map .imerss-project-popup .imerss-occurrence-fields {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2px 10px;
+    margin: 6px 0 0;
+    font-size: 13px;
+}
+
+.imerss-map .imerss-project-popup .imerss-occurrence-fields dt {
+    opacity: 0.7;
+}
+
+.imerss-map .imerss-project-popup .imerss-occurrence-fields dd {
+    margin: 0;
+}
+
+.imerss-map .imerss-showcase {
+    position: absolute;
+    left: 16px;
+    bottom: 36px;
+    z-index: 2;
+    max-width: min(420px, calc(100% - 32px));
+    padding: 12px 16px;
+    background-color: #184E62e8;
+    border: 1px solid #FDF2CE40;
+    border-radius: 4px;
+    color: #EEFAFF;
+    font-family: var(--bs-body-font-family);
+    transition: opacity 0.6s ease, visibility 0.6s;
+}
+
+.imerss-map .imerss-showcase.imerss-showcase-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.imerss-showcase .imerss-showcase-kind {
+    margin: 0 0 4px;
+    color: var(--imerss-muted);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.imerss-showcase a.imerss-showcase-title {
+    display: block;
+    color: var(--imerss-cream);
+    font-size: 20px;
+    line-height: 1.3;
+    text-decoration: none;
+}
+
+.imerss-showcase a.imerss-showcase-title:hover {
+    text-decoration: underline;
+}
+
+.imerss-showcase .imerss-showcase-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.imerss-showcase .imerss-showcase-controls button {
+    display: flex;
+    padding: 4px;
+    border-radius: 4px;
+    color: var(--imerss-cream);
+    cursor: pointer;
+}
+
+.imerss-showcase .imerss-showcase-controls button:hover {
+    background-color: var(--imerss-hover);
+}
+
+.imerss-showcase .imerss-showcase-count {
+    margin-left: 4px;
+    color: var(--imerss-muted);
+    font-size: 12px;
+}
+
+/* ──── Footer ──── */
+
+footer.hextra-footer,
+html.dark footer.hextra-footer {
+    background-color: #171717;
+    color: #A8BEC8;
 }
 
 .imerss-copyright {
     padding: 1rem;
+}
+
+.imerss-copyright a {
+    color: inherit;
+    text-decoration: underline;
 }
