@@ -779,3 +779,20 @@ html.dark footer.hextra-footer {
     color: inherit;
     text-decoration: underline;
 }
+
+.content .imerss-project-list-body p:has(> img:only-child) {
+    margin: 0;
+}
+
+.content .imerss-project-list-body p > img:only-child {
+    float: left;
+    width: 110px;
+    height: auto;
+    margin: 0.25rem 1rem 0.5rem 0;
+    border-radius: 4px;
+}
+
+.content .imerss-project-list-body .imerss-funders,
+.content .imerss-project-list-body .imerss-dataset-links {
+    clear: both;
+}

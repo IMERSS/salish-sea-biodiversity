@@ -224,7 +224,7 @@ const main = async function () {
         return record ? [record] : [];
     });
 
-    const islandPlaces = new Set(config.places.filter(place => place.island).map(place => place.id));
+    const islandPlaces = new Set(config.places.filter(place => place.islands).map(place => place.id));
     const dropIslandBoundary = record => islandPlaces.has(record.place) ? {...record, boundary: null} : record;
     records.splice(0, records.length, ...records.map(dropIslandBoundary));
 
@@ -239,9 +239,7 @@ const main = async function () {
     console.log("Wrote " + datasets.length + " dataset(s) to " + path.relative(rootDir, datasetsOutputPath));
 
     const placeIds = new Set(config.places.map(place => place.id));
-    const occurrenceDatasets = new Set((config.datasets || []).filter(entry => entry.occurrences).map(entry => path.basename(entry.dir)));
-    [...records, ...datasets].filter(record => !placeIds.has(record.place) &&
-        !(record.place === undefined && occurrenceDatasets.has(record.id))).forEach(record =>
+    [...records, ...datasets].filter(record => !placeIds.has(record.place)).forEach(record =>
         console.warn("Warning: " + record.title + " belongs to unknown place " + JSON.stringify(record.place) +
             " - it will not be shown"));
     await fs.writeFile(placesOutputPath, JSON.stringify(config.places, null, 2) + "\n");

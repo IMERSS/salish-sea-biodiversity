@@ -5,3 +5,6 @@ morphological study of samples and molecular (DNA metabarcoding) surveys. Togeth
 region's diatom flora and how knowledge of it has accumulated since the first reports in 1866.
 
 Data paper: [Webber *et al.* (2026), *Biodiversity Data Journal* 14: e189060](https://doi.org/10.3897/BDJ.14.e189060)
+
+The CSV is our curated dataset, combining our newly recorded data with records from GBIF. The GBIF dataset includes
+only the data generated through our research.

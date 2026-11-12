@@ -3,14 +3,16 @@
     "id": "janszen-journal-5",
     "title": "Harvey Janszen’s field journal 5 (1973–1980)",
     "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
-    "description": "# Harvey Janszen’s field journal 5 (1973–1980)\n\nPlant observations from the Southern Gulf Islands, transcribed from Harvey Janszen’s fifth field journal through the Janszen Legacy Project.\n",
+    "place": "southern-gulf-islands",
+    "description": "# Harvey Janszen’s field journal 5 (1973–1980)\n\n![The cover of Harvey Janszen’s fifth field journal, “Flora of Saturna”](/images/janszen/journal-5.png)\n\nPlant observations from the Southern Gulf Islands, transcribed from Harvey Janszen’s fifth field journal through the Janszen Legacy Project.\n",
     "boundary": null
   },
   {
     "id": "janszen-journal-8",
     "title": "Harvey Janszen’s field journal 8 (1997–1999)",
     "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
-    "description": "# Harvey Janszen’s field journal 8 (1997–1999)\n\nPlant observations from Texada Island, transcribed from Harvey Janszen’s eighth field journal through the Janszen Legacy Project.\n",
+    "place": "texada-island",
+    "description": "# Harvey Janszen’s field journal 8 (1997–1999)\n\n![The cover of Harvey Janszen’s eighth field journal](/images/janszen/journal-8.png)\n\nPlant observations from Texada Island, transcribed from Harvey Janszen’s eighth field journal through the Janszen Legacy Project.\n",
     "boundary": null
   },
   {
@@ -26,7 +28,7 @@
     "title": "Diatoms of the Salish Sea (1866–2026)",
     "siteUrl": "https://www.gbif.org/dataset/d41f9582-0b3e-4062-8ee0-31f0ba52ace1",
     "place": "salish-sea",
-    "description": "# Diatoms of the Salish Sea (1866–2026)\n\nA catalogue of marine diatom occurrences across the Salish Sea, consolidating records from the published literature,\nmorphological study of samples and molecular (DNA metabarcoding) surveys. Together, these records document the\nregion's diatom flora and how knowledge of it has accumulated since the first reports in 1866.\n\nData paper: [Webber *et al.* (2026), *Biodiversity Data Journal* 14: e189060](https://doi.org/10.3897/BDJ.14.e189060)\n",
+    "description": "# Diatoms of the Salish Sea (1866–2026)\n\nA catalogue of marine diatom occurrences across the Salish Sea, consolidating records from the published literature,\nmorphological study of samples and molecular (DNA metabarcoding) surveys. Together, these records document the\nregion's diatom flora and how knowledge of it has accumulated since the first reports in 1866.\n\nData paper: [Webber *et al.* (2026), *Biodiversity Data Journal* 14: e189060](https://doi.org/10.3897/BDJ.14.e189060)\n\nThe CSV is our curated dataset, combining our newly recorded data with records from GBIF. The GBIF dataset includes\nonly the data generated through our research.\n",
     "boundary": {
       "type": "FeatureCollection",
       "features": [

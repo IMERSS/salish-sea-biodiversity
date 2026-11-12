@@ -1,5 +1,5 @@
 {
-    "// comment": "Places, and the projects and datasets within them, shown on the index map. Run `npm run collect` to refresh data/projects.json, data/datasets.json and data/places.json. Each place has an id, a name and optionally an \"acknowledgement\" of the peoples in whose territories it lies, shown once beneath the projects or datasets listed under it; the map outlines it with the boundaries of the projects (or, in the Data section, datasets) within it, and the Projects and Data pages list them beneath it. A project is an object holding its repository URL as \"repo\", the id of its place as \"place\", and optionally a \"siteUrl\" for a site that is not at the usual /story address, a \"title\" overriding the one taken from its description, and a \"description\" overriding the description itself. A project or dataset may instead be held in this repository, as an object with \"dir\" naming its folder - holding project.md or dataset.md and, optionally, boundary.geojson - and \"siteUrl\" giving where it links to. A place may also name an \"island\" in the islands KML (\"islandsFile\"), whose outline is drawn for it. A dataset may list tabular Darwin Core \"occurrences\" files, held as is, whose records are assigned to places by island and drawn on the map in the Data section - run `npm run occurrences` (see scripts/build-occurrences.js). A dataset published through GBIF may name its Darwin Core Archive occurrence file, kept out of git, as \"sites\": {\"archive\": ...}, to be summarised into one point per sampling site.",
+    "// comment": "Places, and the projects and datasets within them, shown on the index map. Run `npm run collect` to refresh data/projects.json, data/datasets.json and data/places.json. Each place has an id, a name and optionally an \"acknowledgement\" of the peoples in whose territories it lies, shown once beneath the projects or datasets listed under it; the map outlines it with the boundaries of the projects (or, in the Data section, datasets) within it, and the Projects and Data pages list them beneath it. A project is an object holding its repository URL as \"repo\", the id of its place as \"place\", and optionally a \"siteUrl\" for a site that is not at the usual /story address, a \"title\" overriding the one taken from its description, and a \"description\" overriding the description itself. A project or dataset may instead be held in this repository, as an object with \"dir\" naming its folder - holding project.md or dataset.md and, optionally, boundary.geojson - and \"siteUrl\" giving where it links to. A place may also list \"islands\" in the islands KML (\"islandsFile\"), whose outlines are drawn for it. A dataset may list tabular Darwin Core \"occurrences\" files, held as is, whose records are drawn on the map in the Data section - run `npm run occurrences` (see scripts/build-occurrences.js). A dataset may name a table of its records as \"sites\": {\"file\": ...} - a CSV, or a Darwin Core Archive occurrence file kept out of git - to be summarised into one point per sampling site, and offered for download if \"download\" is true.",
     "boundaryFile": "boundary.geojson",
     "descriptionFile": "project.md",
     "datasetDescriptionFile": "dataset.md",
@@ -13,53 +13,33 @@
         {
             "id": "galiano-island",
             "name": "Galiano Island",
-            "acknowledgement": "We respectfully acknowledge that this work takes place within the traditional territories of the Penelakut, Hwlitsum and Tsawwassen First Nations, among other Hul’qumi’num-speaking Coast Salish peoples, who have cared for these lands and waters since time immemorial.",
-            "island": "Galiano Island"
+            "acknowledgement": "Galiano Island is located within the shared, asserted, and unceded traditional territories of the Pune’luxutth’, Quw’utsun’, Lamalchi, W̱SÁNEĆ, Hul’q’umi’num’ and SENĆOŦEN-speaking people, and on the territories of the Coast Salish people of Galiano. The island also lies within the shared, asserted, and ceded traditional territories of the Tsawwassen First Nation. These nations, along with other Hwulmuhw Mustimuhw, continue to serve as the stewards of these lands and waters, having held rights and responsibilities here since time immemorial.",
+            "islands": [
+                "Galiano Island"
+            ]
         },
         {
-            "id": "mayne-island",
-            "name": "Mayne Island",
-            "island": "Mayne Island"
-        },
-        {
-            "id": "saturna-island",
-            "name": "Saturna Island",
-            "island": "Saturna Island"
-        },
-        {
-            "id": "north-pender-island",
-            "name": "North Pender Island",
-            "island": "North Pender Island"
-        },
-        {
-            "id": "south-pender-island",
-            "name": "South Pender Island",
-            "island": "South Pender Island"
-        },
-        {
-            "id": "samuel-island",
-            "name": "Samuel Island",
-            "island": "Samuel Island"
-        },
-        {
-            "id": "georgeson-island",
-            "name": "Georgeson Island",
-            "island": "Georgeson Island"
-        },
-        {
-            "id": "tumbo-island",
-            "name": "Tumbo Island",
-            "island": "Tumbo Island"
-        },
-        {
-            "id": "saltspring-island",
-            "name": "Saltspring Island",
-            "island": "Saltspring Island"
+            "id": "southern-gulf-islands",
+            "name": "Southern Gulf Islands",
+            "acknowledgement": "The Southern Gulf Islands are located within the shared, asserted, and unceded traditional territories of the Pune’luxutth’, Quw’utsun’, Lamalchi, W̱SÁNEĆ, Hul’q’umi’num’ and SENĆOŦEN-speaking people, and on the territories of the Coast Salish people of these islands. The islands also lie within the shared, asserted, and ceded traditional territories of the Tsawwassen First Nation. These nations, along with other Hwulmuhw Mustimuhw, continue to serve as the stewards of these lands and waters, having held rights and responsibilities here since time immemorial.",
+            "islands": [
+                "Galiano Island",
+                "Mayne Island",
+                "Saturna Island",
+                "North Pender Island",
+                "South Pender Island",
+                "Samuel Island",
+                "Georgeson Island",
+                "Tumbo Island",
+                "Saltspring Island"
+            ]
         },
         {
             "id": "texada-island",
             "name": "Texada Island",
-            "island": "Texada Island"
+            "islands": [
+                "Texada Island"
+            ]
         },
         {
             "id": "saanich-peninsula",
@@ -99,21 +79,17 @@
         {
             "dir": "data/janszen-legacy-project/janszen-journal-5",
             "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
+            "place": "southern-gulf-islands",
             "occurrences": {
                 "files": [
                     "data/janszen-legacy-project/hj5-for-canadensys_2026_10_06.txt"
-                ],
-                "locateBy": {
-                    "Pender Island": [
-                        "North Pender Island",
-                        "South Pender Island"
-                    ]
-                }
+                ]
             }
         },
         {
             "dir": "data/janszen-legacy-project/janszen-journal-8",
             "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
+            "place": "texada-island",
             "occurrences": {
                 "files": [
                     "data/janszen-legacy-project/hj8-for-canadensys_2026-05-12.txt"
@@ -125,7 +101,7 @@
             "siteUrl": "https://www.gbif.org/dataset/56687a3d-b48f-44e5-b2b8-d55bafff2f33",
             "place": "galiano-island",
             "sites": {
-                "archive": "data/galiano-marine-animals/dwca-galiano-data-paper-part-i-v1/occurrence.txt"
+                "file": "data/galiano-marine-animals/dwca-galiano-data-paper-part-i-v1/occurrence.txt"
             }
         },
         {
@@ -133,7 +109,8 @@
             "siteUrl": "https://www.gbif.org/dataset/d41f9582-0b3e-4062-8ee0-31f0ba52ace1",
             "place": "salish-sea",
             "sites": {
-                "archive": "data/salish-sea-diatoms/dwca-salishseadiatoms-v1/occurrence.txt"
+                "file": "data/salish-sea-diatoms/oo_1598030.csv",
+                "download": true
             }
         }
     ]

@@ -1,9 +1,0 @@
-{{- /* The projects, or with "isData" the datasets, within a place */ -}}
-{{- $place := .place -}}
-{{- $items := slice -}}
-{{- range cond .isData site.Data.datasets site.Data.projects -}}
-  {{- if or (eq .place $place.id) (and $.isData (index (index site.Data.occurrences .id | default dict) $place.id)) -}}
-    {{- $items = $items | append . -}}
-  {{- end -}}
-{{- end -}}
-{{- return $items -}}

@@ -3,7 +3,7 @@
 {{- $items := cond $isData site.Data.datasets site.Data.projects -}}
 <div class="imerss-places">
 {{- range $place := site.Data.places }}
-  {{- $placeItems := partial "place-items.html" (dict "place" $place "isData" $isData) }}
+  {{- $placeItems := where $items "place" $place.id }}
   {{- if $placeItems }}
   <section class="imerss-place" data-map-id="{{ $place.id }}" aria-labelledby="imerss-place-{{ $place.id }}">
     <h2 class="imerss-place-name" id="imerss-place-{{ $place.id }}">
@@ -15,8 +15,7 @@
     <div class="imerss-project-list" id="imerss-place-list-{{ $place.id }}">
     {{- range $placeItems }}
       {{- $bodyId := printf "imerss-project-list-body-%s" .id }}
-      {{- $occurrences := index (index site.Data.occurrences .id | default dict) $place.id }}
-      {{- if and (not $occurrences) $isData (eq .place $place.id) }}{{ $occurrences = index site.Data.sites .id }}{{ end }}
+      {{- $occurrences := or (index site.Data.occurrences .id) (index site.Data.sites .id) }}
       <div class="imerss-project-list-item" data-item-id="{{ .id }}"
            {{- with $occurrences }} data-occurrences-url="{{ partial "static-url.html" .url }}" data-occurrences-count="{{ .count }}"{{ end }}>
         <h3 class="imerss-project-list-heading">
@@ -58,14 +57,7 @@
           </section>
           {{- end }}
           {{- if $isData }}
-          {{- $download := index site.Data.downloads .id | default dict }}
-          {{- $downloads := slice }}
-          {{- range index ($download.places | default dict) $place.id }}
-            {{- $downloads = $downloads | append (dict "url" .url "name" .name "label" (printf "CSV · %s" $place.name) "title" (printf "Download the %d records from %s" (int .count) $place.name)) }}
-          {{- end }}
-          {{- range $download.files }}
-            {{- $downloads = $downloads | append (dict "url" .url "name" .name "label" "CSV · full journal" "title" (printf "Download all records in %s" .name)) }}
-          {{- end }}
+          {{- $downloads := index site.Data.downloads .id }}
           {{- $gbif := in .siteUrl "gbif.org" }}
           {{- if or $gbif $downloads }}
           <p class="imerss-dataset-links">
@@ -77,9 +69,9 @@
             {{- end }}
             {{- range $downloads }}
             <a class="imerss-dataset-link imerss-download-link" href="{{ .url | relURL }}" download="{{ .name }}"
-               title="{{ .title }}" aria-label="{{ .title }}">
+               title="Download {{ .name }}" aria-label="Download {{ .name }}">
               <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span>{{ .label }}</span>
+              <span>CSV</span>
             </a>
             {{- end }}
           </p>

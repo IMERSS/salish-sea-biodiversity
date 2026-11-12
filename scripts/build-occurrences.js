@@ -3,10 +3,10 @@
 "use strict";
 
 /*
- * Builds, from the datasets and islands listed in projects.json: island outlines (data/islands.json), each dataset's
- * records by place (static/data/occurrences/), downloads of its source files whole and by place (static/data/downloads/),
- * and sampling sites summarising GBIF archives (static/data/sites/). Records whose coordinates disagree with their island
- * are listed in the dataset folder's island-check.csv. See README.md.
+ * Builds, from the places and datasets listed in projects.json: the outlines of places made of islands
+ * (data/islands.json), each dataset's records (static/data/occurrences/), downloads of its source files
+ * (static/data/downloads/), and sampling sites summarising larger datasets (static/data/sites/). Records whose coordinates
+ * disagree with their island are listed in the dataset folder's island-check.csv. See README.md.
  *
  * Usage:
  *   node scripts/build-occurrences.js
@@ -42,7 +42,7 @@ const pointFields = ["occurrenceID", "scientificName", "verbatimIdentification",
  */
 const parseCsv = function (text) {
     const rows = [];
-    let row = [], field = "", quoted = false, start = 0;
+    let row = [], field = "", quoted = false;
     for (let i = 0; i < text.length; ++i) {
         const c = text[i];
         if (quoted) {
@@ -61,12 +61,10 @@ const parseCsv = function (text) {
             field = "";
         } else if (c === "\n" || c === "\r") {
             row.push(field);
-            row.raw = text.slice(start, i);
             rows.push(row);
             if (c === "\r" && text[i + 1] === "\n") {
                 ++i;
             }
-            start = i + 1;
             row = [];
             field = "";
         } else {
@@ -75,18 +73,11 @@ const parseCsv = function (text) {
     }
     if (field || row.length) {
         row.push(field);
-        row.raw = text.slice(start);
         rows.push(row);
     }
     const [header, ...body] = rows.filter(r => r.some(value => value !== ""));
     const columns = header.map(name => name.replace(/^\uFEFF/, "").trim());
-    const records = body.map(r => {
-        const record = Object.fromEntries(columns.map((name, i) => [name, r[i] ?? ""]));
-        Object.defineProperty(record, "raw", {value: r.raw});
-        return record;
-    });
-    records.header = header.raw;
-    return records;
+    return body.map(r => Object.fromEntries(columns.map((name, i) => [name, r[i] ?? ""])));
 };
 
 /**
@@ -191,22 +182,6 @@ const onIsland = function (x, y, island) {
 };
 
 /**
- * Find the distance from a point to the nearest vertex of an island's outline, roughly in metres.
- * @param {Number} x - The point's longitude.
- * @param {Number} y - The point's latitude.
- * @param {Object} island - An island as returned from `parseKmlPolygons`.
- * @return {Number} The distance in metres.
- */
-const distanceToIsland = function (x, y, island) {
-    const scale = Math.cos(y * Math.PI / 180);
-    let nearest = Infinity;
-    island.polygons.forEach(polygon => polygon.forEach(ring => ring.forEach(([px, py]) => {
-        nearest = Math.min(nearest, Math.hypot((px - x) * scale, py - y));
-    })));
-    return nearest * 111320;
-};
-
-/**
  * Find the smallest island holding a point, ignoring the mainland and Vancouver Island, which in the islands file
  * enclose many smaller islands.
  * @param {Number} x - The point's longitude.
@@ -221,46 +196,44 @@ const islandAt = function (x, y, islands) {
 };
 
 /**
- * Summarise the records of a Darwin Core Archive's tab-separated occurrence file into one point per site.
- * @param {String} text - The occurrence file's text, whose first line names its columns.
- * @return {Object} An object with `sites`, a GeoJSON FeatureCollection of points whose properties hold `records`,
- * `taxa` and `firstYear` and `lastYear`, and `records` and `located`, the numbers of records and of those with
- * coordinates.
+ * Read a table of Darwin Core records: comma-separated if its name ends in .csv, else tab-separated as in a Darwin Core
+ * Archive.
+ * @param {String} file - The table's path.
+ * @param {String} text - The table's text, whose first line names its columns.
+ * @return {Object[]} One object per record, keyed by column name.
  */
-const summariseSites = function (text) {
+const parseRecords = function (file, text) {
+    if (file.endsWith(".csv")) {
+        return parseCsv(text);
+    }
     const [header, ...lines] = text.split(/\r?\n/).filter(line => line !== "");
     const columns = header.split("\t");
-    const column = name => columns.indexOf(name);
-    const [lat, lon, year, name] = ["decimalLatitude", "decimalLongitude", "year", "scientificName"].map(column);
-    const sites = new Map();
-    let located = 0;
-    lines.forEach(line => {
+    return lines.map(line => {
         const values = line.split("\t");
-        const y = Number(values[lat]), x = Number(values[lon]);
-        if (values[lat] && values[lon] && isFinite(x) && isFinite(y)) {
-            ++located;
+        return Object.fromEntries(columns.map((name, i) => [name, values[i] ?? ""]));
+    });
+};
+
+/**
+ * Summarise records into one point per site, giving the number of records there.
+ * @param {Object[]} records - Darwin Core records.
+ * @return {Object} A GeoJSON FeatureCollection of the sites, largest first.
+ */
+const summariseSites = function (records) {
+    const sites = new Map();
+    records.forEach(record => {
+        const x = Number(record.decimalLongitude), y = Number(record.decimalLatitude);
+        if (record.decimalLatitude && record.decimalLongitude && isFinite(x) && isFinite(y)) {
             const key = x.toFixed(siteDecimals) + "," + y.toFixed(siteDecimals);
-            const site = sites.get(key) || {records: 0, taxa: new Set(), years: []};
-            site.records++;
-            if (values[name]) {
-                site.taxa.add(values[name]);
-            }
-            if (Number(values[year])) {
-                site.years.push(Number(values[year]));
-            }
-            sites.set(key, site);
+            sites.set(key, (sites.get(key) || 0) + 1);
         }
     });
-    const features = [...sites.entries()].map(([key, site]) => ({
+    const features = [...sites.entries()].map(([key, records]) => ({
         type: "Feature",
-        properties: {
-            records: site.records,
-            taxa: site.taxa.size,
-            ...(site.years.length && {firstYear: Math.min(...site.years), lastYear: Math.max(...site.years)})
-        },
+        properties: {records},
         geometry: {type: "Point", coordinates: key.split(",").map(Number)}
     })).sort((a, b) => b.properties.records - a.properties.records);
-    return {sites: {type: "FeatureCollection", features}, records: lines.length, located};
+    return {type: "FeatureCollection", features};
 };
 
 /**
@@ -277,107 +250,74 @@ const csvValue = value => "\"" + String(value ?? "").replace(/"/g, "\"\"") + "\"
 const main = async function () {
     const config = JSON.parse(await fs.readFile(configPath, "utf8"));
     const islands = parseKmlPolygons(await fs.readFile(path.join(rootDir, config.islandsFile), "utf8"));
-    const islandPlaces = config.places.filter(place => place.island);
+    const islandPlaces = config.places.filter(place => place.islands);
 
-    const islandFor = {};
-    islandPlaces.forEach(place => {
-        const named = islands.filter(island => island.name === place.island);
+    // Names repeat across the Salish Sea, so each name is taken as the largest island bearing it
+    const size = island => (island.bbox[2] - island.bbox[0]) * (island.bbox[3] - island.bbox[1]);
+    const islandNamed = name => {
+        const named = islands.filter(island => island.name === name).sort((a, b) => size(b) - size(a));
         if (named.length === 0) {
-            throw new Error("Place " + place.id + " names island " + JSON.stringify(place.island) + ", which is not in " + config.islandsFile);
+            throw new Error("Island " + JSON.stringify(name) + " is not in " + config.islandsFile);
         }
-        const size = island => (island.bbox[2] - island.bbox[0]) * (island.bbox[3] - island.bbox[1]);
-        islandFor[place.id] = named.sort((a, b) => size(b) - size(a))[0];
-    });
-
+        return named[0];
+    };
     const outlines = Object.fromEntries(islandPlaces.map(place => [place.id, {
         type: "FeatureCollection",
-        features: [{type: "Feature", properties: {name: place.island}, geometry: simplifyIsland(islandFor[place.id])}]
+        features: place.islands.map(name => ({type: "Feature", properties: {name}, geometry: simplifyIsland(islandNamed(name))}))
     }]));
     await fs.writeFile(islandsOutputPath, JSON.stringify(outlines) + "\n");
-    console.log("Wrote outlines of " + islandPlaces.length + " island(s) to " + path.relative(rootDir, islandsOutputPath));
+    console.log("Wrote outlines of " + islandPlaces.length + " place(s) to " + path.relative(rootDir, islandsOutputPath));
 
-    const placeByIsland = Object.fromEntries(islandPlaces.map(place => [place.island, place]));
     const index = {};
     const downloads = {};
     await fs.rm(occurrencesDir, {recursive: true, force: true});
     await fs.rm(downloadsDir, {recursive: true, force: true});
+    await fs.mkdir(occurrencesDir, {recursive: true});
 
     for (const entry of (config.datasets || []).filter(dataset => dataset.occurrences)) {
         const id = path.basename(entry.dir);
-        const {files, placeField = "island", locateBy = {}} = entry.occurrences;
-        const byPlace = {};
+        const features = [];
         const flagged = [];
-        const subsets = [];
-        for (const file of files) {
-            const text = await fs.readFile(path.join(rootDir, file), "utf8");
-            const rows = parseCsv(text);
-            const subset = {file, header: rows.header, newline: text.includes("\r\n") ? "\r\n" : "\n", byPlace: {}};
-            subsets.push(subset);
+        await fs.mkdir(path.join(downloadsDir, id), {recursive: true});
+        downloads[id] = [];
+        for (const file of entry.occurrences.files) {
+            const rows = parseCsv(await fs.readFile(path.join(rootDir, file), "utf8"));
             rows.forEach(row => {
                 const x = Number(row.decimalLongitude), y = Number(row.decimalLatitude);
-                const hasPoint = row.decimalLongitude !== "" && row.decimalLatitude !== "" && isFinite(x) && isFinite(y);
-                const value = row[placeField];
-                let place = placeByIsland[value];
-                const found = hasPoint ? islandAt(x, y, islands) : null;
-                if (locateBy[value]) {
-                    const candidates = locateBy[value].map(name => placeByIsland[name]);
-                    place = hasPoint ? candidates.find(candidate => found === islandFor[candidate.id]) ||
-                        candidates.sort((a, b) => distanceToIsland(x, y, islandFor[a.id]) - distanceToIsland(x, y, islandFor[b.id]))[0] : null;
-                }
-                if (!place || !hasPoint) {
-                    flagged.push({row, file, problem: !hasPoint ? "no coordinates" : "no place for " + placeField + " " + JSON.stringify(value),
-                        found, distance: ""});
+                if (row.decimalLongitude === "" || row.decimalLatitude === "" || !isFinite(x) || !isFinite(y)) {
+                    flagged.push({row, file, problem: "no coordinates"});
                     return;
                 }
-                if (found !== islandFor[place.id]) {
-                    flagged.push({row, file, problem: "assigned to " + place.island + " but lies " +
-                        (found ? "on " + found.name : "off any island"), found,
-                    distance: Math.round(distanceToIsland(x, y, islandFor[place.id]))});
+                // "Pender Island" stands for North and South Pender alike
+                const found = islandAt(x, y, islands);
+                if (row.island && !(found && (found.name === row.island || found.name.endsWith(" " + row.island)))) {
+                    flagged.push({row, file, problem: "lies " + (found ? "on " + found.name : "off any island")});
                 }
-                (subset.byPlace[place.id] = subset.byPlace[place.id] || []).push(row.raw);
                 const properties = Object.fromEntries(pointFields.filter(field => row[field]).map(field => [field, row[field]]));
-                (byPlace[place.id] = byPlace[place.id] || []).push({
+                features.push({
                     type: "Feature",
                     properties: {...properties, source: path.basename(file)},
                     geometry: {type: "Point", coordinates: [+x.toFixed(6), +y.toFixed(6)]}
                 });
             });
+            // Offered for download unchanged, named .csv so that it opens as a table
+            const name = path.basename(file, path.extname(file)) + ".csv";
+            await fs.copyFile(path.join(rootDir, file), path.join(downloadsDir, id, name));
+            downloads[id].push({url: "data/downloads/" + id + "/" + name, name});
         }
 
-        await fs.mkdir(path.join(downloadsDir, id), {recursive: true});
-        downloads[id] = {files: [], places: {}};
-        for (const {file, header, newline, byPlace: rowsByPlace} of subsets) {
-            const base = path.basename(file, path.extname(file));
-            await fs.copyFile(path.join(rootDir, file), path.join(downloadsDir, id, base + ".csv"));
-            downloads[id].files.push({url: "data/downloads/" + id + "/" + base + ".csv", name: base + ".csv"});
-            for (const [placeId, lines] of Object.entries(rowsByPlace)) {
-                const name = base + "-" + placeId + ".csv";
-                await fs.writeFile(path.join(downloadsDir, id, name), [header, ...lines].join(newline) + newline);
-                (downloads[id].places[placeId] = downloads[id].places[placeId] || [])
-                    .push({url: "data/downloads/" + id + "/" + name, name, count: lines.length});
-            }
-        }
+        await fs.writeFile(path.join(occurrencesDir, id + ".geojson"), JSON.stringify({type: "FeatureCollection", features}));
+        index[id] = {url: "data/occurrences/" + id + ".geojson", count: features.length};
+        console.log("Wrote " + features.length + " occurrence(s) of " + id);
 
-        const datasetDir = path.join(occurrencesDir, id);
-        await fs.mkdir(datasetDir, {recursive: true});
-        index[id] = {};
-        for (const [placeId, features] of Object.entries(byPlace)) {
-            await fs.writeFile(path.join(datasetDir, placeId + ".geojson"), JSON.stringify({type: "FeatureCollection", features}));
-            index[id][placeId] = {url: "data/occurrences/" + id + "/" + placeId + ".geojson", count: features.length};
-        }
-        const total = Object.values(byPlace).reduce((sum, features) => sum + features.length, 0);
-        console.log("Wrote " + total + " occurrence(s) of " + id + " across " + Object.keys(byPlace).length + " place(s)");
-
-        const columns = ["source", "occurrenceID", "problem", "island", "locality", "decimalLatitude", "decimalLongitude",
-            "metresFromAssignedIsland"];
+        const columns = ["source", "occurrenceID", "problem", "island", "locality", "decimalLatitude", "decimalLongitude"];
         const checkPath = path.join(rootDir, entry.dir, "island-check.csv");
-        await fs.writeFile(checkPath, [columns.map(csvValue).join(","), ...flagged.map(({row, file, problem, distance}) =>
+        await fs.writeFile(checkPath, [columns.map(csvValue).join(","), ...flagged.map(({row, file, problem}) =>
             [path.basename(file), row.occurrenceID, problem, row.island, row.locality, row.decimalLatitude,
-                row.decimalLongitude, distance].map(csvValue).join(","))].join("\n") + "\n");
+                row.decimalLongitude].map(csvValue).join(","))].join("\n") + "\n");
         console.log("Listed " + flagged.length + " record(s) for review in " + path.relative(rootDir, checkPath));
     }
     await fs.writeFile(indexOutputPath, JSON.stringify(index, null, 2) + "\n");
-    await fs.writeFile(downloadsOutputPath, JSON.stringify(downloads, null, 2) + "\n");
 
     let sitesIndex = {};
     try {
@@ -391,25 +331,32 @@ const main = async function () {
     await fs.mkdir(sitesDir, {recursive: true});
     for (const entry of siteDatasets) {
         const id = path.basename(entry.dir);
+        const file = entry.sites.file;
         let text;
         try {
-            text = await fs.readFile(path.join(rootDir, entry.sites.archive), "utf8");
+            text = await fs.readFile(path.join(rootDir, file), "utf8");
         } catch (e) {
             if (e.code === "ENOENT" && sitesIndex[id]) {
-                console.warn("No archive at " + entry.sites.archive + " - keeping the sites of " + id + " built previously");
+                console.warn("No file at " + file + " - keeping the sites of " + id + " built previously");
                 continue;
             }
             throw e;
         }
-        const {sites, records, located} = summariseSites(text);
+        const records = parseRecords(file, text);
+        const sites = summariseSites(records);
         await fs.writeFile(path.join(sitesDir, id + ".geojson"), JSON.stringify(sites));
-        sitesIndex[id] = {url: "data/sites/" + id + ".geojson", count: records, located, sites: sites.features.length};
-        console.log("Summarised " + records + " record(s) of " + id + " (" + located + " with coordinates) into " +
-            sites.features.length + " site(s)");
+        sitesIndex[id] = {url: "data/sites/" + id + ".geojson", count: records.length};
+        console.log("Summarised " + records.length + " record(s) of " + id + " into " + sites.features.length + " site(s)");
+        if (entry.sites.download) {
+            await fs.mkdir(path.join(downloadsDir, id), {recursive: true});
+            await fs.copyFile(path.join(rootDir, file), path.join(downloadsDir, id, id + ".csv"));
+            downloads[id] = [{url: "data/downloads/" + id + "/" + id + ".csv", name: id + ".csv"}];
+        }
     }
     const siteIds = new Set(siteDatasets.map(entry => path.basename(entry.dir)));
     sitesIndex = Object.fromEntries(Object.entries(sitesIndex).filter(([id]) => siteIds.has(id)));
     await fs.writeFile(sitesIndexPath, JSON.stringify(sitesIndex, null, 2) + "\n");
+    await fs.writeFile(downloadsOutputPath, JSON.stringify(downloads, null, 2) + "\n");
 };
 
 main().catch(e => {

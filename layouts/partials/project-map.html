@@ -4,7 +4,7 @@
 {{- $items := cond $isData site.Data.datasets site.Data.projects -}}
 {{- $places := slice -}}
 {{- range site.Data.places -}}
-  {{- $placeItems := partial "place-items.html" (dict "place" . "isData" $isData) -}}
+  {{- $placeItems := where $items "place" .id -}}
   {{- if $placeItems -}}
     {{- $features := slice -}}
     {{- $island := index site.Data.islands .id -}}
@@ -33,29 +33,16 @@
   {{- $placeName := dict -}}
   {{- range site.Data.places }}{{ $placeName = merge $placeName (dict .id .name) }}{{ end -}}
   {{- $showcase := slice -}}
-  {{- range site.Data.projects -}}
-    {{- $area := slice -}}
-    {{- with index site.Data.islands .place }}{{ $area = .features }}{{ end -}}
-    {{- if not $area }}{{ with .boundary }}{{ $area = .features }}{{ end }}{{ end -}}
-    {{- $showcase = $showcase | append (dict "kind" "Project" "title" (.title | markdownify | plainify)
-        "url" (printf "%s#imerss-place-%s/%s" (site.GetPage "/projects").RelPermalink .place .id)
-        "places" (slice (index $placeName .place)) "area" $area) -}}
-  {{- end -}}
-  {{- range site.Data.datasets -}}
-    {{- $occurrences := index site.Data.occurrences .id -}}
-    {{- $placeIds := cond (ne $occurrences nil) (slice) (slice .place) -}}
-    {{- range $id, $occurrence := $occurrences }}{{ $placeIds = $placeIds | append $id }}{{ end -}}
-    {{- $area := slice -}}
-    {{- $names := slice -}}
-    {{- range $placeIds -}}
-      {{- $names = $names | append (index $placeName .) -}}
-      {{- if $occurrences }}{{ with index site.Data.islands . }}{{ $area = $area | append .features }}{{ end }}{{ end -}}
+  {{- range $kind, $items := dict "Project" site.Data.projects "Dataset" site.Data.datasets -}}
+    {{- $list := site.GetPage (cond (eq $kind "Project") "/projects" "/data") -}}
+    {{- range $items -}}
+      {{- $area := slice -}}
+      {{- with index site.Data.islands .place }}{{ $area = .features }}{{ end -}}
+      {{- if not $area }}{{ with .boundary }}{{ $area = .features }}{{ end }}{{ end -}}
+      {{- $showcase = $showcase | append (dict "kind" $kind "title" (.title | markdownify | plainify)
+          "url" (printf "%s#imerss-place-%s/%s" $list.RelPermalink .place .id)
+          "places" (slice (index $placeName .place)) "area" $area) -}}
     {{- end -}}
-    {{- if not $occurrences }}{{ with index site.Data.islands .place }}{{ $area = .features }}{{ end }}{{ end -}}
-    {{- if not $area }}{{ with .boundary }}{{ $area = .features }}{{ end }}{{ end -}}
-    {{- $url := printf "%s#imerss-place-%s/%s" (site.GetPage "/data").RelPermalink (index $placeIds 0) .id -}}
-    {{- $showcase = $showcase | append (dict "kind" "Dataset" "title" (.title | markdownify | plainify)
-        "url" $url "places" $names "area" $area) -}}
   {{- end }}
 <script type="application/json" class="imerss-showcase-data">{{ $showcase | jsonify | safeJS }}</script>
 <script src="{{ partial "static-url.html" "js/showcase.js" }}"></script>

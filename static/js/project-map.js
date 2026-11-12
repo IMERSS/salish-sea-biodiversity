@@ -81,13 +81,6 @@ const imerssOccurrenceFields = [
  * @return {String} The popup's HTML.
  */
 const imerssOccurrencePopupHtml = function (properties) {
-    if (properties.records !== undefined) {
-        const plural = (n, word) => n.toLocaleString() + " " + word + (n === 1 ? "" : "s");
-        const years = properties.firstYear ? properties.firstYear === properties.lastYear ? String(properties.firstYear) :
-            properties.firstYear + "–" + properties.lastYear : "";
-        return "<h1>" + plural(properties.records, "record") + "</h1><p>" + plural(properties.taxa, "taxon").replace(/taxons$/, "taxa") +
-            (years ? " · " + years : "") + "</p>";
-    }
     const name = properties.scientificName || properties.verbatimIdentification || "Unidentified";
     const verbatim = properties.verbatimIdentification && properties.verbatimIdentification !== name &&
         !name.startsWith(properties.verbatimIdentification + " ") ? " <span class=\"imerss-occurrence-verbatim\">(recorded as " +
@@ -356,8 +349,11 @@ const imerssProjectMap = function (container, places, options) {
                 "circle-opacity": 0.9
             }
         });
-        map.on("mouseenter", "occurrence-points", () => {
-            map.getCanvas().style.cursor = "pointer";
+        // Single records have details to show; summarised sites do not
+        map.on("mouseenter", "occurrence-points", e => {
+            if (e.features[0].properties.records === undefined) {
+                map.getCanvas().style.cursor = "pointer";
+            }
         });
         map.on("mouseleave", "occurrence-points", () => {
             map.getCanvas().style.cursor = "";
@@ -393,7 +389,9 @@ const imerssProjectMap = function (container, places, options) {
         map.on("click", e => {
             const record = map.queryRenderedFeatures(e.point, {layers: ["occurrence-points"]})[0];
             if (record) {
-                recordPopup.setLngLat(record.geometry.coordinates).setHTML(imerssOccurrencePopupHtml(record.properties)).addTo(map);
+                if (record.properties.records === undefined) {
+                    recordPopup.setLngLat(record.geometry.coordinates).setHTML(imerssOccurrencePopupHtml(record.properties)).addTo(map);
+                }
                 return;
             }
             const index = imerssPlaceAt(map, e.point);

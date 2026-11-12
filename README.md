@@ -16,7 +16,10 @@ pages. Every project and dataset names its place by id in its entry's `place`. A
 page is left out of that page and its map.
 
 A place may also give an `acknowledgement` of the peoples in whose territories it lies, which is shown once beneath
-the projects or datasets listed under it.
+the projects or datasets listed under it, and may list `islands` from
+[`data/geography/Salish_Sea_Islands.kml`](data/geography/Salish_Sea_Islands.kml). A place made of islands, such as
+`{"id": "southern-gulf-islands", "name": "Southern Gulf Islands", "islands": ["Galiano Island", "Mayne Island", ...]}`,
+is outlined by those islands alone, and the projects and datasets within it need no boundary of their own.
 
 ## Adding a project
 
@@ -60,10 +63,7 @@ many of IMERSS's funders and partners, with their entries in its own `data/logos
 Datasets are shown on the map in the Data section in place of the projects, and listed by place on the Data page. Unlike
 projects, a dataset's files are held in this repository, in a folder under [`data/`](data):
 
-* `boundary.geojson` - the area the dataset covers, as for a project
-
-A project or dataset within a place that names an island needs no boundary: it is outlined by the island, and any
-boundary it has is set aside.
+* `boundary.geojson` - the area the dataset covers, as for a project, unless its place is made of islands
 * `dataset.md` - a short markdown description of the dataset. Its first `#` heading is used as the dataset's title
 
 Add the folder, the URL its title links to and its place under `datasets` in [`projects.json`](projects.json), for
@@ -86,39 +86,35 @@ All data lives in [`data/`](data):
 
 The map layers and downloads generated from the data are served from `static/data/`.
 
-### Datasets held here, shown by island
+### Datasets held here
 
-A dataset whose records are held in this repository is drawn on the map record by record. Its entry names its files
-under `occurrences`:
+A dataset whose records are held in this repository is drawn on the map record by record, wherever its records fall,
+when it is opened on the Data page. Its entry names its place and its files under `occurrences`:
 
 ```json
-{"dir": "data/janszen-legacy-project/janszen-journal-5", "siteUrl": "...",
- "occurrences": {"files": ["data/janszen-legacy-project/hj5-for-canadensys_2026_10_06.txt"],
-                 "locateBy": {"Pender Island": ["North Pender Island", "South Pender Island"]}}}
+{"dir": "data/janszen-legacy-project/janszen-journal-5", "siteUrl": "...", "place": "southern-gulf-islands",
+ "occurrences": {"files": ["data/janszen-legacy-project/hj5-for-canadensys_2026_10_06.txt"]}}
 ```
 
-Such a dataset needs no `place`. [`scripts/build-occurrences.js`](scripts/build-occurrences.js) (`npm run occurrences`)
-assigns each Darwin Core record to a place by its `island` column, matched against the places' `island` names. A place
-naming an island in `data/geography/Salish_Sea_Islands.kml` is outlined by that island alone. `locateBy` names values covering
-several islands, whose records are placed by the island polygon holding them. Each place's records are written to
-`static/data/occurrences/<dataset>/<place>.geojson`, the dataset is listed under every place holding its records, each
-source file is offered for download unchanged from `static/data/downloads/<dataset>/`, and records whose coordinates
-disagree with their island are listed in the dataset folder's `island-check.csv` for review.
+[`scripts/build-occurrences.js`](scripts/build-occurrences.js) (`npm run occurrences`) writes the records to
+`static/data/occurrences/<dataset>.geojson` and offers each source file for download unchanged from
+`static/data/downloads/<dataset>/`. Records whose coordinates don't lie on the island named in their `island` column are
+listed in the dataset folder's `island-check.csv` for review.
 
 ### Datasets published through GBIF
 
-A dataset published through GBIF links to its GBIF page by GBIF's logo, and its records stay there. To show where its
-records come from, download its Darwin Core Archive from GBIF, unzip it into the dataset's folder, and name its
-occurrence file in the dataset's entry:
+A dataset published through GBIF links to its GBIF page by GBIF's logo. To show the distribution of its records, name a
+table of them in the dataset's entry as `sites`, either a CSV held in its folder or the occurrence file of its Darwin Core
+Archive downloaded from GBIF (`dwca-*` folders are too large for this repository and are ignored by git):
 
 ```json
 {"dir": "data/salish-sea-diatoms", "siteUrl": "https://www.gbif.org/dataset/...", "place": "salish-sea",
- "sites": {"archive": "data/salish-sea-diatoms/dwca-salishseadiatoms-v1/occurrence.txt"}}
+ "sites": {"file": "data/salish-sea-diatoms/oo_1598030.csv", "download": true}}
 ```
 
-`npm run occurrences` summarises the records into one point per sampling site - with its numbers of records and taxa
-and the years they span - in `static/data/sites/<dataset>.geojson`. The archives are too large for this repository, so
-folders named `dwca-*` are ignored by git; without one, the sites built from it previously are kept.
+`npm run occurrences` summarises the records into one point per sampling site, sized by its number of records, in
+`static/data/sites/<dataset>.geojson`. With `"download": true` the table is also offered as a CSV. Without the file, the
+sites built from it previously are kept.
 
 ### Using the Data page
 
@@ -135,7 +131,7 @@ You need [Hugo](https://gohugo.io/installation/) (the site was built with 0.121.
 
 ```shell
 npm run collect      # fetch boundary.geojson and project.md from each project's default branch into data/projects.json
-npm run occurrences  # build island outlines, record points, sampling sites and downloads from the folders in data/
+npm run occurrences  # build place outlines, record points, sampling sites and downloads from the folders in data/
 hugo              # build the site into docs/
 ```
 

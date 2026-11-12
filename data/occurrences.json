@@ -1,46 +1,10 @@
 {
   "janszen-journal-5": {
-    "saturna-island": {
-      "url": "data/occurrences/janszen-journal-5/saturna-island.geojson",
-      "count": 422
-    },
-    "tumbo-island": {
-      "url": "data/occurrences/janszen-journal-5/tumbo-island.geojson",
-      "count": 6
-    },
-    "galiano-island": {
-      "url": "data/occurrences/janszen-journal-5/galiano-island.geojson",
-      "count": 396
-    },
-    "south-pender-island": {
-      "url": "data/occurrences/janszen-journal-5/south-pender-island.geojson",
-      "count": 32
-    },
-    "mayne-island": {
-      "url": "data/occurrences/janszen-journal-5/mayne-island.geojson",
-      "count": 158
-    },
-    "north-pender-island": {
-      "url": "data/occurrences/janszen-journal-5/north-pender-island.geojson",
-      "count": 214
-    },
-    "samuel-island": {
-      "url": "data/occurrences/janszen-journal-5/samuel-island.geojson",
-      "count": 35
-    },
-    "georgeson-island": {
-      "url": "data/occurrences/janszen-journal-5/georgeson-island.geojson",
-      "count": 27
-    },
-    "saltspring-island": {
-      "url": "data/occurrences/janszen-journal-5/saltspring-island.geojson",
-      "count": 6
-    }
+    "url": "data/occurrences/janszen-journal-5.geojson",
+    "count": 1296
   },
   "janszen-journal-8": {
-    "texada-island": {
-      "url": "data/occurrences/janszen-journal-8/texada-island.geojson",
-      "count": 600
-    }
+    "url": "data/occurrences/janszen-journal-8.geojson",
+    "count": 600
   }
 }

@@ -1,14 +1,10 @@
 {
   "galiano-marine-animals": {
     "url": "data/sites/galiano-marine-animals.geojson",
-    "count": 20022,
-    "located": 20022,
-    "sites": 894
+    "count": 20022
   },
   "salish-sea-diatoms": {
     "url": "data/sites/salish-sea-diatoms.geojson",
-    "count": 6725,
-    "located": 4463,
-    "sites": 60
+    "count": 11469
   }
 }
