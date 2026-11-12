@@ -2020,6 +2020,14 @@
     }
   },
   {
+    "id": "biodiversity-galiano",
+    "title": "Biodiversity Galiano Island",
+    "siteUrl": "https://www.biogaliano.org",
+    "place": "galiano-island",
+    "description": "# Biodiversity Galiano Island\n\nA community initiative, begun in 2016, documenting the flora and fauna of Galiano Island. Hundreds of participants\nhave recorded over 3,500 species, combining historical records with contemporary observations from iNaturalist. These\nbaselines are being formalized in a series of biodiversity data papers with dozens of research scientists, and serve as\na model for community biodiversity research across the Salish Sea.\n",
+    "boundary": null
+  },
+  {
     "id": "detecting-local-extinction",
     "title": "Protocol for the Detection of Extirpation",
     "repoUrl": "https://github.com/IMERSS/detecting-local-extinction",

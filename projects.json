@@ -59,6 +59,11 @@
             "description": "A map-based report on the vascular plant diversity of the Átl’ḵa7tsem/Howe Sound Biosphere Region, drawing on historical collections and community science observations to relate the region’s plants to biogeoclimatic zones and protected areas, map their status, track species that have not been reported in recent decades, and recognise the contributors whose records make this work possible.\n"
         },
         {
+            "dir": "projects/biodiversity-galiano",
+            "siteUrl": "https://www.biogaliano.org",
+            "place": "galiano-island"
+        },
+        {
             "repo": "https://github.com/IMERSS/detecting-local-extinction",
             "siteUrl": "https://imerss.github.io/detecting-local-extinction/docs/",
             "place": "galiano-island"
