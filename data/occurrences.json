@@ -6,5 +6,9 @@
   "janszen-journal-8": {
     "url": "data/occurrences/janszen-journal-8.geojson",
     "count": 600
+  },
+  "janszen-woodwardia": {
+    "url": "data/occurrences/janszen-woodwardia.geojson",
+    "count": 22
   }
 }

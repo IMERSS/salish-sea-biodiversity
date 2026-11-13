@@ -2,19 +2,34 @@
   "janszen-journal-5": [
     {
       "url": "data/downloads/janszen-journal-5/hj5-for-canadensys_2026_10_06.csv",
-      "name": "hj5-for-canadensys_2026_10_06.csv"
+      "name": "hj5-for-canadensys_2026_10_06.csv",
+      "label": "CSV"
     }
   ],
   "janszen-journal-8": [
     {
       "url": "data/downloads/janszen-journal-8/hj8-for-canadensys_2026-05-12.csv",
-      "name": "hj8-for-canadensys_2026-05-12.csv"
+      "name": "hj8-for-canadensys_2026-05-12.csv",
+      "label": "CSV"
+    }
+  ],
+  "janszen-woodwardia": [
+    {
+      "url": "data/downloads/janszen-woodwardia/janszen-woodwardia.csv",
+      "name": "janszen-woodwardia.csv",
+      "label": "CSV"
+    },
+    {
+      "url": "data/downloads/janszen-woodwardia/hj8-for-canadensys_2026-05-12.csv",
+      "name": "hj8-for-canadensys_2026-05-12.csv",
+      "label": "CSV · full journal"
     }
   ],
   "salish-sea-diatoms": [
     {
       "url": "data/downloads/salish-sea-diatoms/salish-sea-diatoms.csv",
-      "name": "salish-sea-diatoms.csv"
+      "name": "salish-sea-diatoms.csv",
+      "label": "CSV"
     }
   ]
 }

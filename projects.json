@@ -102,6 +102,20 @@
             }
         },
         {
+            "dir": "data/janszen-legacy-project/janszen-woodwardia",
+            "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
+            "place": "texada-island",
+            "occurrences": {
+                "files": [
+                    "data/janszen-legacy-project/hj8-for-canadensys_2026-05-12.txt"
+                ],
+                "filter": {
+                    "occurrenceID": "HJE-*"
+                },
+                "fullLabel": "CSV · full journal"
+            }
+        },
+        {
             "dir": "data/galiano-marine-animals",
             "siteUrl": "https://www.gbif.org/dataset/56687a3d-b48f-44e5-b2b8-d55bafff2f33",
             "place": "galiano-island",

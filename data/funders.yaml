@@ -32,13 +32,19 @@ xetthecum-ecocultural-mapping:
   featuredLogo: whiteswan
 janszen-journal-5:
   acknowledgements: >-
-    These records were transcribed through the
+    Records transcribed through the
     [Living Data Project](https://www.ciee-icee.ca/ldp.html) of the
     [Canadian Institute of Ecology and Evolution](https://www.ciee-icee.ca/).
   logos: [ciee]
 janszen-journal-8:
   acknowledgements: >-
-    These records were transcribed through the
+    Records transcribed through the
+    [Living Data Project](https://www.ciee-icee.ca/ldp.html) of the
+    [Canadian Institute of Ecology and Evolution](https://www.ciee-icee.ca/).
+  logos: [ciee]
+janszen-woodwardia:
+  acknowledgements: >-
+    Records transcribed through the
     [Living Data Project](https://www.ciee-icee.ca/ldp.html) of the
     [Canadian Institute of Ecology and Evolution](https://www.ciee-icee.ca/).
   logos: [ciee]

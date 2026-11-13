@@ -38,11 +38,12 @@ const pointFields = ["occurrenceID", "scientificName", "verbatimIdentification",
 /**
  * Parse CSV text, honouring quoted fields which may hold commas, doubled quotes and line breaks.
  * @param {String} text - The CSV text, whose first row names the columns.
- * @return {Object[]} One object per row, keyed by column name.
+ * @return {Object[]} One object per row, keyed by column name, holding the row's text as it stands as a hidden `raw`;
+ * the array holds the header row's text as `header` and the file's line ending as `newline`.
  */
 const parseCsv = function (text) {
     const rows = [];
-    let row = [], field = "", quoted = false;
+    let row = [], field = "", quoted = false, start = 0;
     for (let i = 0; i < text.length; ++i) {
         const c = text[i];
         if (quoted) {
@@ -61,10 +62,12 @@ const parseCsv = function (text) {
             field = "";
         } else if (c === "\n" || c === "\r") {
             row.push(field);
+            row.raw = text.slice(start, i);
             rows.push(row);
             if (c === "\r" && text[i + 1] === "\n") {
                 ++i;
             }
+            start = i + 1;
             row = [];
             field = "";
         } else {
@@ -73,11 +76,19 @@ const parseCsv = function (text) {
     }
     if (field || row.length) {
         row.push(field);
+        row.raw = text.slice(start);
         rows.push(row);
     }
     const [header, ...body] = rows.filter(r => r.some(value => value !== ""));
     const columns = header.map(name => name.replace(/^\uFEFF/, "").trim());
-    return body.map(r => Object.fromEntries(columns.map((name, i) => [name, r[i] ?? ""])));
+    const records = body.map(r => {
+        const record = Object.fromEntries(columns.map((name, i) => [name, r[i] ?? ""]));
+        Object.defineProperty(record, "raw", {value: r.raw});
+        return record;
+    });
+    records.header = header.raw;
+    records.newline = text.includes("\r\n") ? "\r\n" : "\n";
+    return records;
 };
 
 /**
@@ -280,8 +291,12 @@ const main = async function () {
         const flagged = [];
         await fs.mkdir(path.join(downloadsDir, id), {recursive: true});
         downloads[id] = [];
+        const filter = Object.entries(entry.occurrences.filter || {});
         for (const file of entry.occurrences.files) {
-            const rows = parseCsv(await fs.readFile(path.join(rootDir, file), "utf8"));
+            const all = parseCsv(await fs.readFile(path.join(rootDir, file), "utf8"));
+            // A value ending in * matches by prefix
+            const rows = all.filter(row => filter.every(([column, value]) =>
+                value.endsWith("*") ? row[column].startsWith(value.slice(0, -1)) : row[column] === value));
             rows.forEach(row => {
                 const x = Number(row.decimalLongitude), y = Number(row.decimalLatitude);
                 if (row.decimalLongitude === "" || row.decimalLatitude === "" || !isFinite(x) || !isFinite(y)) {
@@ -300,10 +315,17 @@ const main = async function () {
                     geometry: {type: "Point", coordinates: [+x.toFixed(6), +y.toFixed(6)]}
                 });
             });
-            // Offered for download unchanged, named .csv so that it opens as a table
-            const name = path.basename(file, path.extname(file)) + ".csv";
-            await fs.copyFile(path.join(rootDir, file), path.join(downloadsDir, id, name));
-            downloads[id].push({url: "data/downloads/" + id + "/" + name, name});
+            // Offered for download unchanged, named .csv so that it opens as a table. A filtered dataset also offers its own
+            // rows, exactly as they stand in the file
+            const base = path.basename(file, path.extname(file));
+            if (filter.length) {
+                await fs.writeFile(path.join(downloadsDir, id, id + ".csv"),
+                    [all.header, ...rows.map(row => row.raw)].join(all.newline) + all.newline);
+                downloads[id].push({url: "data/downloads/" + id + "/" + id + ".csv", name: id + ".csv", label: "CSV"});
+            }
+            await fs.copyFile(path.join(rootDir, file), path.join(downloadsDir, id, base + ".csv"));
+            downloads[id].push({url: "data/downloads/" + id + "/" + base + ".csv", name: base + ".csv",
+                label: filter.length ? entry.occurrences.fullLabel || "CSV · full source" : "CSV"});
         }
 
         await fs.writeFile(path.join(occurrencesDir, id + ".geojson"), JSON.stringify({type: "FeatureCollection", features}));
@@ -350,7 +372,7 @@ const main = async function () {
         if (entry.sites.download) {
             await fs.mkdir(path.join(downloadsDir, id), {recursive: true});
             await fs.copyFile(path.join(rootDir, file), path.join(downloadsDir, id, id + ".csv"));
-            downloads[id] = [{url: "data/downloads/" + id + "/" + id + ".csv", name: id + ".csv"}];
+            downloads[id] = [{url: "data/downloads/" + id + "/" + id + ".csv", name: id + ".csv", label: "CSV"}];
         }
     }
     const siteIds = new Set(siteDatasets.map(entry => path.basename(entry.dir)));
