@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Salish Sea Biodiversity Atlas – Blog</title>
-    <link>https://salishseabiodiversity.org/blog/</link>
+    <link>//localhost:3777/blog/</link>
     <description>Recent content in Blog on Salish Sea Biodiversity Atlas</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	  <atom:link href="https://salishseabiodiversity.org/blog/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="//localhost:3777/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +16,10 @@
     
     <item>
       <title>R Markdown Syntax Guide</title>
-      <link>https://salishseabiodiversity.org/blog/markdown/</link>
+      <link>//localhost:3777/blog/markdown/</link>
       <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://salishseabiodiversity.org/blog/markdown/</guid>
+      <guid>//localhost:3777/blog/markdown/</guid>
       <description>
         
         
