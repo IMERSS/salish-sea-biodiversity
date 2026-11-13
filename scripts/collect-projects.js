@@ -162,9 +162,11 @@ const collectProject = async function (entry, config, localDir) {
         return collectLocal(entry, config.boundaryFile, config.descriptionFile);
     }
     const repo = parseRepoUrl(entryRepoUrl(entry));
+    // A description given in projects.json, and a boundary for a place drawn by its islands, need not be fetched
+    const islandPlace = config.places.some(place => place.id === entry.place && place.islands);
     const [boundaryText, description] = await Promise.all([
-        readProjectFile(repo, config.boundaryFile, localDir),
-        readProjectFile(repo, config.descriptionFile, localDir)
+        islandPlace ? null : readProjectFile(repo, config.boundaryFile, localDir),
+        entry.description || readProjectFile(repo, config.descriptionFile, localDir)
     ]);
     return {
         id: repo.name,
@@ -172,8 +174,8 @@ const collectProject = async function (entry, config, localDir) {
         repoUrl: "https://github.com/" + repo.owner + "/" + repo.name,
         siteUrl: entry.siteUrl || pagesUrl(repo),
         place: entry.place,
-        description: entry.description || description,
-        boundary: toFeatureCollection(JSON.parse(boundaryText))
+        description,
+        boundary: boundaryText && toFeatureCollection(JSON.parse(boundaryText))
     };
 };
 

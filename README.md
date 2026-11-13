@@ -29,7 +29,8 @@ A project repository must:
 * publish its site with GitHub Pages from its `docs/` directory, so that it appears at
   `https://<owner>.github.io/<repository>/`
 * hold at its top level
-  * `boundary.geojson` - the project boundary as a GeoJSON FeatureCollection, Feature or geometry in WGS84 longitude/latitude
+  * `boundary.geojson` - the project boundary as a GeoJSON FeatureCollection, Feature or geometry in WGS84 longitude/latitude,
+    unless its place is made of islands
   * `project.md` - a short markdown description of the project. Its first `#` heading is used as the project's title
 * to show the shared navigation banner, copy [`layouts/partials/navbar.html`](layouts/partials/navbar.html) and the
   "Shared navigation banner" rules from [`static/css/custom.css`](static/css/custom.css), and set in its `hugo.yaml`:

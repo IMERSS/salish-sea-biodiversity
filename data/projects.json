@@ -2028,6 +2028,15 @@
     "boundary": null
   },
   {
+    "id": "galiano-island-flora",
+    "title": "Flora of Galiano Island",
+    "repoUrl": "https://github.com/IMERSS/galiano-island-flora",
+    "siteUrl": "https://imerss.github.io/galiano-island-flora/story",
+    "place": "galiano-island",
+    "description": "An analysis of the vascular plant flora of Galiano Island, drawing on historical collections and\ncommunity science observations to map the status of the region's plants, track species that have not been\nreported in recent decades, and recognise the contributors whose records make this work possible.\n",
+    "boundary": null
+  },
+  {
     "id": "detecting-local-extinction",
     "title": "Protocol for the Detection of Extirpation",
     "repoUrl": "https://github.com/IMERSS/detecting-local-extinction",
