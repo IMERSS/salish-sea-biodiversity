@@ -1,5 +1,5 @@
 # Configuration
-baseURL: "/"
+baseURL: "https://salishseabiodiversity.org/"
 title: Salish Sea Biodiversity Atlas
 
 relativeUrls: true
@@ -98,6 +98,8 @@ menu:
 
 params:
   description: Salish Sea Biodiversity Atlas
+  # Image shown when pages are shared on social media
+  images: [images/share-licmophora.jpg]
 
   # Map of subsidiary projects shown on every page. Projects are listed in projects.json at the top level of this
   # repository - run `npm run collect` to refresh data/projects.json from their repositories before building
