@@ -556,6 +556,13 @@ nav button.imerss-subnav-dropdown-toggle {
     font-size: 0.85rem;
 }
 
+.content .imerss-dataset-note {
+    margin-top: 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    opacity: 0.75;
+}
+
 .content .imerss-gbif-link img,
 .content .imerss-canadensys-link img {
     display: block;

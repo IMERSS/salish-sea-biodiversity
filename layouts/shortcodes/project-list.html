@@ -83,6 +83,9 @@
             {{- end }}
           </p>
           {{- end }}
+          {{- with .downloadNote }}
+          <p class="imerss-dataset-note">{{ . | markdownify }}</p>
+          {{- end }}
           {{- end }}
         </div>
       </div>

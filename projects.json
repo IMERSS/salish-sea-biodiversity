@@ -135,6 +135,7 @@
         },
         {
             "dir": "data/salish-sea-diatoms",
+            "downloadNote": "The CSV is our curated dataset, combining our newly recorded data with records from GBIF. The GBIF dataset includes only the data generated through our research.",
             "siteUrl": "https://www.gbif.org/dataset/d41f9582-0b3e-4062-8ee0-31f0ba52ace1",
             "place": "salish-sea",
             "sites": {

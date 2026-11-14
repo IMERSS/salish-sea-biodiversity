@@ -120,7 +120,7 @@ const entryRepoUrl = function (entry) {
  * Collect the description and any boundary of a project or dataset from its folder within this repository.
  * @param {Object} entry - The item's entry in projects.json, with members `dir` holding the path of its folder relative
  * to this repository, `siteUrl` holding the URL that its title links to, `place` holding the id of its place, and
- * optionally `canadensysUrl` holding its address on Canadensys.
+ * optionally `canadensysUrl` holding its address on Canadensys and `downloadNote` describing its downloads.
  * @param {String} boundaryFile - The name of the boundary file within the folder, which may be absent.
  * @param {String} descriptionFile - The name of the markdown description within the folder.
  * @return {Promise<Object>} A promise for the item's record, whose `boundary` is null if it has no boundary file.
@@ -141,6 +141,7 @@ const collectLocal = async function (entry, boundaryFile, descriptionFile) {
         title: entry.title || titleFromMarkdown(description, path.basename(entry.dir)),
         siteUrl: entry.siteUrl,
         canadensysUrl: entry.canadensysUrl,
+        downloadNote: entry.downloadNote,
         place: entry.place,
         description,
         boundary

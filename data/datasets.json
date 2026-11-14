@@ -5,7 +5,7 @@
     "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
     "canadensysUrl": "https://doi.org/10.5886/x4itxw",
     "place": "southern-gulf-islands",
-    "description": "# Harvey Janszen’s field journal (1973–1980)\n\n![The cover of Harvey Janszen’s field journal “Flora of Saturna” (1973–1980)](/images/janszen/journal-5.png)\n\nPlant observations from the Southern Gulf Islands, transcribed from Harvey Janszen’s field journal of 1973–1980 through the Janszen Legacy Project.\n",
+    "description": "# Harvey Janszen’s field journal (1973–1980)\n\n![The cover of Harvey Janszen’s field journal “Flora of Saturna” (1973–1980)](/images/janszen/journal-5.png)\n\nPlant observations from the Southern Gulf Islands, transcribed from Harvey Janszen’s field journal of 1973–1980 through the Janszen Legacy Project. Records transcribed through the [Living Data Project](https://www.ciee-icee.ca/ldp.html) of the [Canadian Institute of Ecology and Evolution](https://www.ciee-icee.ca/) and available on [Canadensys](https://doi.org/10.5886/x4itxw).\n",
     "boundary": null
   },
   {
@@ -14,7 +14,7 @@
     "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
     "canadensysUrl": "https://doi.org/10.5886/x4itxw",
     "place": "texada-island",
-    "description": "# Harvey Janszen’s field journal (1997–1999)\n\n![The cover of Harvey Janszen’s field journal (1997–1999)](/images/janszen/journal-8.png)\n\nPlant observations from Texada Island, transcribed from Harvey Janszen’s field journal of 1997–1999 through the Janszen Legacy Project.\n",
+    "description": "# Harvey Janszen’s field journal (1997–1999)\n\n![The cover of Harvey Janszen’s field journal (1997–1999)](/images/janszen/journal-8.png)\n\nPlant observations from Texada Island, transcribed from Harvey Janszen’s field journal of 1997–1999 through the Janszen Legacy Project. Records transcribed through the [Living Data Project](https://www.ciee-icee.ca/ldp.html) of the [Canadian Institute of Ecology and Evolution](https://www.ciee-icee.ca/) and available on [Canadensys](https://doi.org/10.5886/x4itxw).\n",
     "boundary": null
   },
   {
@@ -23,7 +23,7 @@
     "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
     "canadensysUrl": "https://doi.org/10.5886/x4itxw",
     "place": "texada-island",
-    "description": "# *Woodwardia fimbriata* on Texada Island (1997)\n\nHarvey Janszen’s 1997 survey assessing the status of the giant chain fern (*Woodwardia fimbriata*) on Texada Island. Records note the size and condition of each population, including sites since destroyed.\n\nGPS coordinates predate May 2000, when the US military still degraded civilian GPS signals, and may be off by up to ~100 m.\n",
+    "description": "# *Woodwardia fimbriata* on Texada Island (1997)\n\nHarvey Janszen’s 1997 survey assessing the status of the giant chain fern (*Woodwardia fimbriata*) on Texada Island. Records note the size and condition of each population, including sites since destroyed. Records transcribed through the [Living Data Project](https://www.ciee-icee.ca/ldp.html) of the [Canadian Institute of Ecology and Evolution](https://www.ciee-icee.ca/) and available on [Canadensys](https://doi.org/10.5886/x4itxw).\n\nGPS coordinates predate May 2000, when the US military still degraded civilian GPS signals, and may be off by up to ~100 m.\n",
     "boundary": null
   },
   {
@@ -38,8 +38,9 @@
     "id": "salish-sea-diatoms",
     "title": "Diatoms of the Salish Sea (1866–2026)",
     "siteUrl": "https://www.gbif.org/dataset/d41f9582-0b3e-4062-8ee0-31f0ba52ace1",
+    "downloadNote": "The CSV is our curated dataset, combining our newly recorded data with records from GBIF. The GBIF dataset includes only the data generated through our research.",
     "place": "salish-sea",
-    "description": "# Diatoms of the Salish Sea (1866–2026)\n\nA catalogue of marine diatom occurrences across the Salish Sea, consolidating records from the published literature,\nmorphological study of samples and molecular (DNA metabarcoding) surveys. Together, these records document the\nregion's diatom flora and how knowledge of it has accumulated since the first reports in 1866.\n\nData paper: [Webber *et al.* (2026), *Biodiversity Data Journal* 14: e189060](https://doi.org/10.3897/BDJ.14.e189060)\n\nThe CSV is our curated dataset, combining our newly recorded data with records from GBIF. The GBIF dataset includes\nonly the data generated through our research.\n",
+    "description": "# Diatoms of the Salish Sea (1866–2026)\n\nA catalogue of marine diatom occurrences across the Salish Sea, consolidating records from the published literature,\nmorphological study of samples and molecular (DNA metabarcoding) surveys. Together, these records document the\nregion's diatom flora and how knowledge of it has accumulated since the first reports in 1866.\n\nData paper: [Webber *et al.* (2026), *Biodiversity Data Journal* 14: e189060](https://doi.org/10.3897/BDJ.14.e189060)\n",
     "boundary": {
       "type": "FeatureCollection",
       "features": [
