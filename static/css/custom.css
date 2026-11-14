@@ -796,3 +796,55 @@ html.dark footer.hextra-footer {
 .content .imerss-project-list-body .imerss-dataset-links {
     clear: both;
 }
+
+html,
+body {
+    overflow-x: clip;
+}
+
+@media (max-width: 767px) {
+    .imerss-main {
+        flex-direction: column;
+    }
+
+    .imerss-map {
+        position: relative;
+        top: 0;
+        z-index: 1;
+        align-self: stretch;
+        width: 100%;
+        height: 45vh;
+    }
+
+    .imerss-page {
+        display: contents;
+    }
+
+    .imerss-page > * {
+        order: 2;
+    }
+
+    .imerss-page > .imerss-subnav {
+        order: 0;
+    }
+
+    .imerss-map {
+        order: 1;
+    }
+
+    .imerss-page main {
+        padding: 0 16px;
+    }
+
+    .imerss-navbar-title {
+        font-size: 19px;
+    }
+
+    .imerss-navbar img {
+        margin-right: 6px;
+    }
+
+    .imerss-navbar .imerss-navbar-wordmark {
+        display: none;
+    }
+}

@@ -203,6 +203,7 @@ const imerssProjectMap = function (container, places, options) {
         }
     });
     map.addControl(new maplibregl.NavigationControl({showCompass: false}), "top-right");
+    map.once("load", () => container.querySelector(".maplibregl-compact-show")?.classList.remove("maplibregl-compact-show"));
 
     // Follows the pointer while hovering, so it must not intercept the pointer, or the map would see it leave the place
     const hoverPopup = new maplibregl.Popup({
