@@ -90,6 +90,7 @@
     "datasets": [
         {
             "dir": "data/janszen-legacy-project/janszen-journal-5",
+            "canadensysUrl": "https://doi.org/10.5886/x4itxw",
             "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
             "place": "southern-gulf-islands",
             "occurrences": {
@@ -100,6 +101,7 @@
         },
         {
             "dir": "data/janszen-legacy-project/janszen-journal-8",
+            "canadensysUrl": "https://doi.org/10.5886/x4itxw",
             "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
             "place": "texada-island",
             "occurrences": {
@@ -110,6 +112,7 @@
         },
         {
             "dir": "data/janszen-legacy-project/janszen-woodwardia",
+            "canadensysUrl": "https://doi.org/10.5886/x4itxw",
             "siteUrl": "https://imerss.github.io/janszen-legacy-storymap/Janszen_Legacy_Project-Reknitted.html",
             "place": "texada-island",
             "occurrences": {

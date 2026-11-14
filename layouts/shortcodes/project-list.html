@@ -59,12 +59,19 @@
           {{- if $isData }}
           {{- $downloads := index site.Data.downloads .id }}
           {{- $gbif := in .siteUrl "gbif.org" }}
-          {{- if or $gbif $downloads }}
+          {{- if or $gbif .canadensysUrl $downloads }}
           <p class="imerss-dataset-links">
             {{- if $gbif }}
             <a class="imerss-dataset-link imerss-gbif-link" href="{{ .siteUrl }}" target="_blank" rel="noopener"
                title="View this dataset on GBIF" aria-label="View {{ .title | markdownify | plainify }} on GBIF">
               <img src="{{ partial "static-url.html" "images/logos/gbif.svg" }}" alt="" height="28">
+            </a>
+            {{- end }}
+            {{- with .canadensysUrl }}
+            <a class="imerss-dataset-link imerss-canadensys-link" href="{{ . }}" target="_blank" rel="noopener"
+               title="View this dataset on Canadensys" aria-label="View this dataset on Canadensys">
+              <img src="{{ partial "static-url.html" "images/logos/canadensys.png" }}" alt="" height="28">
+              <span>Canadensys</span>
             </a>
             {{- end }}
             {{- range $downloads }}
