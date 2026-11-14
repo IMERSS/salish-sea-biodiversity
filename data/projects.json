@@ -2028,15 +2028,6 @@
     "boundary": null
   },
   {
-    "id": "galiano-island-flora",
-    "title": "Flora of Galiano Island",
-    "repoUrl": "https://github.com/IMERSS/galiano-island-flora",
-    "siteUrl": "https://imerss.github.io/galiano-island-flora/story",
-    "place": "galiano-island",
-    "description": "An analysis of the vascular plant flora of Galiano Island, drawing on historical collections and\ncommunity science observations to map the status of the region's plants, track species that have not been\nreported in recent decades, and recognise the contributors whose records make this work possible.\n",
-    "boundary": null
-  },
-  {
     "id": "detecting-local-extinction",
     "title": "Protocol for the Detection of Extirpation",
     "repoUrl": "https://github.com/IMERSS/detecting-local-extinction",
@@ -2059,7 +2050,7 @@
     "repoUrl": "https://github.com/IMERSS/saanich-peninsula-flora",
     "siteUrl": "https://imerss.github.io/saanich-peninsula-flora/story",
     "place": "saanich-peninsula",
-    "description": "An analysis of the vascular plant flora of the Saanich Peninsula, drawing on historical collections and\ncommunity science observations to map the status of the region's plants, track species that have not been\nreported in recent decades, and recognise the contributors whose records make this work possible. This work builds on the foundation of Harvey Janszen's revisions of Szczawinski and Harrison’s (1972) *Flora of the Saanich Peninsula* through ongoing data curation involving a community of naturalists in the Salish Sea.\n",
+    "description": "An atlas of the vascular plants of the W̱SÁNEĆ/Saanich Peninsula, drawing on historical collections and community\nscience observations to map each species’ status, track those not reported in recent decades, and recognise the\ncontributors whose records make this possible. This work builds on Harvey Janszen’s revisions of Szczawinski and Harrison’s (1972) *Flora of the Saanich Peninsula* through ongoing data curation involving a community of naturalists.\n",
     "boundary": {
       "type": "FeatureCollection",
       "features": [

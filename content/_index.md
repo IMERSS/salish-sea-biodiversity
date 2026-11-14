@@ -5,16 +5,15 @@ map: showcase
 
 ### Tracking biodiversity change in the Salish Sea
 
-The Salish Sea Biodiversity Atlas brings together datasets, analyses and tools for understanding how biodiversity is
+The Salish Sea Biodiversity Atlas brings together digital resources for understanding how biodiversity is
 changing across the Salish Sea. Building on more than a decade of research, the projects mapped here draw on diverse
 sources of data and place-based knowledge to establish regional baselines in support of biodiversity research and
 conservation.
 
 ### Rooted in community
 
-Caring for biodiversity depends on knowledge held in local communities. Our work brings community-based
-projects, regional non-profits and academic institutions together to develop practical, transparent methods that
-communities can adopt to monitor biodiversity where they live. Harnessing the
+Caring for biodiversity depends on knowledge held in local communities. We work with community groups, non-profits and universities
+to develop simple, open methods that communities can use to monitor biodiversity in the places where they live. Harnessing the
 [bioReportR framework](https://boninabox.geobon.org/tool-detail?id=251) for interactive, map-based biodiversity
 reporting, together with our
 [protocol for detecting local extinction](https://imerss.github.io/detecting-local-extinction/docs/), we aim to

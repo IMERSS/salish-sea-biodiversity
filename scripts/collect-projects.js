@@ -205,11 +205,15 @@ const main = async function () {
     const localIndex = process.argv.indexOf("--local");
     const localDir = localIndex === -1 ? null : path.resolve(process.argv[localIndex + 1] ?? "..");
     const config = JSON.parse(await fs.readFile(configPath, "utf8"));
+    // A project marked "hidden" is left off the site until the mark is removed
+    config.projects = config.projects.filter(entry => !entry.hidden);
     const previous = await readPrevious();
 
-    const results = await Promise.allSettled(config.projects.map(entry => collectProject(entry, config, localDir)));
+    // A project marked "hidden" is left off the site until it is ready
+    const projects = config.projects.filter(entry => !entry.hidden);
+    const results = await Promise.allSettled(projects.map(entry => collectProject(entry, config, localDir)));
     const records = results.flatMap((result, i) => {
-        const entry = config.projects[i];
+        const entry = projects[i];
         const source = entry.dir || entryRepoUrl(entry);
         let record;
         if (result.status === "fulfilled") {
