@@ -3,6 +3,12 @@
 # and funders, and `logos` lists keys from data/logos.yaml, of which `featuredLogo` may name one to set larger on a row
 # of its own. Every member is optional. The acknowledgement of the
 # peoples in whose territories a project takes place belongs to its place, in projects.json.
+howe-sound-mapping-2026:
+  partners: >-
+    This project is undertaken in partnership with the
+    [Átl’ḵa7tsem/Howe Sound Biosphere Region](https://www.howesoundbri.org/) and
+    [Nature Squamish](https://naturesquamish.ca/).
+  logos: [howe-sound-biosphere, nature-squamish]
 saanich-peninsula-flora:
   partners: >-
     This project is undertaken in partnership with Paige Erickson-Mcgee of

@@ -70,3 +70,15 @@ whiteswan:
   logo: images/logos/whiteswan-environmental.png
   ratio: 2.158
   density: 0.401
+nature-squamish:
+  name: Nature Squamish
+  url: https://naturesquamish.ca/
+  logo: images/logos/nature-squamish.png
+  ratio: 5.911
+  density: 0.221
+howe-sound-biosphere:
+  name: Átl’ḵa7tsem/Howe Sound Biosphere Region
+  url: https://www.howesoundbri.org/
+  logo: images/logos/howe-sound-biosphere.png
+  ratio: 3.540
+  density: 0.314
