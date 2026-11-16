@@ -65,7 +65,6 @@
         },
         {
             "repo": "https://github.com/IMERSS/galiano-island-flora",
-            "hidden": true,
             "place": "galiano-island",
             "title": "Flora of Galiano Island",
             "description": "An analysis of the vascular plant flora of Galiano Island, drawing on historical collections and\ncommunity science observations to map the status of the region's plants, track species that have not been\nreported in recent decades, and recognise the contributors whose records make this work possible.\n"
