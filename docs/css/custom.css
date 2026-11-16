@@ -855,4 +855,18 @@ body {
     .imerss-navbar .imerss-navbar-wordmark {
         display: none;
     }
+
+    .imerss-map .imerss-showcase {
+        left: 10px;
+        bottom: 28px;
+        padding: 8px 12px;
+    }
+
+    .imerss-showcase a.imerss-showcase-title {
+        font-size: 16px;
+    }
+
+    .imerss-showcase .imerss-showcase-controls {
+        margin-top: 4px;
+    }
 }

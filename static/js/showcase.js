@@ -4,12 +4,19 @@
 
 /*
  * Features each project and dataset in turn on the landing page's map, in a random order: the places it covers are
- * outlined and a caption links to its entry on this site. Between items the map returns to the whole Salish Sea.
+ * outlined and a caption links to its entry on this site. Between items the map draws back to the whole Salish Sea,
+ * rests there for a moment, and flies on to the next.
  */
 
-// Milliseconds each item is shown, and the overview between items
-const imerssShowcaseInterval = 8000;
-const imerssShowcaseOverview = 3500;
+// Milliseconds each item is held once the map has arrived at it, the camera takes to fly in and draw back out, the
+// map rests on the whole Salish Sea between items, and the outline and caption take to fade
+const imerssShowcaseHold = 7000;
+const imerssShowcaseFlight = 3200;
+const imerssShowcaseRetreat = 2600;
+const imerssShowcaseRest = 600;
+const imerssShowcaseFade = 600;
+
+const imerssShowcaseEase = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
 const imerssShowcasePaint = {
     outline: "#FDF2CE"
@@ -73,7 +80,7 @@ window.imerssShowcase = function (map, container, items, overviewBounds) {
     let position = -1, timer = null, playing = true;
 
     const caption = document.createElement("div");
-    caption.className = "imerss-showcase";
+    caption.className = "imerss-showcase imerss-showcase-hidden";
     caption.innerHTML = "<p class=\"imerss-showcase-kind\"></p>" +
         "<a class=\"imerss-showcase-title\"></a>" +
         "<div class=\"imerss-showcase-controls\">" +
@@ -91,22 +98,45 @@ window.imerssShowcase = function (map, container, items, overviewBounds) {
             "<svg viewBox=\"0 0 20 20\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M6 4l10 6-10 6z\" fill=\"currentColor\"/></svg>";
     };
 
-    const schedule = function () {
+    // Each step of the tour checks it is still current, so that skipping ahead or pausing abandons the rest of the step
+    let step = 0;
+    const wait = (ms, current) => new Promise(resolve => {
         clearTimeout(timer);
-        if (playing) {
-            timer = setTimeout(overview, imerssShowcaseInterval);
+        timer = setTimeout(resolve, ms);
+    }).then(() => current === step);
+    const arrive = current => new Promise(resolve => map.isMoving() ? map.once("moveend", resolve) : resolve())
+        .then(() => current === step);
+
+    const setOutline = function (opacity) {
+        map.setPaintProperty("showcase-outline", "line-opacity", opacity);
+        map.setPaintProperty("showcase-fill", "fill-opacity", opacity * 0.1);
+    };
+
+    // Leave room beneath the item for the caption, which takes up more of a small map
+    const padding = function () {
+        const rect = container.getBoundingClientRect(), margin = Math.min(60, rect.width * 0.1);
+        const bottom = Math.min(caption.offsetHeight + 36 + margin / 2, rect.height * 0.5);
+        return {top: margin, bottom, left: margin, right: margin};
+    };
+
+    // Hold the current item, then draw back to the whole Salish Sea, rest for a moment and fly on to the next
+    const hold = async function (current) {
+        if (!playing || !await wait(imerssShowcaseHold, current)) {
+            return;
+        }
+        setOutline(0);
+        caption.classList.add("imerss-showcase-hidden");
+        if (!await wait(imerssShowcaseFade, current)) {
+            return;
+        }
+        map.fitBounds(overviewBounds, {padding: 0, duration: imerssShowcaseRetreat, easing: imerssShowcaseEase});
+        if (await arrive(current) && await wait(imerssShowcaseRest, current)) {
+            show(position + 1);
         }
     };
 
-    const overview = function () {
-        map.getSource("showcase-area").setData({type: "FeatureCollection", features: []});
-        map.fitBounds(overviewBounds, {padding: 0, duration: 2500});
-        caption.classList.add("imerss-showcase-hidden");
-        clearTimeout(timer);
-        timer = setTimeout(() => show(position + 1), imerssShowcaseOverview);
-    };
-
-    const show = function (next) {
+    const show = async function (next) {
+        const current = ++step;
         position = (next + order.length) % order.length;
         const item = items[order[position]];
         caption.querySelector(".imerss-showcase-kind").textContent = item.kind + (item.places.length ? " · " + imerssShowcasePlaces(item.places) : "");
@@ -115,44 +145,65 @@ window.imerssShowcase = function (map, container, items, overviewBounds) {
         title.href = item.url;
         caption.querySelector(".imerss-showcase-count").textContent = (position + 1) + " / " + order.length;
         caption.classList.remove("imerss-showcase-hidden");
-        schedule();
 
+        setOutline(0);
         map.getSource("showcase-area").setData({type: "FeatureCollection", features: item.area});
         const bounds = imerssFeatureBounds(item.area);
-        if (bounds) {
-            map.fitBounds(bounds, {padding: {top: 60, bottom: 160, left: 60, right: 60}, maxZoom: 11.5, duration: 2500});
+        const camera = bounds && map.cameraForBounds(bounds, {padding: padding(), maxZoom: 11.5});
+        if (camera) {
+            map.flyTo({...camera, duration: imerssShowcaseFlight, curve: 1.2, easing: imerssShowcaseEase});
+        }
+        if (await arrive(current)) {
+            setOutline(1);
+            hold(current);
         }
     };
 
     playButton.addEventListener("click", () => {
         playing = !playing;
         showPlaying();
-        schedule();
+        if (playing) {
+            show(position + 1);
+        } else {
+            ++step;
+            clearTimeout(timer);
+        }
     });
     caption.querySelector(".imerss-showcase-next").addEventListener("click", () => show(position + 1));
 
-    const pause = () => {
-        if (playing) {
+    // Pause when someone moves the map themselves - not when they merely tap it, or touch it to scroll the page
+    const pause = e => {
+        if (playing && e.originalEvent) {
             playing = false;
+            ++step;
+            clearTimeout(timer);
+            setOutline(1);
+            caption.classList.remove("imerss-showcase-hidden");
             showPlaying();
-            schedule();
         }
     };
-    map.getCanvas().addEventListener("pointerdown", pause);
-    map.getCanvas().addEventListener("wheel", pause, {passive: true});
+    ["dragstart", "zoomstart", "rotatestart", "pitchstart"].forEach(type => map.on(type, pause));
 
     const start = function () {
         map.addSource("showcase-area", {type: "geojson", data: {type: "FeatureCollection", features: []}});
         map.addLayer({id: "showcase-fill", type: "fill", source: "showcase-area",
-            paint: {"fill-color": imerssShowcasePaint.outline, "fill-opacity": 0.1}});
+            paint: {"fill-color": imerssShowcasePaint.outline, "fill-opacity": 0,
+                "fill-opacity-transition": {duration: imerssShowcaseFade}}});
         map.addLayer({id: "showcase-outline", type: "line", source: "showcase-area",
-            paint: {"line-color": imerssShowcasePaint.outline, "line-width": 2}});
+            paint: {"line-color": imerssShowcasePaint.outline, "line-width": 2, "line-opacity": 0,
+                "line-opacity-transition": {duration: imerssShowcaseFade}}});
         showPlaying();
         show(0);
     };
-    if (map.loaded()) {
-        start();
-    } else {
-        map.once("load", start);
-    }
+    // Start as soon as the style is ready, without waiting for every tile to arrive, which can take a while on a slow
+    // connection. The map's style is given inline, so is usually ready at once, though the map does not report itself
+    // loaded until its tiles have arrived
+    const tryStart = function () {
+        if (!map.getSource("showcase-area") && map.style?._loaded) {
+            map.off("styledata", tryStart);
+            start();
+        }
+    };
+    map.on("styledata", tryStart);
+    tryStart();
 };
