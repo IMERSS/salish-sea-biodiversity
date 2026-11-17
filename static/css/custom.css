@@ -452,6 +452,21 @@ nav button.imerss-subnav-dropdown-toggle {
     text-decoration: underline;
 }
 
+/* The whole heading selects its entry, bringing it into view on the map */
+.content .imerss-project-list-heading {
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+}
+
+.imerss-project-list-item:not(.imerss-selected-item) .imerss-project-list-heading:hover {
+    background: linear-gradient(90deg, #FDF2CE14, transparent);
+}
+
+.imerss-selected-item .imerss-project-list-heading {
+    box-shadow: inset 3px 0 0 var(--imerss-cream);
+    padding-left: 0.75rem;
+}
+
 .imerss-project-list-toggle {
     flex: none;
     display: flex;
@@ -591,10 +606,20 @@ nav button.imerss-subnav-dropdown-toggle {
 }
 
 .content .imerss-funders .imerss-logos-list li {
+    /* At most two logos to a row, so a narrow card pairs them up rather than stacking them one by one */
+    max-width: calc(50% - 1rem);
     margin: 0;
 }
 
+.content .imerss-funders .imerss-logos-list li.imerss-logo-wide {
+    display: flex;
+    flex-basis: 100%;
+    max-width: 100%;
+    justify-content: center;
+}
+
 .content .imerss-funders .imerss-logos-list li.imerss-logo-featured {
+    max-width: 100%;
     display: flex;
     flex-basis: 100%;
     justify-content: center;
@@ -602,6 +627,8 @@ nav button.imerss-subnav-dropdown-toggle {
 
 .imerss-funders .imerss-logos-list a {
     display: block;
+    min-width: 0;
+    max-width: 100%;
     line-height: 0;
     transition: opacity 0.2s ease;
 }
@@ -612,9 +639,11 @@ nav button.imerss-subnav-dropdown-toggle {
 }
 
 .content .imerss-funders .imerss-logos-list img {
+    /* Shrink a wide logo, keeping its proportions, rather than let it overflow a narrow card */
     width: var(--logo-w);
-    height: var(--logo-h);
-    max-width: none;
+    height: auto;
+    aspect-ratio: calc(var(--logo-w) / var(--logo-h));
+    max-width: 100%;
     margin: 0;
     object-fit: contain;
 }
@@ -626,7 +655,6 @@ nav button.imerss-subnav-dropdown-toggle {
 
     .content .imerss-funders .imerss-logos-list img {
         width: calc(var(--logo-w) * 0.78);
-        height: calc(var(--logo-h) * 0.78);
     }
 }
 

@@ -18,7 +18,9 @@
   {{- $w := mul $h $ratio -}}
   {{- $maxW := mul 200.0 $scale -}}
   {{- if gt $w $maxW }}{{ $w = $maxW }}{{ $h = div $w $ratio }}{{ end -}}
-  <li{{ if $isFeatured }} class="imerss-logo-featured"{{ end }}>
+  {{- /* A wordmark much wider than tall takes a row of its own, leaving the others to pair up beside each other */ -}}
+  {{- $isWide := and (not $isFeatured) (ge $ratio 5.0) }}
+  <li{{ if $isFeatured }} class="imerss-logo-featured"{{ else if $isWide }} class="imerss-logo-wide"{{ end }}>
     <a href="{{ .url }}" target="_blank" rel="noreferrer" title="{{ .name }}">
       <img src="{{ .logo | relURL }}" alt="{{ .name }}" loading="lazy"
            style="--logo-w: {{ math.Round $w }}px; --logo-h: {{ math.Round $h }}px">

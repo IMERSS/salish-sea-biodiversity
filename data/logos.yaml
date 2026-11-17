@@ -10,10 +10,10 @@ sitka:
 ciee:
   name: Canadian Institute of Ecology and Evolution
   url: https://www.ciee-icee.ca/
-  logo: images/logos/ciee.png
-  ratio: 4.713
-  density: 0.166
-  scale: 1.6
+  logo: images/logos/ciee-icee.png
+  ratio: 6.124
+  density: 0.218
+  scale: 1.8
 crd:
   name: Capital Regional District
   url: https://www.crd.ca/

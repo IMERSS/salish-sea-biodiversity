@@ -5,7 +5,8 @@
 /*
  * The map of places beside the list of projects or datasets (see static/js/project-list.js). Places highlight while
  * hovered here or in the list, and a place opened in the list is brought into view, with any records of a dataset hovered
- * or expanded there drawn as points. Clicking a place opens it in the list. Where places overlap, the smallest is chosen.
+ * or expanded there drawn as points. An entry selected in the list is brought into view by its own boundary, or failing
+ * that its records, or failing that its place, with its boundary traced on the map. Clicking a place opens it in the list. Where places overlap, the smallest is chosen.
  */
 
 const imerssProjectMapDefaults = {
@@ -265,9 +266,43 @@ const imerssProjectMap = function (container, places, options) {
         selectedIndex = index;
         if (index !== null) {
             map.setFeatureState({source: "places", id: index}, {selected: true});
-            map.fitBounds(imerssBounds(places[index].boundary), {padding: 60, maxZoom: 12});
+            map.fitBounds(imerssBounds(places[index].boundary), {padding: 60, maxZoom: 12, duration: 1200});
         } else {
-            map.fitBounds(opts.bounds, {padding: 0});
+            map.fitBounds(opts.bounds, {padding: 0, duration: 1200});
+        }
+    };
+
+    let selectedItem = null;
+
+    /**
+     * Bring an entry selected in the list into view, tracing its boundary, or clear the trace.
+     * @param {Object} detail - The "imerss-item-selected" event's detail, with `placeId`, `itemId` and `occurrencesUrl`.
+     */
+    const selectItem = async function (detail) {
+        selectedItem = detail;
+        const place = places.find(candidate => candidate.id === detail.placeId);
+        const item = place?.items.find(candidate => candidate.id === detail.itemId);
+        if (!loaded) {
+            return;
+        }
+        map.getSource("item").setData(item?.boundary || {type: "FeatureCollection", features: []});
+        if (!item) {
+            return;
+        }
+        let bounds = item.boundary && imerssBounds(item.boundary);
+        if (!bounds && detail.occurrencesUrl) {
+            try {
+                bounds = imerssBounds(await fetchOccurrences(detail.occurrencesUrl));
+            } catch (error) {
+                console.error(error);
+            }
+            if (selectedItem !== detail) {
+                return;
+            }
+        }
+        bounds = bounds || imerssBounds(place.boundary);
+        if (bounds) {
+            map.fitBounds(bounds, {padding: 60, maxZoom: 13, duration: 1200});
         }
     };
 
@@ -296,6 +331,7 @@ const imerssProjectMap = function (container, places, options) {
         occurrences.shown = e.detail.url;
         drawOccurrences();
     });
+    document.addEventListener("imerss-item-selected", e => selectItem(e.detail));
     document.addEventListener("imerss-place-opened", e => {
         const index = places.findIndex(place => place.id === e.detail.id);
         setSelected(index === -1 ? null : index);
@@ -335,6 +371,21 @@ const imerssProjectMap = function (container, places, options) {
             }
         });
 
+        // The boundary of the entry selected in the list
+        map.addSource("item", {type: "geojson", data: {type: "FeatureCollection", features: []}});
+        map.addLayer({
+            id: "item-glow",
+            type: "line",
+            source: "item",
+            paint: {"line-color": opts.colour, "line-width": 10, "line-blur": 8, "line-opacity": 0.55}
+        });
+        map.addLayer({
+            id: "item-outline",
+            type: "line",
+            source: "item",
+            paint: {"line-color": "#FFFFFF", "line-width": 2.5}
+        });
+
         map.addSource("occurrences", {type: "geojson", data: {type: "FeatureCollection", features: []}});
         map.addLayer({
             id: "occurrence-points",
@@ -363,6 +414,9 @@ const imerssProjectMap = function (container, places, options) {
         loaded = true;
         if (selectedIndex !== null) {
             setSelected(selectedIndex);
+        }
+        if (selectedItem) {
+            selectItem(selectedItem);
         }
         drawOccurrences();
 

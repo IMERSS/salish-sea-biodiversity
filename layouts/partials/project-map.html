@@ -11,8 +11,13 @@
     {{- with $island }}{{ $features = $features | append .features }}{{ end -}}
     {{- $entries := slice -}}
     {{- range $placeItems -}}
-      {{- if not $island }}{{ with .boundary }}{{ $features = $features | append .features }}{{ end }}{{ end -}}
-      {{- $entries = $entries | append (dict "titleHtml" (.title | markdownify) "siteUrl" .siteUrl) -}}
+      {{- $entry := dict "id" .id "titleHtml" (.title | markdownify) "siteUrl" .siteUrl -}}
+      {{- if not $island }}{{ with .boundary }}
+        {{- $features = $features | append .features -}}
+        {{- /* The entry's own boundary, which the map zooms to when the entry is selected in the list */ -}}
+        {{- $entry = merge $entry (dict "boundary" .) -}}
+      {{ end }}{{ end -}}
+      {{- $entries = $entries | append $entry -}}
     {{- end -}}
     {{- $places = $places | append (dict
         "id" .id

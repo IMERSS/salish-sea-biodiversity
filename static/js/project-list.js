@@ -3,11 +3,27 @@
 /*
  * The list of places beside the map. Clicking a place's name opens it and collapses the others; within it, each project
  * or dataset is an accordion entry. Hovering or expanding a dataset with records for the place draws them on the map.
- * The list talks to the map through "imerss-place-opened", "imerss-preview-occurrences" and "imerss-show-occurrences"
- * events. A URL fragment #imerss-place-<place>[/<entry>] opens a place, and optionally one of its entries.
+ * Clicking an entry's title or heading expands it and brings it into view on the map; its "Explore" link opens its site.
+ * The list talks to the map through "imerss-place-opened", "imerss-item-selected", "imerss-preview-occurrences" and
+ * "imerss-show-occurrences" events. A URL fragment #imerss-place-<place>[/<entry>] opens a place, and optionally one of its entries.
  */
 
 let imerssShownItem = null;
+let imerssSelectedItem = null;
+
+/**
+ * Mark an entry as selected, bringing it into view on the map, or clear the selection and return to its place.
+ * @param {HTMLElement|null} item - The entry's `.imerss-project-list-item` element, or null to clear any selection.
+ */
+const imerssSelectItem = function (item) {
+    imerssSelectedItem?.classList.remove("imerss-selected-item");
+    imerssSelectedItem = item;
+    item?.classList.add("imerss-selected-item");
+    const section = item?.closest(".imerss-place[data-map-id]");
+    document.dispatchEvent(new CustomEvent("imerss-item-selected", {detail: item ? {
+        placeId: section.dataset.mapId, itemId: item.dataset.itemId, occurrencesUrl: item.dataset.occurrencesUrl || null
+    } : {placeId: null, itemId: null}}));
+};
 
 /**
  * Expand or collapse a list entry.
@@ -68,7 +84,15 @@ const imerssSetPlaceOpen = function (target, open, options = {}) {
     if (open && options.scroll) {
         target.scrollIntoView({behavior: options.smooth ? "smooth" : "auto", block: "start"});
     }
+    if (imerssSelectedItem && !(open && target.contains(imerssSelectedItem))) {
+        imerssSelectedItem.classList.remove("imerss-selected-item");
+        imerssSelectedItem = null;
+    }
     document.dispatchEvent(new CustomEvent("imerss-place-opened", {detail: {id: open ? target.dataset.mapId : null}}));
+    const items = target.querySelectorAll(".imerss-project-list-item");
+    if (open && items.length === 1) {
+        imerssSelectItem(items[0]);
+    }
 };
 
 /**
@@ -96,6 +120,14 @@ document.querySelectorAll(".imerss-project-list-item").forEach(item => {
     const hasOccurrences = Boolean(item.dataset.occurrencesUrl);
     const setExpanded = expanded => {
         imerssSetExpanded(item, expanded);
+        if (expanded) {
+            imerssSelectItem(item);
+        } else if (imerssSelectedItem === item) {
+            // Return the map to the place as a whole
+            imerssSelectItem(null);
+            const section = item.closest(".imerss-place[data-map-id]");
+            document.dispatchEvent(new CustomEvent("imerss-place-opened", {detail: {id: section.dataset.mapId}}));
+        }
         if (hasOccurrences && expanded) {
             imerssShowItem(item);
         } else if (hasOccurrences && imerssShownItem === item) {
@@ -105,11 +137,18 @@ document.querySelectorAll(".imerss-project-list-item").forEach(item => {
     item.querySelector(".imerss-project-list-toggle").addEventListener("click", () => {
         setExpanded(!item.classList.contains("imerss-expanded"));
     });
-    item.querySelector(".imerss-project-list-title").addEventListener("click", e => {
-        // Let modified clicks open the link in a new tab or window as usual
+    // A plain click on the title, or anywhere else on the heading, selects the entry rather than leaving the page.
+    // Modified clicks on the title open its site in a new tab or window as usual, and the "Explore" link always does.
+    item.querySelector(".imerss-project-list-heading").addEventListener("click", e => {
+        const title = e.target.closest(".imerss-project-list-title");
         const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
-        if (!modified && !item.classList.contains("imerss-expanded")) {
-            e.preventDefault();
+        if (title && modified || !title && e.target.closest("a, button")) {
+            return;
+        }
+        e.preventDefault();
+        if (item.classList.contains("imerss-expanded")) {
+            imerssSelectItem(item);
+        } else {
             setExpanded(true);
         }
     });
