@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Salish Sea Biodiversity Atlas – Categories</title>
-    <link>//localhost:5784/categories/</link>
+    <link>//localhost:7510/categories/</link>
     <description>Recent content in Categories on Salish Sea Biodiversity Atlas</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	  <atom:link href="//localhost:5784/categories/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="//localhost:7510/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
       

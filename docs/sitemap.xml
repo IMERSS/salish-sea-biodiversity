@@ -2,26 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>//localhost:5784/blog/markdown/</loc>
+    <loc>//localhost:7510/blog/markdown/</loc>
     <lastmod>2025-07-09T15:56:42+01:00</lastmod>
   </url><url>
-    <loc>//localhost:5784/</loc>
+    <loc>//localhost:7510/</loc>
     <lastmod>2026-11-13T23:50:39-06:00</lastmod>
   </url><url>
-    <loc>//localhost:5784/blog/</loc>
+    <loc>//localhost:7510/blog/</loc>
     <lastmod>2025-07-09T15:56:42+01:00</lastmod>
   </url><url>
-    <loc>//localhost:5784/categories/</loc>
+    <loc>//localhost:7510/categories/</loc>
   </url><url>
-    <loc>//localhost:5784/data/</loc>
+    <loc>//localhost:7510/data/</loc>
     <lastmod>2026-11-11T16:38:54-06:00</lastmod>
   </url><url>
-    <loc>//localhost:5784/documentation/</loc>
+    <loc>//localhost:7510/documentation/</loc>
     <lastmod>2026-11-08T14:17:31-06:00</lastmod>
   </url><url>
-    <loc>//localhost:5784/projects/</loc>
+    <loc>//localhost:7510/projects/</loc>
     <lastmod>2026-11-11T16:38:54-06:00</lastmod>
   </url><url>
-    <loc>//localhost:5784/tags/</loc>
+    <loc>//localhost:7510/tags/</loc>
   </url>
 </urlset>

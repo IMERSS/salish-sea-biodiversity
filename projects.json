@@ -37,6 +37,7 @@
         {
             "id": "texada-island",
             "name": "Texada Island",
+            "acknowledgement": "We respectfully acknowledge that this work takes place within the traditional territory of the Tla’amin Nation (ɬaʔamɩn), who have cared for these lands and waters since time immemorial.",
             "islands": [
                 "Texada Island"
             ]

@@ -4,7 +4,8 @@
 
 /*
  * Features each project and dataset in turn on the landing page's map, in a random order: the places it covers are
- * outlined and a caption links to its entry on this site. Between items the map draws back to the whole Salish Sea,
+ * outlined, brightening as the map flies in so that it reaches full strength as the map arrives, and a caption links to its
+ * entry on this site. Between items the map draws back to the whole Salish Sea,
  * rests there for a moment, and flies on to the next.
  */
 
@@ -15,6 +16,9 @@ const imerssShowcaseFlight = 3200;
 const imerssShowcaseRetreat = 2600;
 const imerssShowcaseRest = 600;
 const imerssShowcaseFade = 600;
+
+// The share of the flight in, from its start, before the item's outline begins to brighten
+const imerssShowcaseRevealStart = 0.35;
 
 const imerssShowcaseEase = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
@@ -107,9 +111,39 @@ window.imerssShowcase = function (map, container, items, overviewBounds) {
     const arrive = current => new Promise(resolve => map.isMoving() ? map.once("moveend", resolve) : resolve())
         .then(() => current === step);
 
-    const setOutline = function (opacity) {
+    /**
+     * Set the outline's opacity, fading to it, or setting it at once when tracking the camera frame by frame.
+     * @param {Number} opacity - The opacity, from 0 to 1.
+     * @param {Boolean} [immediate] - Whether to set it at once rather than fade to it.
+     */
+    const setOutline = function (opacity, immediate) {
+        const transition = {duration: immediate ? 0 : imerssShowcaseFade, delay: 0};
+        map.setPaintProperty("showcase-outline", "line-opacity-transition", transition);
+        map.setPaintProperty("showcase-fill", "fill-opacity-transition", transition);
         map.setPaintProperty("showcase-outline", "line-opacity", opacity);
         map.setPaintProperty("showcase-fill", "fill-opacity", opacity * 0.1);
+    };
+
+    /**
+     * Brighten the outline in step with the flight in, from nothing until partway through to full strength on arrival.
+     * @param {Number} current - The step of the tour this flight belongs to.
+     * @param {Number} duration - The flight's duration in milliseconds.
+     */
+    const reveal = function (current, duration) {
+        const begun = performance.now();
+        const frame = now => {
+            if (current !== step) {
+                return;
+            }
+            const t = Math.min(1, (now - begun) / duration);
+            const ramp = Math.max(0, (t - imerssShowcaseRevealStart) / (1 - imerssShowcaseRevealStart));
+            // Ease in, so that most of the brightening comes in the last moments of the approach
+            setOutline(ramp * ramp * (3 - 2 * ramp), true);
+            if (t < 1 && map.isMoving()) {
+                requestAnimationFrame(frame);
+            }
+        };
+        requestAnimationFrame(frame);
     };
 
     // Leave room beneath the item for the caption, which takes up more of a small map
@@ -146,15 +180,16 @@ window.imerssShowcase = function (map, container, items, overviewBounds) {
         caption.querySelector(".imerss-showcase-count").textContent = (position + 1) + " / " + order.length;
         caption.classList.remove("imerss-showcase-hidden");
 
-        setOutline(0);
+        setOutline(0, true);
         map.getSource("showcase-area").setData({type: "FeatureCollection", features: item.area});
         const bounds = imerssFeatureBounds(item.area);
         const camera = bounds && map.cameraForBounds(bounds, {padding: padding(), maxZoom: 11.5});
         if (camera) {
             map.flyTo({...camera, duration: imerssShowcaseFlight, curve: 1.2, easing: imerssShowcaseEase});
+            reveal(current, imerssShowcaseFlight);
         }
         if (await arrive(current)) {
-            setOutline(1);
+            setOutline(1, true);
             hold(current);
         }
     };
